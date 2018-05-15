@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartballBL", "DartballBL\DartballBL.csproj", "{B88A0B6E-4E2E-44FB-9FCF-75678F75204B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DartballBL", "DartballBL\DartballBL.csproj", "{B88A0B6E-4E2E-44FB-9FCF-75678F75204B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DartballDL", "..\DartballDL\DartballDL\DartballDL.csproj", "{A90CD7FE-F018-4510-9832-E35EC29EA25F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B88A0B6E-4E2E-44FB-9FCF-75678F75204B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B88A0B6E-4E2E-44FB-9FCF-75678F75204B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B88A0B6E-4E2E-44FB-9FCF-75678F75204B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A90CD7FE-F018-4510-9832-E35EC29EA25F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A90CD7FE-F018-4510-9832-E35EC29EA25F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A90CD7FE-F018-4510-9832-E35EC29EA25F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A90CD7FE-F018-4510-9832-E35EC29EA25F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

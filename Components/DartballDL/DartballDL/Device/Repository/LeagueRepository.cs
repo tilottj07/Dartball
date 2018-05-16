@@ -1,11 +1,11 @@
-﻿using DartballDL.Device.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dapper;
+using Dartball.DataLayer.Device.Interface;
 
-namespace DartballDL.Device.Repository
+namespace Dartball.DataLayer.Device.Repository
 {
     public class LeagueRepository : ConnectionBase, ILeague
     {

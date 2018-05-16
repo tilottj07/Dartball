@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using static DartballDL.Device.Repository.LeagueRepository;
+using static Dartball.DataLayer.Device.Repository.LeagueRepository;
 
-namespace DartballDL.Device.Interface
+namespace Dartball.DataLayer.Device.Interface
 {
     public interface ILeague
     {

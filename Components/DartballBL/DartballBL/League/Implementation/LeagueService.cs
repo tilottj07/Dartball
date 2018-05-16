@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dartball.DataLayer.Device.Repository;
 using DartballBL.League.Dto;
 using DartballBL.League.Interface.Models;
 using DartballBL.Shared;
@@ -12,14 +13,14 @@ namespace DartballBL.League.Implementation
     public class LeagueService : ILeagueService
     {
         private IMapper Mapper;
-        private DataLayer.Device.Interface.ILeague LeagueRepository;
+        private Dartball.DataLayer.Device.Interface.ILeague LeagueRepository;
 
         public LeagueService()
         {
-            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DataLayer.Device.LeagueRepository.League, LeagueDto>());
+            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<LeagueRepository.League, LeagueDto>());
             Mapper = mapConfig.CreateMapper();
 
-            LeagueRepository = new DataLayer.Device.LeagueRepository();
+            LeagueRepository = new LeagueRepository();
         }
 
 
@@ -59,7 +60,7 @@ namespace DartballBL.League.Implementation
             {
                 foreach (var league in leagues)
                 {
-                    DataLayer.Device.LeagueRepository.League item = new DataLayer.Device.LeagueRepository.League()
+                    LeagueRepository.League item = new LeagueRepository.League()
                     {
                         Name = Helper.CleanString(league.Name),
                         DeleteDate = null

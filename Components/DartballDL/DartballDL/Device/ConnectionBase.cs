@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DartballDL.Device
+namespace Dartball.DataLayer.Device
 {
     public class ConnectionBase
     {

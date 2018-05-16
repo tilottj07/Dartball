@@ -14,7 +14,7 @@ namespace Dartball.BusinessLayer.League.Implementation
     public class LeagueService : ILeagueService
     {
         private IMapper Mapper;
-        private Dartball.DataLayer.Device.Interface.ILeagueRepository LeagueRepository;
+        private DataLayer.Device.Interface.ILeagueRepository LeagueRepository;
 
         public LeagueService()
         {

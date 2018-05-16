@@ -14,6 +14,7 @@ namespace Dartball.DataLayer.Device.Interface
         void AddNew(League league);
         void Update(League league);
         void Save(League league);
+        void Delete(string name);
 
 
     }

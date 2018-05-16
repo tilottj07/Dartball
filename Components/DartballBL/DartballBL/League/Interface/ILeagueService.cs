@@ -15,5 +15,7 @@ namespace Dartball.BusinessLayer.League.Interface
         ChangeResult Save(ILeague league);
         ChangeResult Save(List<ILeague> leagues);
 
+        ChangeResult RemoveLeague(string name);
+
     }
 }

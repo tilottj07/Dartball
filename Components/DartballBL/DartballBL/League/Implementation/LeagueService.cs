@@ -64,6 +64,7 @@ namespace Dartball.BusinessLayer.League.Implementation
                     LeagueRepository.League item = new LeagueRepository.League()
                     {
                         Name = Helper.CleanString(league.Name),
+                        Password = Helper.CleanString(league.Password), //TODO: add encryption
                         DeleteDate = null
                     };
                     LeagueRepository.Save(item);
@@ -73,14 +74,14 @@ namespace Dartball.BusinessLayer.League.Implementation
         }
 
 
-
-
         private ChangeResult Validate(List<ILeague> leagues)
         {
             ChangeResult result = new ChangeResult();
 
             foreach (var league in leagues)
             {
+                if (!result.IsSuccess) break;
+
                 if (string.IsNullOrWhiteSpace(league.Name))
                 {
                     result.IsSuccess = false;
@@ -97,6 +98,14 @@ namespace Dartball.BusinessLayer.League.Implementation
         }
 
 
+
+        public ChangeResult RemoveLeague(string name)
+        {
+            ChangeResult result = new ChangeResult();
+            LeagueRepository.Delete(name);
+
+            return result;
+        }
 
 
     }

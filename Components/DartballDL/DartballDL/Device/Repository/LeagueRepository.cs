@@ -89,6 +89,12 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
+        public void Delete(string name)
+        {
+            string deleteQuery = @"delete from League where Name = @Name";
+            Connection.Execute(deleteQuery, new { Name = name });
+        }
+
 
         public bool ExistsInDb(League league)
         {

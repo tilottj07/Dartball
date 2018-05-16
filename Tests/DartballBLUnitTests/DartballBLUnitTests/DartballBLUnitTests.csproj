@@ -4,4 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.UnitTestFramework.Extensions" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Components\DartballBL\DartballBL\DartballBL.csproj" />
+    <ProjectReference Include="..\..\..\Components\DartballDL\DartballDL\DartballDL.csproj" />
+  </ItemGroup>
+
 </Project>

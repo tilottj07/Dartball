@@ -1,16 +1,16 @@
-﻿using DartballBL.League.Interface.Models;
+﻿using Dartball.BusinessLayer.League.Interface.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DartballBL.League.Dto
+namespace Dartball.BusinessLayer.League.Dto
 {
     public class LeagueDto : ILeague
     {
 
         public int LeagueId { get; set; }
         public string Name { get; set; }
-
+        public string Password { get; set; }
 
     }
 }

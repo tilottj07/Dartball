@@ -5,7 +5,7 @@ using static Dartball.DataLayer.Device.Repository.LeagueRepository;
 
 namespace Dartball.DataLayer.Device.Interface
 {
-    public interface ILeague
+    public interface ILeagueRepository
     {
 
         List<League> LoadAll();

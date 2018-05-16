@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DartballBL.Shared.Models
+namespace Dartball.BusinessLayer.Shared.Models
 {
     public class ChangeResult
     {

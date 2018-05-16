@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DartballBL.Shared
+namespace Dartball.BusinessLayer.Shared
 {
     public class Helper
     {

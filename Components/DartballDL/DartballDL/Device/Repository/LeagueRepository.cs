@@ -7,7 +7,7 @@ using Dartball.DataLayer.Device.Interface;
 
 namespace Dartball.DataLayer.Device.Repository
 {
-    public class LeagueRepository : ConnectionBase, ILeague
+    public class LeagueRepository : ConnectionBase, ILeagueRepository
     {
 
 
@@ -63,24 +63,27 @@ namespace Dartball.DataLayer.Device.Repository
         private void InsertLeague(League league)
         {
             string insertQuery = @"INSERT INTO League
-                    (Name, ChangeDate, DeleteDate)
-                    values(@Name, @DeleteDate)";
+                    (Name, Password, ChangeDate, DeleteDate)
+                    values(@Name, @Password, @DeleteDate)";
 
             Connection.Execute(insertQuery, new
             {
                 league.Name,
+                league.Password,
                 league.DeleteDate
             });
         }
         private void UpdateLeague(League league)
         {
             string updateQuery = @"update League
-            set DeleteDate = @DeleteDate
+            set DeleteDate = @DeleteDate,
+            Password = @Password
             where Name = @Name";
 
             Connection.Execute(updateQuery, new
             {
                 league.DeleteDate,
+                league.Password,
                 league.Name
             });
         }
@@ -98,12 +101,13 @@ namespace Dartball.DataLayer.Device.Repository
         {
             public int LeagueId { get; set; }
             public string Name { get; set; }
+            public string Password { get; set; }
             public DateTime ChangeDate { get; set; }
             public DateTime? DeleteDate { get; set; }
         }
 
 
-        private const string SELECT_QUERY = @"select LeagueId, Name, ChangeDate, DeleteDate from League";
+        private const string SELECT_QUERY = @"select LeagueId, Name, Password, ChangeDate, DeleteDate from League";
 
 
     }

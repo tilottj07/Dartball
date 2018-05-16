@@ -1,19 +1,20 @@
 ﻿using AutoMapper;
+using Dartball.BusinessLayer.League.Interface;
+using Dartball.BusinessLayer.League.Interface.Models;
 using Dartball.DataLayer.Device.Repository;
-using DartballBL.League.Dto;
-using DartballBL.League.Interface.Models;
-using DartballBL.Shared;
-using DartballBL.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dartball.BusinessLayer.League.Dto;
+using Dartball.BusinessLayer.Shared;
+using Dartball.BusinessLayer.Shared.Models;
 
-namespace DartballBL.League.Implementation
+namespace Dartball.BusinessLayer.League.Implementation
 {
     public class LeagueService : ILeagueService
     {
         private IMapper Mapper;
-        private Dartball.DataLayer.Device.Interface.ILeague LeagueRepository;
+        private Dartball.DataLayer.Device.Interface.ILeagueRepository LeagueRepository;
 
         public LeagueService()
         {

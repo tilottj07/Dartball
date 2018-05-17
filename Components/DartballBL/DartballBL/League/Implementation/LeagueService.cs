@@ -14,11 +14,11 @@ namespace Dartball.BusinessLayer.League.Implementation
     public class LeagueService : ILeagueService
     {
         private IMapper Mapper;
-        private DataLayer.Device.Interface.ILeagueRepository LeagueRepository;
+        private LeagueRepository LeagueRepository;
 
         public LeagueService()
         {
-            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<LeagueRepository.League, LeagueDto>());
+            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DataLayer.Device.Dto.LeagueDto, LeagueDto>());
             Mapper = mapConfig.CreateMapper();
 
             LeagueRepository = new LeagueRepository();
@@ -61,7 +61,7 @@ namespace Dartball.BusinessLayer.League.Implementation
             {
                 foreach (var league in leagues)
                 {
-                    LeagueRepository.League item = new LeagueRepository.League()
+                    DataLayer.Device.Dto.LeagueDto item = new DataLayer.Device.Dto.LeagueDto()
                     {
                         Name = Helper.CleanString(league.Name),
                         Password = Helper.CleanString(league.Password), //TODO: add encryption

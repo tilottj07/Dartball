@@ -3,48 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dapper;
-using Dartball.DataLayer.Device.Interface;
+using Dartball.DataLayer.Device.Dto;
 
 namespace Dartball.DataLayer.Device.Repository
 {
-    public class LeagueRepository : ConnectionBase, ILeagueRepository
+    public class LeagueRepository : ConnectionBase
     {
 
 
 
-        public List<League> LoadAll()
+        public List<LeagueDto> LoadAll()
         {
-            List<League> leagues = new List<League>();
-            using (var cnn = Connection)
-            {
-                leagues.AddRange(cnn.Query<League>(SELECT_QUERY));
-            }
+            List<LeagueDto> leagues = new List<LeagueDto>();
+            Connection.Open();
+
+            leagues.AddRange(Connection.Query<LeagueDto>(SELECT_QUERY));
+
+            Connection.Close();
 
             return leagues;
         }
 
-        public League LoadByName(string name)
+        public LeagueDto LoadByName(string name)
         {
-            League league = null;
-            using (var cnn = Connection)
-            {
-                var result = cnn.Query<League>(
-                    SELECT_QUERY + " where Name = @Name",
-                    new { Name = name });
+            LeagueDto league = null;
+            Connection.Open();
 
-                league = result.FirstOrDefault();
-            }
+            var result = Connection.Query<LeagueDto>(
+                SELECT_QUERY + " where Name = @Name",
+                new { Name = name });
+
+            league = result.FirstOrDefault();
+
+            Connection.Close();
 
             return league;
         }
 
 
 
-        public void AddNew(League league)
+        public void AddNew(LeagueDto league)
         {
             InsertLeague(league);
         }
-        public void Update(League league)
+        public void Update(LeagueDto league)
         {
             UpdateLeague(league);
         }
@@ -53,65 +55,58 @@ namespace Dartball.DataLayer.Device.Repository
         /// data layer will determine add vs update
         /// </summary>
         /// <param name="league"></param>
-        public void Save(League league)
+        public void Save(LeagueDto league)
         {
             if (ExistsInDb(league)) Update(league);
             else AddNew(league);
         }
 
 
-        private void InsertLeague(League league)
+        private void InsertLeague(LeagueDto league)
         {
             string insertQuery = @"INSERT INTO League
                     (Name, Password, ChangeDate, DeleteDate)
                     values(@Name, @Password, @DeleteDate)";
 
-            Connection.Execute(insertQuery, new
-            {
-                league.Name,
-                league.Password,
-                league.DeleteDate
-            });
+            Connection.Open();
+            Connection.Query(insertQuery, league);
+            Connection.Close();
         }
-        private void UpdateLeague(League league)
+        private void UpdateLeague(LeagueDto league)
         {
             string updateQuery = @"update League
             set DeleteDate = @DeleteDate,
             Password = @Password
             where Name = @Name";
 
-            Connection.Execute(updateQuery, new
-            {
-                league.DeleteDate,
-                league.Password,
-                league.Name
-            });
+            Connection.Open();
+            Connection.Query(updateQuery, league);
+            Connection.Close();
         }
 
 
         public void Delete(string name)
         {
             string deleteQuery = @"delete from League where Name = @Name";
-            Connection.Execute(deleteQuery, new { Name = name });
+
+            Connection.Open();
+            Connection.Query(deleteQuery, new { Name = name });
+            Connection.Close();
         }
 
 
-        public bool ExistsInDb(League league)
+        public bool ExistsInDb(LeagueDto league)
         {
-            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM League WHERE Name = @Name", new { league.Name });
+            Connection.Open();
+
+            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM League WHERE Name = @Name", new { league });
+            Connection.Close();
+
             return rows.First() > 0;
         }
 
 
-        public class League
-        {
-            public int LeagueId { get; set; }
-            public string Name { get; set; }
-            public string Password { get; set; }
-            public DateTime ChangeDate { get; set; }
-            public DateTime? DeleteDate { get; set; }
-        }
-
+      
 
         private const string SELECT_QUERY = @"select LeagueId, Name, Password, ChangeDate, DeleteDate from League";
 

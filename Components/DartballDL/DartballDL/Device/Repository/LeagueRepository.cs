@@ -65,7 +65,7 @@ namespace Dartball.DataLayer.Device.Repository
         private void InsertLeague(LeagueDto league)
         {
             string insertQuery = @"INSERT INTO League
-                    (Name, Password, ChangeDate, DeleteDate)
+                    (Name, Password, DeleteDate)
                     values(@Name, @Password, @DeleteDate)";
 
             Connection.Open();
@@ -99,7 +99,7 @@ namespace Dartball.DataLayer.Device.Repository
         {
             Connection.Open();
 
-            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM League WHERE Name = @Name", new { league });
+            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM League WHERE Name = @Name", new { Name = league.Name });
             Connection.Close();
 
             return rows.First() > 0;

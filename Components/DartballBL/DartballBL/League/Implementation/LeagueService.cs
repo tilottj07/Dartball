@@ -26,11 +26,11 @@ namespace Dartball.BusinessLayer.League.Implementation
 
 
 
-        public ILeague GetLeague(string name)
+        public ILeague GetLeague(Guid leagueAlternateKey)
         {
             ILeague league = null;
 
-            var dl = LeagueRepository.LoadByName(name);
+            var dl = LeagueRepository.LoadByKey(leagueAlternateKey);
             if (dl != null && !dl.DeleteDate.HasValue) league = Mapper.Map<LeagueDto>(dl);
 
             return league;
@@ -64,6 +64,7 @@ namespace Dartball.BusinessLayer.League.Implementation
                     DataLayer.Device.Dto.LeagueDto item = new DataLayer.Device.Dto.LeagueDto()
                     {
                         Name = Helper.CleanString(league.Name),
+                        LeagueAlternateKey = league.LeagueAlternateKey.ToString(),
                         Password = Helper.CleanString(league.Password), //TODO: add encryption
                         DeleteDate = null
                     };
@@ -99,10 +100,10 @@ namespace Dartball.BusinessLayer.League.Implementation
 
 
 
-        public ChangeResult RemoveLeague(string name)
+        public ChangeResult RemoveLeague(Guid leagueAltenateKey)
         {
             ChangeResult result = new ChangeResult();
-            LeagueRepository.Delete(name);
+            LeagueRepository.Delete(leagueAltenateKey);
 
             return result;
         }

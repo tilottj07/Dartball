@@ -9,13 +9,13 @@ namespace Dartball.BusinessLayer.League.Interface
     public interface ILeagueService
     {
 
-        ILeague GetLeague(string name);
+        ILeague GetLeague(Guid leagueAlternateKey);
         List<ILeague> GetLeagues();
 
         ChangeResult Save(ILeague league);
         ChangeResult Save(List<ILeague> leagues);
 
-        ChangeResult RemoveLeague(string name);
+        ChangeResult RemoveLeague(Guid leagueAlternateKey);
 
     }
 }

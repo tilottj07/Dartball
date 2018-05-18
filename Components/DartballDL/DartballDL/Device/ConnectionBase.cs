@@ -13,7 +13,7 @@ namespace Dartball.DataLayer.Device
 
         }
 
-        public SQLiteConnection Connection { get; private set; }
+        protected SQLiteConnection Connection { get; private set; }
 
 
 

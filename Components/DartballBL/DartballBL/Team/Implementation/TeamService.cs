@@ -75,7 +75,7 @@ namespace Dartball.BusinessLayer.Team.Implementation
                         Name = team.Name,
                         Password = team.Password, //TODO: add encryption
                         Handicap = team.Handicap,
-                        ShouldSync = team.ShouldSync,
+                        ShouldSync = team.ShouldSync ? 1 : 0,
                         DeleteDate = team.DeleteDate
                     };
                     TeamRepository.AddNew(dto);
@@ -103,7 +103,7 @@ namespace Dartball.BusinessLayer.Team.Implementation
                         Name = team.Name,
                         Password = team.Password, //TODO: add encryption
                         Handicap = team.Handicap,
-                        ShouldSync = team.ShouldSync,
+                        ShouldSync = team.ShouldSync ? 1 : 0,
                         DeleteDate = team.DeleteDate
                     };
                     TeamRepository.Update(dto);
@@ -136,6 +136,17 @@ namespace Dartball.BusinessLayer.Team.Implementation
                     result.ErrorMessages.Add("Team Name cannot be longer than 100 characters.");
                 }
             }
+
+            return result;
+        }
+
+
+
+        public ChangeResult Remove(Guid teamAlternateKey)
+        {
+            ChangeResult result = new ChangeResult();
+
+            TeamRepository.Delete(teamAlternateKey);
 
             return result;
         }

@@ -19,5 +19,7 @@ namespace Dartball.BusinessLayer.Team.Interface
         ChangeResult Update(ITeam team);
         ChangeResult Update(List<ITeam> teams);
 
+        ChangeResult Remove(Guid teamAlternateKey);
+
     }
 }

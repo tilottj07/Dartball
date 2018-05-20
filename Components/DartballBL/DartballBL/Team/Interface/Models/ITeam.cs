@@ -12,7 +12,7 @@ namespace Dartball.BusinessLayer.Team.Interface.Models
         string Name { get; }
         string Password { get; }
         int? Handicap { get; }
-        int ShouldSync { get; }
+        bool ShouldSync { get; }
         DateTime ChangeDate { get; }
         DateTime? DeleteDate { get; }
 

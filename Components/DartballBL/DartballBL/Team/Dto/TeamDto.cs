@@ -14,7 +14,7 @@ namespace Dartball.BusinessLayer.Team.Dto
         public string Name { get; set; }
         public string Password { get; set; }
         public int? Handicap { get; set; }
-        public int ShouldSync { get; set; }
+        public bool ShouldSync { get; set; }
         public DateTime ChangeDate { get; set; }
         public DateTime? DeleteDate { get; set; }
 

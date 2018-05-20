@@ -44,8 +44,8 @@ namespace Dartball.DataLayer.Device.Repository
             Connection.Open();
 
             teams.AddRange(Connection.Query<TeamDto>(
-                SELECT_QUERY + " WHERE LeaugeAlternateKey = @LeaugeAlternateKey",
-                new { LeaugeAlternateKey = leagueAlternateKey.ToString() }));
+                SELECT_QUERY + " WHERE LeagueAlternateKey = @LeagueAlternateKey",
+                new { LeagueAlternateKey = leagueAlternateKey.ToString() }));
 
 
             Connection.Close();
@@ -79,7 +79,7 @@ namespace Dartball.DataLayer.Device.Repository
         {
             string insertQuery = @"INSERT INTO Team
                     (TeamAlternateKey, LeagueAlternateKey, Name, Password, Handicap, ShouldSync, DeleteDate)
-                    VALUEs(
+                    VALUES(
                         @TeamAlternateKey, 
                         @LeagueAlternateKey, 
                         @Name, 
@@ -95,11 +95,11 @@ namespace Dartball.DataLayer.Device.Repository
         private void UpdateTeam(TeamDto team)
         {
             string updateQuery = @"UPDATE Team
-            set LeagueAlternateKey = @LeagueAlternateKey,
+            SET LeagueAlternateKey = @LeagueAlternateKey,
             Name = @Name,
             Password = @Password,
             Handicap = @Handicap,
-            ShouldSync = @ShouldSync,
+            ShouldSync = @ShouldSync
             WHERE TeamAlternateKey = @TeamAlternateKey";
 
             Connection.Open();
@@ -108,12 +108,12 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
-        public void Delete(Guid leagueAlternateKey)
+        public void Delete(Guid teamAlternateKey)
         {
-            string deleteQuery = @"delete from League where LeagueAlternateKey = @LeagueAlternateKey";
+            string deleteQuery = @"DELETE FROM Team WHERE TeamAlternateKey = @TeamAlternateKey";
 
             Connection.Open();
-            Connection.Query(deleteQuery, new { LeagueAlternateKey = leagueAlternateKey.ToString() });
+            Connection.Query(deleteQuery, new { TeamAlternateKey = teamAlternateKey.ToString() });
             Connection.Close();
         }
 

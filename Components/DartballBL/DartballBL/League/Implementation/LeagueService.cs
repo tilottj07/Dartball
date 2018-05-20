@@ -49,12 +49,37 @@ namespace Dartball.BusinessLayer.League.Implementation
         }
 
 
-
-        public ChangeResult Save(ILeague league)
+        public ChangeResult AddNew(ILeague league)
         {
-            return Save(new List<ILeague> { league });
+            return AddNew(new List<ILeague> { league });
         }
-        public ChangeResult Save(List<ILeague> leagues)
+        public ChangeResult AddNew(List<ILeague> leagues)
+        {
+            var result = Validate(leagues);
+            if (result.IsSuccess)
+            {
+                foreach (var league in leagues)
+                {
+                    DataLayer.Device.Dto.LeagueDto item = new DataLayer.Device.Dto.LeagueDto()
+                    {
+                        Name = Helper.CleanString(league.Name),
+                        LeagueAlternateKey = league.LeagueAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : league.LeagueAlternateKey.ToString(),
+                        Password = Helper.CleanString(league.Password), //TODO: add encryption
+                        DeleteDate = null
+                    };
+                    LeagueRepository.AddNew(item);
+                }
+            }
+            return result;
+        }
+
+
+
+        public ChangeResult Update(ILeague league)
+        {
+            return Update(new List<ILeague> { league });
+        }
+        public ChangeResult Update(List<ILeague> leagues)
         {
             var result = Validate(leagues);
             if (result.IsSuccess)
@@ -68,7 +93,7 @@ namespace Dartball.BusinessLayer.League.Implementation
                         Password = Helper.CleanString(league.Password), //TODO: add encryption
                         DeleteDate = null
                     };
-                    LeagueRepository.Save(item);
+                    LeagueRepository.Update(item);
                 }
             }
             return result;

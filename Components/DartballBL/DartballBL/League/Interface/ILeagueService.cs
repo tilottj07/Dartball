@@ -12,8 +12,11 @@ namespace Dartball.BusinessLayer.League.Interface
         ILeague GetLeague(Guid leagueAlternateKey);
         List<ILeague> GetLeagues();
 
-        ChangeResult Save(ILeague league);
-        ChangeResult Save(List<ILeague> leagues);
+        ChangeResult AddNew(ILeague league);
+        ChangeResult AddNew(List<ILeague> leagues);
+
+        ChangeResult Update(ILeague league);
+        ChangeResult Update(List<ILeague> leagues);
 
         ChangeResult RemoveLeague(Guid leagueAlternateKey);
 

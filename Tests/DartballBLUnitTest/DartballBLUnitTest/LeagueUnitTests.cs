@@ -32,7 +32,7 @@ namespace DartballBLUnitTests
                 Password = TEST_LEAGUE_PASSWORD
             };
 
-            var result = LeagueService.Save(dto);
+            var result = LeagueService.AddNew(dto);
             Assert.IsTrue(result.IsSuccess);
 
             //make sure the league is actually in the db
@@ -43,7 +43,7 @@ namespace DartballBLUnitTests
 
             //make sure an update works
             dto.Name = TEST_LEAGUE_NAME_2;
-            var nameChangeResult = LeagueService.Save(dto);
+            var nameChangeResult = LeagueService.Update(dto);
             Assert.IsTrue(nameChangeResult.IsSuccess);
 
             league = LeagueService.GetLeague(TEST_ALTERNATE_ID);

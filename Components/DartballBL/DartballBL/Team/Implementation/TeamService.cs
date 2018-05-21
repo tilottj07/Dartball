@@ -6,6 +6,7 @@ using AutoMapper;
 using Dartball.BusinessLayer.Team.Dto;
 using Dartball.BusinessLayer.Team.Interface.Models;
 using Dartball.BusinessLayer.Shared.Models;
+using Dartball.BusinessLayer.Shared;
 
 namespace Dartball.BusinessLayer.Team.Implementation
 {
@@ -72,8 +73,8 @@ namespace Dartball.BusinessLayer.Team.Implementation
                     {
                         TeamAlternateKey = team.TeamAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : team.TeamAlternateKey.ToString(),
                         LeagueAlternateKey = team.LeagueAlternateKey.ToString(),
-                        Name = team.Name,
-                        Password = team.Password, //TODO: add encryption
+                        Name = Helper.CleanString(team.Name),
+                        Password = Helper.CleanString(team.Password), //TODO: add encryption
                         Handicap = team.Handicap,
                         ShouldSync = team.ShouldSync ? 1 : 0,
                         DeleteDate = team.DeleteDate
@@ -100,8 +101,8 @@ namespace Dartball.BusinessLayer.Team.Implementation
                     {
                         TeamAlternateKey = team.TeamAlternateKey.ToString(),
                         LeagueAlternateKey = team.LeagueAlternateKey.ToString(),
-                        Name = team.Name,
-                        Password = team.Password, //TODO: add encryption
+                        Name = Helper.CleanString(team.Name),
+                        Password = Helper.CleanString(team.Password), //TODO: add encryption
                         Handicap = team.Handicap,
                         ShouldSync = team.ShouldSync ? 1 : 0,
                         DeleteDate = team.DeleteDate

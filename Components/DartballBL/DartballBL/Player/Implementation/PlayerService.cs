@@ -122,6 +122,17 @@ namespace Dartball.BusinessLayer.Player.Implementation
                     result.ErrorMessages.Add("Player Name cannot be longer than 100 characters.");
                 }
 
+                if (string.IsNullOrWhiteSpace(player.UserName))
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add("User Name is Required.");
+                }
+                else if (player.UserName.Trim().Length > 100)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add("User Name cannot be longer than 100 characters.");
+                }
+
                 if (!string.IsNullOrWhiteSpace(player.EmailAddress))
                 {
                     if (!Helper.IsValidEmail(player.EmailAddress))

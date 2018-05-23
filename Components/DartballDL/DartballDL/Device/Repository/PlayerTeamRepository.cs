@@ -44,9 +44,9 @@ namespace Dartball.DataLayer.Device.Repository
             List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
 
             Connection.Open();
-            var result = Connection.Query<PlayerTeamDto>(
+            playerTeams.AddRange(Connection.Query<PlayerTeamDto>(
                 SELECT_QUERY + " WHERE TeamAlternateKey = @TeamAlternateKey ",
-                new { TeamAlternateKey = teamAlternateKey.ToString() });
+                new { TeamAlternateKey = teamAlternateKey.ToString() }));
             Connection.Close();
 
             return playerTeams;

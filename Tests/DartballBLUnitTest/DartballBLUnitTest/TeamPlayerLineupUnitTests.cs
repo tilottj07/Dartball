@@ -66,5 +66,44 @@ namespace DartballBLUnitTest
             Assert.IsNull(teamPlayerLineupItem);
         }
 
+        [TestMethod]
+        public void InvalidTeamAlternateKeyTest()
+        {
+            TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
+            {
+                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
+                BattingOrder = TEST_BATTING_ORDER
+            };
+
+            var result = Lineup.AddNew(dto);
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [TestMethod]
+        public void InvalidPlayerAlternateKeyTest()
+        {
+            TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
+            {
+                TeamAlternateKey = TEST_TEAM_ALTERNATE_KEY,
+                BattingOrder = TEST_BATTING_ORDER
+            };
+
+            var result = Lineup.AddNew(dto);
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [TestMethod]
+        public void InvalidTeamPlayerLineupAlternateKeyTest()
+        {
+            TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
+            {
+                TeamAlternateKey = TEST_TEAM_ALTERNATE_KEY,
+                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
+                BattingOrder = TEST_BATTING_ORDER
+            };
+
+            var result = Lineup.Update(dto);
+            Assert.IsFalse(result.IsSuccess);
+        }
     }
 }

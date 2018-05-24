@@ -84,5 +84,18 @@ namespace DartballBLUnitTest
             Assert.IsFalse(addResult.IsSuccess);
         }
 
+        [TestMethod]
+        public void InvalidTeamPlayerAlternateKeyTest()
+        {
+            PlayerTeamDto dto = new PlayerTeamDto()
+            {
+                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
+                TeamAlternateKey = Guid.Empty
+            };
+
+            var result = PlayerTeamService.Update(dto);
+            Assert.IsFalse(result.IsSuccess);
+        }
+
     }
 }

@@ -11,113 +11,115 @@ namespace Dartball.DataLayer.Device.Repository
     public class TeamPlayerLineupRepository : ConnectionBase
     {
 
-        public List<PlayerTeamDto> LoadAll()
+        public List<TeamPlayerLineupDto> LoadAll()
         {
-            List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
+            List<TeamPlayerLineupDto> teamPlayerLineups = new List<TeamPlayerLineupDto>();
 
             Connection.Open();
-            playerTeams.AddRange(Connection.Query<PlayerTeamDto>(SELECT_QUERY));
+            teamPlayerLineups.AddRange(Connection.Query<TeamPlayerLineupDto>(SELECT_QUERY));
             Connection.Close();
 
-            return playerTeams;
+            return teamPlayerLineups;
         }
 
-        public PlayerTeamDto LoadByCompositeKey(Guid playerAlternateKey, Guid teamAlternateKey)
+        public TeamPlayerLineupDto LoadByCompositeKey(Guid playerAlternateKey, Guid teamAlternateKey)
         {
-            PlayerTeamDto playerTeam = null;
+            TeamPlayerLineupDto teamPlayerLineup = null;
             Connection.Open();
 
-            var result = Connection.Query<PlayerTeamDto>(
+            var result = Connection.Query<TeamPlayerLineupDto>(
                 SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey " +
                 "AND TeamAlternateKey = @TeamAlternateKey",
                 new { PlayerAlternateKey = playerAlternateKey.ToString(), TeamAlternateKey = teamAlternateKey.ToString() });
 
-            playerTeam = result.FirstOrDefault();
+            teamPlayerLineup = result.FirstOrDefault();
 
             Connection.Close();
 
-            return playerTeam;
+            return teamPlayerLineup;
         }
 
-        public List<PlayerTeamDto> LoadByTeamAlternateKey(Guid teamAlternateKey)
+        public List<TeamPlayerLineupDto> LoadByTeamAlternateKey(Guid teamAlternateKey)
         {
-            List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
+            List<TeamPlayerLineupDto> teamPlayerLineups = new List<TeamPlayerLineupDto>();
 
             Connection.Open();
-            playerTeams.AddRange(Connection.Query<PlayerTeamDto>(
+            teamPlayerLineups.AddRange(Connection.Query<TeamPlayerLineupDto>(
                 SELECT_QUERY + " WHERE TeamAlternateKey = @TeamAlternateKey ",
                 new { TeamAlternateKey = teamAlternateKey.ToString() }));
             Connection.Close();
 
-            return playerTeams;
+            return teamPlayerLineups;
         }
 
-        public List<PlayerTeamDto> LoadByPlayerAlternateKey(Guid playerAlternateKey)
+        public List<TeamPlayerLineupDto> LoadByPlayerAlternateKey(Guid playerAlternateKey)
         {
-            List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
+            List<TeamPlayerLineupDto> teamPlayerLineups = new List<TeamPlayerLineupDto>();
 
             Connection.Open();
-            var result = Connection.Query<PlayerTeamDto>(
+            var result = Connection.Query<TeamPlayerLineupDto>(
                 SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey ",
                 new { PlayerAlternateKey = playerAlternateKey.ToString() });
             Connection.Close();
 
-            return playerTeams;
+            return teamPlayerLineups;
         }
 
 
-        public void AddNew(PlayerTeamDto playerTeam)
+        public void AddNew(TeamPlayerLineupDto teamPlayerLineup)
         {
-            InsertPlayerTeam(playerTeam);
+            InsertTeamPlayerLineup(teamPlayerLineup);
         }
-        public void Update(PlayerTeamDto playerTeam)
+        public void Update(TeamPlayerLineupDto teamPlayerLineup)
         {
-            UpdatePlayerTeam(playerTeam);
+            UpdateTeamPlayerLineup(teamPlayerLineup);
         }
 
         /// <summary>
         /// data layer will determine add vs update
         /// </summary>
         /// <param name="league"></param>
-        public void Save(PlayerTeamDto playerTeam)
+        public void Save(TeamPlayerLineupDto teamPlayerLineup)
         {
-            if (ExistsInDb(playerTeam)) Update(playerTeam);
-            else AddNew(playerTeam);
+            if (ExistsInDb(teamPlayerLineup)) Update(teamPlayerLineup);
+            else AddNew(teamPlayerLineup);
         }
 
 
-        private void InsertPlayerTeam(PlayerTeamDto playerTeam)
+        private void InsertTeamPlayerLineup(TeamPlayerLineupDto teamPlayerLineup)
         {
-            string insertQuery = @"INSERT INTO PlayerTeam
-                    (PlayerTeamAlternateKey, PlayerAlternateKey, TeamAlternateKey, DeleteDate)
+            string insertQuery = @"INSERT INTO TeamPlayerLineup
+                    (TeamPlayerLineupAlternateKey, TeamAlternateKey, PlayerAlternateKey, BattingOrder, DeleteDate)
                     VALUES(
-                        @PlayerTeamAlternateKey, 
-                        @PlayerAlternateKey, 
+                        @TeamPlayerLineupAlternateKey, 
                         @TeamAlternateKey, 
+                        @PlayerAlternateKey, 
+                        @BattingOrder, 
                         @DeleteDate)";
 
             Connection.Open();
-            Connection.Query(insertQuery, playerTeam);
+            Connection.Query(insertQuery, teamPlayerLineup);
             Connection.Close();
         }
-        private void UpdatePlayerTeam(PlayerTeamDto playerTeam)
+        private void UpdateTeamPlayerLineup(TeamPlayerLineupDto teamPlayerLineup)
         {
-            string updateQuery = @"UPDATE PlayerTeam
-            SET PlayerTeamAlternateKey = @PlayerTeamAlternateKey,
+            string updateQuery = @"UPDATE TeamPlayerLineup
+            SET TeamPlayerLineupAlternateKey = @TeamPlayerLineupAlternateKey,
             PlayerAlternateKey = @PlayerAlternateKey,
             TeamAlternateKey = @TeamAlternateKey,
+            BattingOrder = @BattingOrder, 
             DeleteDate = @DeleteDate 
             WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
 
             Connection.Open();
-            Connection.Query(updateQuery, playerTeam);
+            Connection.Query(updateQuery, teamPlayerLineup);
             Connection.Close();
         }
 
 
         public void Delete(Guid playerAlternateKey, Guid teamAlternateKey)
         {
-            string deleteQuery = @"DELETE FROM PlayerTeam WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
+            string deleteQuery = @"DELETE FROM TeamPlayerLineup WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
 
             Connection.Open();
             Connection.Query(deleteQuery, new { PlayerAlternateKey = playerAlternateKey.ToString(), TeamAlternateKey = teamAlternateKey.ToString() });
@@ -125,13 +127,13 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
-        public bool ExistsInDb(PlayerTeamDto playerTeam)
+        public bool ExistsInDb(TeamPlayerLineupDto teamPlayerLineup)
         {
             Connection.Open();
 
-            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM PlayerTeam 
+            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM TeamPlayerLineup 
             WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey",
-            new { playerTeam.PlayerAlternateKey, playerTeam.TeamAlternateKey });
+            new { teamPlayerLineup.PlayerAlternateKey, teamPlayerLineup.TeamAlternateKey });
             Connection.Close();
 
             return rows.First() > 0;
@@ -140,8 +142,15 @@ namespace Dartball.DataLayer.Device.Repository
 
 
         private const string SELECT_QUERY =
-        @"SELECT PlayerTeamId, PlayerTeamAlternateKey, PlayerAlternateKey, TeamAlternateKey, ChangeDate, DeleteDate
-        FROM PlayerTeam ";
+            @"SELECT 
+            TeamPlayerLineupId, 
+            TeamPlayerLineupAlternateKey, 
+            TeamAlternateKey, 
+            PlayerAlternateKey, 
+            BattingOrder,
+            ChangeDate, 
+            DeleteDate
+            FROM TeamPlayerLineup ";
 
     }
 }

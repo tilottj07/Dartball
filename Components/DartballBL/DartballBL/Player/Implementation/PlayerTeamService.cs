@@ -53,7 +53,7 @@ namespace Dartball.BusinessLayer.Player.Implementation
         }
         public ChangeResult AddNew(List<IPlayerTeam> playerTeams)
         {
-            var result = Validate(playerTeams);
+            var result = Validate(playerTeams, isAddNew: true);
             if (result.IsSuccess)
             {
                 foreach(var item in playerTeams)
@@ -78,7 +78,7 @@ namespace Dartball.BusinessLayer.Player.Implementation
         }
         public ChangeResult Update(List<IPlayerTeam> playerTeams)
         {
-            var result = Validate(playerTeams);
+            var result = Validate(playerTeams, isAddNew: false);
             if (result.IsSuccess)
             {
                 foreach (var item in playerTeams)
@@ -99,7 +99,7 @@ namespace Dartball.BusinessLayer.Player.Implementation
 
 
 
-        private ChangeResult Validate(List<IPlayerTeam> playerTeams)
+        private ChangeResult Validate(List<IPlayerTeam> playerTeams, bool isAddNew = true)
         {
             ChangeResult result = new ChangeResult();
 
@@ -115,6 +115,15 @@ namespace Dartball.BusinessLayer.Player.Implementation
                 {
                     result.IsSuccess = false;
                     result.ErrorMessages.Add("Incorrect TeamAlternateKey.");
+                }
+
+                if (isAddNew == false)
+                {
+                    if (item.PlayerTeamAlternateKey == Guid.Empty)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMessages.Add("Invalid Player Team Alternate Key.");
+                    }
                 }
             }
 

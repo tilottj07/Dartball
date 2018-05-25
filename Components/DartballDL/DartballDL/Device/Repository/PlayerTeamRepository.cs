@@ -57,9 +57,9 @@ namespace Dartball.DataLayer.Device.Repository
             List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
 
             Connection.Open();
-            var result = Connection.Query<PlayerTeamDto>(
+            playerTeams.AddRange(Connection.Query<PlayerTeamDto>(
                 SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey ",
-                new { PlayerAlternateKey = playerAlternateKey.ToString() });
+                new { PlayerAlternateKey = playerAlternateKey.ToString() }));
             Connection.Close();
 
             return playerTeams;
@@ -78,7 +78,7 @@ namespace Dartball.DataLayer.Device.Repository
         /// <summary>
         /// data layer will determine add vs update
         /// </summary>
-        /// <param name="league"></param>
+        /// <param name="playerTeam"></param>
         public void Save(PlayerTeamDto playerTeam)
         {
             if (ExistsInDb(playerTeam)) Update(playerTeam);

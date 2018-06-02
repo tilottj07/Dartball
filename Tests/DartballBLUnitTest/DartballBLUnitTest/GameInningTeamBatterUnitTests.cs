@@ -170,5 +170,40 @@ namespace DartballBLUnitTest
         }
 
 
+        [TestMethod]
+        public void InvalidEventTypeTest()
+        {
+            GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
+            {
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE,
+                EventType = 92,
+                TargetEventType = TEST_TARGET_EVENT_TYPE,
+                RBIs = TEST_RBIS
+            };
+
+            var result = Service.AddNew(dto);
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [TestMethod]
+        public void InvalidTargetEventTypeTest()
+        {
+            GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
+            {
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE,
+                EventType = TEST_EVENT_TYPE,
+                TargetEventType = 105,
+                RBIs = TEST_RBIS
+            };
+
+            var result = Service.AddNew(dto);
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+
     }
 }

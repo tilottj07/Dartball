@@ -13,7 +13,7 @@ namespace Dartball.BusinessLayer.Game.Interface.Models
         Guid PlayerAlternateKey { get; }
         int Sequence { get; }
         int EventType { get; }
-        int TargetEventType { get; }
+        int? TargetEventType { get; }
         int RBIs { get; }
         DateTime ChangeDate { get; }
         DateTime? DeleteDate { get; }

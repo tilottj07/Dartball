@@ -14,6 +14,7 @@ namespace Dartball.BusinessLayer.Game.Implementation
     {
         private IMapper Mapper;
         private DataLayer.Device.Repository.GameInningTeamBatterRepository Repository;
+        private IGameEventService EventService;
 
         public GameInningTeamBatterService()
         {
@@ -21,6 +22,7 @@ namespace Dartball.BusinessLayer.Game.Implementation
             Mapper = mapConfig.CreateMapper();
 
             Repository = new DataLayer.Device.Repository.GameInningTeamBatterRepository();
+            EventService = new GameEventService();
         }
 
 
@@ -122,6 +124,10 @@ namespace Dartball.BusinessLayer.Game.Implementation
         private ChangeResult Validate(List<IGameInningTeamBatter> gameInningTeamBatters, bool isAddNew = false)
         {
             ChangeResult result = new ChangeResult();
+
+            List<int> validEvents = new List<int>();
+            foreach (var item in EventService.GetAllGameEvents()) validEvents.Add((int)item.Event);
+
             foreach (var item in gameInningTeamBatters)
             {
                 if (!result.IsSuccess) break;
@@ -150,7 +156,20 @@ namespace Dartball.BusinessLayer.Game.Implementation
                     result.ErrorMessages.Add("Cannot have RBIs < 0");
                 }
 
-                //TODO: add checks making sure event type and target event types are valid
+                if (!validEvents.Contains(item.EventType))
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add($"Invalid Event Type: {item.EventType}");
+                }
+
+                if (item.TargetEventType.HasValue)
+                {
+                    if (!validEvents.Contains(item.TargetEventType.Value))
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMessages.Add($"Invalid Target Event Type: {item.TargetEventType.Value}");
+                    }
+                }
 
                 if (isAddNew == false)
                 {

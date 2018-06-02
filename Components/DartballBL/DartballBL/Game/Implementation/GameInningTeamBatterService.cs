@@ -6,6 +6,7 @@ using System.Linq;
 using AutoMapper;
 using Dartball.BusinessLayer.Game.Dto;
 using Dartball.BusinessLayer.Game.Interface.Models;
+using Dartball.BusinessLayer.Shared.Models;
 
 namespace Dartball.BusinessLayer.Game.Implementation
 {
@@ -51,10 +52,127 @@ namespace Dartball.BusinessLayer.Game.Implementation
         {
             List<IGameInningTeamBatter> gameInningTeamBatters = new List<IGameInningTeamBatter>();
 
+            foreach(var item in Repository.LoadByGameAlternateKeyPlayerAlternateKey(gameAlternateKey, playerAlteranteKey))
+            {
+                if (!item.DeleteDate.HasValue) gameInningTeamBatters.Add(Mapper.Map<GameInningTeamBatterDto>(item));
+            }
 
             return gameInningTeamBatters;
         }
 
+
+        public ChangeResult AddNew(IGameInningTeamBatter gameInningTeamBatter)
+        {
+            return AddNew(new List<IGameInningTeamBatter> { gameInningTeamBatter });
+        }
+        public ChangeResult AddNew(List<IGameInningTeamBatter> gameInningTeamBatters)
+        {
+            var result = Validate(gameInningTeamBatters, isAddNew: true);
+            if (result.IsSuccess)
+            {
+                foreach(var item in gameInningTeamBatters)
+                {
+                    DataLayer.Device.Dto.GameInningTeamBatterDto dto = new DataLayer.Device.Dto.GameInningTeamBatterDto()
+                    {
+                        GameInningTeamBatterAlternateKey = item.GameInningTeamBatterAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : item.GameInningTeamBatterAlternateKey.ToString(),
+                        GameInningTeamAlternateKey = item.GameInningTeamAlternateKey.ToString(),
+                        PlayerAlternateKey = item.PlayerAlternateKey.ToString(),
+                        Sequence = item.Sequence,
+                        EventType = item.EventType,
+                        TargetEventType = item.TargetEventType,
+                        RBIs = item.RBIs,
+                        DeleteDate = item.DeleteDate
+                    };
+                    Repository.AddNew(dto);
+                }
+            }
+            return result;
+        }
+
+        public ChangeResult Update(IGameInningTeamBatter gameInningTeamBatter)
+        {
+            return Update(new List<IGameInningTeamBatter> { gameInningTeamBatter });
+        }
+        public ChangeResult Update(List<IGameInningTeamBatter> gameInningTeamBatters)
+        {
+            var result = Validate(gameInningTeamBatters, isAddNew: false);
+            if (result.IsSuccess)
+            {
+                foreach (var item in gameInningTeamBatters)
+                {
+                    DataLayer.Device.Dto.GameInningTeamBatterDto dto = new DataLayer.Device.Dto.GameInningTeamBatterDto()
+                    {
+                        GameInningTeamBatterAlternateKey = item.GameInningTeamBatterAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : item.GameInningTeamBatterAlternateKey.ToString(),
+                        GameInningTeamAlternateKey = item.GameInningTeamAlternateKey.ToString(),
+                        PlayerAlternateKey = item.PlayerAlternateKey.ToString(),
+                        Sequence = item.Sequence,
+                        EventType = item.EventType,
+                        TargetEventType = item.TargetEventType,
+                        RBIs = item.RBIs,
+                        DeleteDate = item.DeleteDate
+                    };
+                    Repository.Update(dto);
+                }
+            }
+            return result;
+        }
+
+
+
+        private ChangeResult Validate(List<IGameInningTeamBatter> gameInningTeamBatters, bool isAddNew = false)
+        {
+            ChangeResult result = new ChangeResult();
+            foreach (var item in gameInningTeamBatters)
+            {
+                if (!result.IsSuccess) break;
+
+                if (item.GameInningTeamAlternateKey == Guid.Empty)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add("Invalid Game Inning Team Key");
+                }
+
+                if (item.PlayerAlternateKey == Guid.Empty)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add("Invalid Player");
+                }
+
+                if (item.Sequence < 0)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add("Sequence must be > 0");
+                }
+
+                if (item.RBIs < 0)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add("Cannot have RBIs < 0");
+                }
+
+                //TODO: add checks making sure event type and target event types are valid
+
+                if (isAddNew == false)
+                {
+                    if (item.GameInningTeamBatterAlternateKey == Guid.Empty)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMessages.Add("Invalid PK");
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+
+        public ChangeResult Remove(Guid gameInningTeamAlternateKey, int sequence)
+        {
+            ChangeResult result = new ChangeResult();
+            Repository.Delete(gameInningTeamAlternateKey, sequence);
+            return result;
+        }
 
     }
 }

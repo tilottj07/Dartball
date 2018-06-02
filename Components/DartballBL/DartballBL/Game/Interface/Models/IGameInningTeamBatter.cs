@@ -14,6 +14,7 @@ namespace Dartball.BusinessLayer.Game.Interface.Models
         int Sequence { get; }
         int EventType { get; }
         int TargetEventType { get; }
+        int RBIs { get; }
         DateTime ChangeDate { get; }
         DateTime? DeleteDate { get; }
 

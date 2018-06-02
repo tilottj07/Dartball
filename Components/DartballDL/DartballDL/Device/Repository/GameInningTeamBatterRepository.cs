@@ -80,6 +80,7 @@ namespace Dartball.DataLayer.Device.Repository
                 a.Sequence,
                 a.EventType,
                 a.TargetEventType,
+                a.RBIs, 
                 a.ChangeDate,
                 a.DeleteDate
                 FROM GameInningTeamBatter a
@@ -120,7 +121,7 @@ namespace Dartball.DataLayer.Device.Repository
         {
             string insertQuery = @"INSERT INTO GameInningTeamBatter
                     (GameInningTeamBatterAlternateKey, GameInningTeamAlternateKey, PlayerAlternateKey, Sequence, 
-                    EventType, TargetEventType, DeleteDate)
+                    EventType, TargetEventType, RBIs, DeleteDate)
                     VALUES(
                         @GameInningTeamBatterAlternateKey, 
                         @GameInningTeamAlternateKey, 
@@ -128,6 +129,7 @@ namespace Dartball.DataLayer.Device.Repository
                         @Sequence,
                         @EventType,
                         @TargetEventType,
+                        @RBIs, 
                         @DeleteDate)";
 
             Connection.Open();
@@ -141,6 +143,7 @@ namespace Dartball.DataLayer.Device.Repository
             PlayerAlternateKey = @PlayerAlternateKey, 
             EventType = @EventType,
             TargetEventType = @TargetEventType,
+            RBIs = @RBIs, 
             DeleteDate = @DeleteDate
             WHERE GameInningTeamAlternateKey = @GameInningTeamAlternateKey AND Sequence = @Sequence";
 
@@ -183,6 +186,7 @@ namespace Dartball.DataLayer.Device.Repository
             Sequence, 
             EventType,
             TargetEventType, 
+            RBIs, 
             ChangeDate, 
             DeleteDate 
         FROM GameInningTeamBatter ";

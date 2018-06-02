@@ -6,7 +6,7 @@ using Dartball.BusinessLayer.Team.Implementation;
 using Dartball.BusinessLayer.Team.Interface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DartballBLUnitTest
+namespace DartballBLUnitTest.IntegrationValidation
 {
     [TestClass]
     public class TeamPlayerLineupUnitTests

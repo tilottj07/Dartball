@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DartballBLUnitTest
+namespace DartballBLUnitTest.IntegrationValidation
 {
     [TestClass]
     public class LeagueUnitTests

@@ -24,27 +24,25 @@ namespace DartballBLUnitTest.GameLogic.Event
         [TestMethod]
         public void OutTotalTest()
         {
-            List<IGameInningTeamBatter> gameInningTeamBatters = new List<IGameInningTeamBatter>
+            HalfInningActionsDto dto = new HalfInningActionsDto
             {
-                GetTestOutAtBat(),
-                GetTestOutAtBat()
+                TotalOuts = 1
             };
 
-            var actions = Service.FillOutActions(new HalfInningActionsDto(), gameInningTeamBatters);
+            var actions = Service.FillOutActions(dto);
             Assert.IsTrue(actions.TotalOuts == 2);
         }
 
         [TestMethod]
         public void AdvanceToNextHalfInningTest()
         {
-            List<IGameInningTeamBatter> gameInningTeamBatters = new List<IGameInningTeamBatter>
+            HalfInningActionsDto dto = new HalfInningActionsDto
             {
-                GetTestOutAtBat(),
-                GetTestOutAtBat(),
-                GetTestOutAtBat()
+                TotalOuts = 2
             };
 
-            var actions = Service.FillOutActions(new HalfInningActionsDto(), gameInningTeamBatters);
+            var actions = Service.FillOutActions(dto);
+            Assert.IsTrue(actions.TotalOuts == 3);
             Assert.IsTrue(actions.AdvanceToNextHalfInning);
         }
 

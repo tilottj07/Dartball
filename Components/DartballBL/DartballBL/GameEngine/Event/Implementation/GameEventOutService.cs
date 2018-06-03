@@ -26,31 +26,18 @@ namespace Dartball.BusinessLayer.GameEngine.Event.Implementation
         }
 
 
-        public IHalfInningActions FillOutActions(IHalfInningActions actions, List<IGameInningTeamBatter> gameInningTeamBatters)
+        public IHalfInningActions FillOutActions(IHalfInningActions actions)
         {
             HalfInningActionsDto dto = Mapper.Map<HalfInningActionsDto>(actions);
+            dto.TotalOuts++;
 
-            gameInningTeamBatters = gameInningTeamBatters.OrderBy(x => x.Sequence).ToList();
-
-            dto = PopulateTotalOuts(dto, gameInningTeamBatters);
-            dto = PopulateShouldAdvanceToNextHalfInning(dto);
+            if (dto.TotalOuts >= 3) dto.AdvanceToNextHalfInning = true;
 
             return dto;
         }
 
 
 
-        private HalfInningActionsDto PopulateTotalOuts(HalfInningActionsDto dto, List<IGameInningTeamBatter> gameInningTeamBatters)
-        {
-            dto.TotalOuts = gameInningTeamBatters.Where(x => (EventType)x.EventType == EventType.Out).Count();
-            return dto;
-        }
-
-        private HalfInningActionsDto PopulateShouldAdvanceToNextHalfInning(HalfInningActionsDto dto)
-        {
-            dto.AdvanceToNextHalfInning = dto.TotalOuts >= 3;
-            return dto;
-        }
 
 
     }

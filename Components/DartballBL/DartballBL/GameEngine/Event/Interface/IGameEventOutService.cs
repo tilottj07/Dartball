@@ -8,7 +8,7 @@ namespace Dartball.BusinessLayer.GameEngine.Event.Interface
 {
     public interface IGameEventOutService
     {
-        IHalfInningActions FillOutActions(IHalfInningActions actions, List<IGameInningTeamBatter> gameInningTeamBatters);
+        IHalfInningActions FillOutActions(IHalfInningActions actions);
 
     }
 }

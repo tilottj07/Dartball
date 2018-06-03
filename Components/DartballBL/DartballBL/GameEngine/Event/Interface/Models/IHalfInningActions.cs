@@ -9,5 +9,11 @@ namespace Dartball.BusinessLayer.GameEngine.Event.Interface.Models
         bool AdvanceToNextHalfInning { get; }
         int TotalOuts { get; }
 
+        bool IsRunnerOnFirst { get; }
+        bool IsRunnerOnSecond { get; }
+        bool IsRunnerOnThird { get; }
+
+        int TotalRuns { get; }
+
     }
 }

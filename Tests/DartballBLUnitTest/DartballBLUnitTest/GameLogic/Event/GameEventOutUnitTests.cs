@@ -24,9 +24,11 @@ namespace DartballBLUnitTest.GameLogic.Event
         [TestMethod]
         public void OutTotalTest()
         {
-            List<IGameInningTeamBatter> gameInningTeamBatters = new List<IGameInningTeamBatter>();
-            gameInningTeamBatters.Add(GetTestOutAtBat());
-            gameInningTeamBatters.Add(GetTestOutAtBat());
+            List<IGameInningTeamBatter> gameInningTeamBatters = new List<IGameInningTeamBatter>
+            {
+                GetTestOutAtBat(),
+                GetTestOutAtBat()
+            };
 
             var actions = Service.FillOutActions(new HalfInningActionsDto(), gameInningTeamBatters);
             Assert.IsTrue(actions.TotalOuts == 2);
@@ -35,10 +37,12 @@ namespace DartballBLUnitTest.GameLogic.Event
         [TestMethod]
         public void AdvanceToNextHalfInningTest()
         {
-            List<IGameInningTeamBatter> gameInningTeamBatters = new List<IGameInningTeamBatter>();
-            gameInningTeamBatters.Add(GetTestOutAtBat());
-            gameInningTeamBatters.Add(GetTestOutAtBat());
-            gameInningTeamBatters.Add(GetTestOutAtBat());
+            List<IGameInningTeamBatter> gameInningTeamBatters = new List<IGameInningTeamBatter>
+            {
+                GetTestOutAtBat(),
+                GetTestOutAtBat(),
+                GetTestOutAtBat()
+            };
 
             var actions = Service.FillOutActions(new HalfInningActionsDto(), gameInningTeamBatters);
             Assert.IsTrue(actions.AdvanceToNextHalfInning);

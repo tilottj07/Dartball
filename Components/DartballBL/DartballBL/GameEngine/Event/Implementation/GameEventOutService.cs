@@ -30,6 +30,8 @@ namespace Dartball.BusinessLayer.GameEngine.Event.Implementation
         {
             HalfInningActionsDto dto = Mapper.Map<HalfInningActionsDto>(actions);
 
+            gameInningTeamBatters = gameInningTeamBatters.OrderBy(x => x.Sequence).ToList();
+
             dto = PopulateTotalOuts(dto, gameInningTeamBatters);
             dto = PopulateShouldAdvanceToNextHalfInning(dto);
 

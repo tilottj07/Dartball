@@ -4,6 +4,7 @@ using Dartball.BusinessLayer.GameEngine.Event.Implementation;
 using Dartball.BusinessLayer.GameEngine.Event.Interface;
 using Dartball.BusinessLayer.GameEngine.Event.Interface.Models;
 using Dartball.BusinessLayer.GameEngine.InGame.Interface;
+using Dartball.BusinessLayer.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,13 @@ namespace Dartball.BusinessLayer.GameEngine.InGame.Implementation
             TwoBaseSingle = new GameEventTwoBaseSingleService();
         }
 
+
+
+        public IHalfInningActions GetHalfInningActions(Guid gameInningTeamAlternateKey)
+        {
+            Game.Interface.IGameInningTeamBatterService service = new Game.Implementation.GameInningTeamBatterService();
+            return GetHalfInningActions(service.GetGameInningTeamBatters(gameInningTeamAlternateKey));
+        }
 
         public IHalfInningActions GetHalfInningActions(List<IGameInningTeamBatter> gameInningTeamBatters)
         {
@@ -76,6 +84,9 @@ namespace Dartball.BusinessLayer.GameEngine.InGame.Implementation
 
             return dto;
         }
+
+
+       
 
 
     }

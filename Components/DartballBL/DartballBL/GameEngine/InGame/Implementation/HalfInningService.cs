@@ -3,6 +3,7 @@ using Dartball.BusinessLayer.GameEngine.Event.Dto;
 using Dartball.BusinessLayer.GameEngine.Event.Implementation;
 using Dartball.BusinessLayer.GameEngine.Event.Interface;
 using Dartball.BusinessLayer.GameEngine.Event.Interface.Models;
+using Dartball.BusinessLayer.GameEngine.InGame.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using static Dartball.BusinessLayer.Game.Implementation.GameEventService;
 
 namespace Dartball.BusinessLayer.GameEngine.InGame.Implementation
 {
-    public class HalfInningService
+    public class HalfInningService : IHalfInningService
     {
         private IGameEventSingleService Single;
         private IGameEventDoubleService Double;

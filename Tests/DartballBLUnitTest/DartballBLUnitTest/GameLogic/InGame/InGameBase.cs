@@ -9,159 +9,156 @@ namespace DartballBLUnitTest.GameLogic.InGame
 {
     public class InGameBase
     {
-        public class EventBase
+        public InGameBase()
         {
-            public EventBase()
+            TEST_GAME_INNING_TEAM_ALTERNATE_KEY = Guid.NewGuid();
+
+            TEST_PLAYER_ONE = Guid.NewGuid();
+            TEST_PLAYER_TWO = Guid.NewGuid();
+            TEST_PLAYER_THREE = Guid.NewGuid();
+            TEST_PLAYER_FOUR = Guid.NewGuid();
+            TEST_PLAYER_FIVE = Guid.NewGuid();
+        }
+
+        private Guid TEST_GAME_INNING_TEAM_ALTERNATE_KEY;
+        private int TEST_SEQUENCE_TRACKER;
+        private Guid TEST_PLAYER_ONE;
+        private Guid TEST_PLAYER_TWO;
+        private Guid TEST_PLAYER_THREE;
+        private Guid TEST_PLAYER_FOUR;
+        private Guid TEST_PLAYER_FIVE;
+
+
+        public IGameInningTeamBatter GetTestOutAtBat()
+        {
+            TEST_SEQUENCE_TRACKER++;
+            return new GameInningTeamBatterDto()
             {
-                TEST_GAME_INNING_TEAM_ALTERNATE_KEY = Guid.NewGuid();
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE_TRACKER,
+                PlayerAlternateKey = GetPlayerAlternateKey(),
+                EventType = (int)EventType.Out,
+                RBIs = 0,
+                TargetEventType = (int)EventType.Single
+            };
+        }
 
-                TEST_PLAYER_ONE = Guid.NewGuid();
-                TEST_PLAYER_TWO = Guid.NewGuid();
-                TEST_PLAYER_THREE = Guid.NewGuid();
-                TEST_PLAYER_FOUR = Guid.NewGuid();
-                TEST_PLAYER_FIVE = Guid.NewGuid();
-            }
-
-            private Guid TEST_GAME_INNING_TEAM_ALTERNATE_KEY;
-            private int TEST_SEQUENCE_TRACKER;
-            private Guid TEST_PLAYER_ONE;
-            private Guid TEST_PLAYER_TWO;
-            private Guid TEST_PLAYER_THREE;
-            private Guid TEST_PLAYER_FOUR;
-            private Guid TEST_PLAYER_FIVE;
-
-
-            public IGameInningTeamBatter GetTestOutAtBat()
+        public IGameInningTeamBatter GetTestSingleAtBat(int rBIs = 0)
+        {
+            TEST_SEQUENCE_TRACKER++;
+            return new GameInningTeamBatterDto()
             {
-                TEST_SEQUENCE_TRACKER++;
-                return new GameInningTeamBatterDto()
-                {
-                    GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                    Sequence = TEST_SEQUENCE_TRACKER,
-                    PlayerAlternateKey = GetPlayerAlternateKey(),
-                    EventType = (int)EventType.Out,
-                    RBIs = 0,
-                    TargetEventType = (int)EventType.Single
-                };
-            }
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE_TRACKER,
+                PlayerAlternateKey = GetPlayerAlternateKey(),
+                EventType = (int)EventType.Single,
+                RBIs = rBIs,
+                TargetEventType = (int)EventType.Single
+            };
+        }
 
-            public IGameInningTeamBatter GetTestSingleAtBat(int rBIs = 0)
+        public IGameInningTeamBatter GetTestDoubleAtBat(int rBIs = 0)
+        {
+            TEST_SEQUENCE_TRACKER++;
+            return new GameInningTeamBatterDto()
             {
-                TEST_SEQUENCE_TRACKER++;
-                return new GameInningTeamBatterDto()
-                {
-                    GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                    Sequence = TEST_SEQUENCE_TRACKER,
-                    PlayerAlternateKey = GetPlayerAlternateKey(),
-                    EventType = (int)EventType.Single,
-                    RBIs = rBIs,
-                    TargetEventType = (int)EventType.Single
-                };
-            }
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE_TRACKER,
+                PlayerAlternateKey = GetPlayerAlternateKey(),
+                EventType = (int)EventType.Double,
+                RBIs = rBIs,
+                TargetEventType = (int)EventType.Double
+            };
+        }
 
-            public IGameInningTeamBatter GetTestDoubleAtBat(int rBIs = 0)
+        public IGameInningTeamBatter GetTestTripleAtBat(int rBIs = 0)
+        {
+            TEST_SEQUENCE_TRACKER++;
+            return new GameInningTeamBatterDto()
             {
-                TEST_SEQUENCE_TRACKER++;
-                return new GameInningTeamBatterDto()
-                {
-                    GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                    Sequence = TEST_SEQUENCE_TRACKER,
-                    PlayerAlternateKey = GetPlayerAlternateKey(),
-                    EventType = (int)EventType.Double,
-                    RBIs = rBIs,
-                    TargetEventType = (int)EventType.Double
-                };
-            }
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE_TRACKER,
+                PlayerAlternateKey = GetPlayerAlternateKey(),
+                EventType = (int)EventType.Triple,
+                RBIs = rBIs,
+                TargetEventType = (int)EventType.Triple
+            };
+        }
 
-            public IGameInningTeamBatter GetTestTripleAtBat(int rBIs = 0)
+        public IGameInningTeamBatter GetTestHomeRunAtBat(int rBIs = 0)
+        {
+            TEST_SEQUENCE_TRACKER++;
+            return new GameInningTeamBatterDto()
             {
-                TEST_SEQUENCE_TRACKER++;
-                return new GameInningTeamBatterDto()
-                {
-                    GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                    Sequence = TEST_SEQUENCE_TRACKER,
-                    PlayerAlternateKey = GetPlayerAlternateKey(),
-                    EventType = (int)EventType.Triple,
-                    RBIs = rBIs,
-                    TargetEventType = (int)EventType.Triple
-                };
-            }
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE_TRACKER,
+                PlayerAlternateKey = GetPlayerAlternateKey(),
+                EventType = (int)EventType.HomeRun,
+                RBIs = rBIs,
+                TargetEventType = (int)EventType.HomeRun
+            };
+        }
 
-            public IGameInningTeamBatter GetTestHomeRunAtBat(int rBIs = 0)
+        public IGameInningTeamBatter GetTestDoublePlayAtBat()
+        {
+            TEST_SEQUENCE_TRACKER++;
+            return new GameInningTeamBatterDto()
             {
-                TEST_SEQUENCE_TRACKER++;
-                return new GameInningTeamBatterDto()
-                {
-                    GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                    Sequence = TEST_SEQUENCE_TRACKER,
-                    PlayerAlternateKey = GetPlayerAlternateKey(),
-                    EventType = (int)EventType.HomeRun,
-                    RBIs = rBIs,
-                    TargetEventType = (int)EventType.HomeRun
-                };
-            }
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE_TRACKER,
+                PlayerAlternateKey = GetPlayerAlternateKey(),
+                EventType = (int)EventType.DoublePlay,
+                RBIs = 0,
+                TargetEventType = (int)EventType.DoublePlay
+            };
+        }
 
-            public IGameInningTeamBatter GetTestDoublePlayAtBat()
+        public IGameInningTeamBatter GetTestSacraficeHitAtBat()
+        {
+            TEST_SEQUENCE_TRACKER++;
+            return new GameInningTeamBatterDto()
             {
-                TEST_SEQUENCE_TRACKER++;
-                return new GameInningTeamBatterDto()
-                {
-                    GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                    Sequence = TEST_SEQUENCE_TRACKER,
-                    PlayerAlternateKey = GetPlayerAlternateKey(),
-                    EventType = (int)EventType.DoublePlay,
-                    RBIs = 0,
-                    TargetEventType = (int)EventType.DoublePlay
-                };
-            }
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE_TRACKER,
+                PlayerAlternateKey = GetPlayerAlternateKey(),
+                EventType = (int)EventType.SacraficeHit,
+                RBIs = 0,
+                TargetEventType = (int)EventType.SacraficeHit
+            };
+        }
 
-            public IGameInningTeamBatter GetTestSacraficeHitAtBat()
+        public IGameInningTeamBatter GetTestTwoBaseSingleAtBat()
+        {
+            TEST_SEQUENCE_TRACKER++;
+            return new GameInningTeamBatterDto()
             {
-                TEST_SEQUENCE_TRACKER++;
-                return new GameInningTeamBatterDto()
-                {
-                    GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                    Sequence = TEST_SEQUENCE_TRACKER,
-                    PlayerAlternateKey = GetPlayerAlternateKey(),
-                    EventType = (int)EventType.SacraficeHit,
-                    RBIs = 0,
-                    TargetEventType = (int)EventType.SacraficeHit
-                };
-            }
+                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                Sequence = TEST_SEQUENCE_TRACKER,
+                PlayerAlternateKey = GetPlayerAlternateKey(),
+                EventType = (int)EventType.TwoBaseSingle,
+                RBIs = 0,
+                TargetEventType = (int)EventType.TwoBaseSingle
+            };
+        }
 
-            public IGameInningTeamBatter GetTestTwoBaseSingleAtBat()
+        private Guid GetPlayerAlternateKey()
+        {
+            switch (TEST_SEQUENCE_TRACKER)
             {
-                TEST_SEQUENCE_TRACKER++;
-                return new GameInningTeamBatterDto()
-                {
-                    GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                    Sequence = TEST_SEQUENCE_TRACKER,
-                    PlayerAlternateKey = GetPlayerAlternateKey(),
-                    EventType = (int)EventType.TwoBaseSingle,
-                    RBIs = 0,
-                    TargetEventType = (int)EventType.TwoBaseSingle
-                };
+                case 1:
+                    return TEST_PLAYER_ONE;
+                case 2:
+                    return TEST_PLAYER_TWO;
+                case 3:
+                    return TEST_PLAYER_THREE;
+                case 4:
+                    return TEST_PLAYER_FOUR;
+
+                default:
+                    return TEST_PLAYER_FIVE;
             }
-
-            private Guid GetPlayerAlternateKey()
-            {
-                switch (TEST_SEQUENCE_TRACKER)
-                {
-                    case 1:
-                        return TEST_PLAYER_ONE;
-                    case 2:
-                        return TEST_PLAYER_TWO;
-                    case 3:
-                        return TEST_PLAYER_THREE;
-                    case 4:
-                        return TEST_PLAYER_FOUR;
-
-                    default:
-                        return TEST_PLAYER_FIVE;
-                }
-            }
-
         }
 
     }
+
 }

@@ -13,4 +13,8 @@
     <ProjectReference Include="..\..\DartballDL\DartballDL\DartballDL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GameEngine\Statistic\" />
+  </ItemGroup>
+
 </Project>

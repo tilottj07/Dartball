@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DartballBLUnitTest.GameLogic.Event
 {
     [TestClass]
-    public class GameEventTwoBaseSingleUnitTests : EventBase
+    public class GameEventTwoBaseSingleUnitTests 
     {
         private IGameEventTwoBaseSingleService Service;
 

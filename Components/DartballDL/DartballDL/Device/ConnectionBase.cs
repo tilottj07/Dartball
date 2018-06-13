@@ -2,6 +2,7 @@
 using System.Data.SQLite;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace Dartball.DataLayer.Device
 {
@@ -9,7 +10,10 @@ namespace Dartball.DataLayer.Device
     {
         public ConnectionBase()
         {
-            Connection = new SQLiteConnection($"Data Source = C:\\TJT\\Dartball\\Database\\Dartball.db");
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            path = Path.Combine(path, "Dartball.db3");
+
+            Connection = new SQLiteConnection($"Data Source = {path};");
 
         }
 

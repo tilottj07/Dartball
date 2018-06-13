@@ -7,4 +7,9 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />  
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Components\DartballBL\DartballBL\DartballBL.csproj" />
+    <ProjectReference Include="..\..\..\..\Components\DartballDL\DartballDL\DartballDL.csproj" />
+  </ItemGroup>
 </Project>

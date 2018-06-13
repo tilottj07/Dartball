@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dapper;
-using System.Data.SQLite;
+using SQLite;
 using System.Linq;
 using Dartball.DataLayer.Device.Dto;
 
@@ -15,9 +15,9 @@ namespace Dartball.DataLayer.Device.Repository
         {
             List<PlayerDto> teams = new List<PlayerDto>();
 
-            Connection.Open();
+            Connection.BeginTransaction();
             teams.AddRange(Connection.Query<PlayerDto>(SELECT_QUERY));
-            Connection.Close();
+            Connection.Commit();
 
             return teams;
         }
@@ -25,7 +25,7 @@ namespace Dartball.DataLayer.Device.Repository
         public PlayerDto LoadByKey(Guid playerAlternateKey)
         {
             PlayerDto player = null;
-            Connection.Open();
+            Connection.BeginTransaction();
 
             var result = Connection.Query<PlayerDto>(
                 SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey",
@@ -33,7 +33,7 @@ namespace Dartball.DataLayer.Device.Repository
 
             player = result.FirstOrDefault();
 
-            Connection.Close();
+            Connection.Commit();
 
             return player;
         }
@@ -41,14 +41,14 @@ namespace Dartball.DataLayer.Device.Repository
         //public List<PlayerDto> LoadByLeagueKey(Guid leagueAlternateKey)
         //{
         //    List<PlayerDto> teams = new List<PlayerDto>();
-        //    Connection.Open();
+        //    Connection.BeginTransaction();
 
         //    teams.AddRange(Connection.Query<PlayerDto>(
         //        SELECT_QUERY + " WHERE LeagueAlternateKey = @LeagueAlternateKey",
         //        new { LeagueAlternateKey = leagueAlternateKey.ToString() }));
 
 
-        //    Connection.Close();
+        //    Connection.Commit();
 
         //    return teams;
         //}
@@ -89,9 +89,9 @@ namespace Dartball.DataLayer.Device.Repository
                         @ShouldSync, 
                         @DeleteDate)";
 
-            Connection.Open();
-            Connection.Query(insertQuery, player);
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(insertQuery, player);
+            Connection.Commit();
         }
         private void UpdatePlayer(PlayerDto player)
         {
@@ -104,9 +104,9 @@ namespace Dartball.DataLayer.Device.Repository
             ShouldSync = @ShouldSync
             WHERE PlayerAlternateKey = @PlayerAlternateKey";
 
-            Connection.Open();
-            Connection.Query(updateQuery, player);
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(updateQuery, player);
+            Connection.Commit();
         }
 
 
@@ -114,18 +114,18 @@ namespace Dartball.DataLayer.Device.Repository
         {
             string deleteQuery = @"DELETE FROM Player WHERE PlayerAlternateKey = @PlayerAlternateKey";
 
-            Connection.Open();
-            Connection.Query(deleteQuery, new { PlayerAlternateKey = playerAlternateKey.ToString() });
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(deleteQuery, new { PlayerAlternateKey = playerAlternateKey.ToString() });
+            Connection.Commit();
         }
 
 
         public bool ExistsInDb(PlayerDto player)
         {
-            Connection.Open();
+            Connection.BeginTransaction();
 
             var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM Player WHERE PlayerAlternateKey = @PlayerAlternateKey", new { PlayerAlternateKey = player.PlayerAlternateKey });
-            Connection.Close();
+            Connection.Commit();
 
             return rows.First() > 0;
         }

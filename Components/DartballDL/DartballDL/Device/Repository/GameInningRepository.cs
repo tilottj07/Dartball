@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dapper;
-using System.Data.SQLite;
+using SQLite;
 using System.Linq;
 using Dartball.DataLayer.Device.Dto;
 
@@ -15,9 +15,9 @@ namespace Dartball.DataLayer.Device.Repository
         {
             List<GameInningDto> gameInnings = new List<GameInningDto>();
 
-            Connection.Open();
+            Connection.BeginTransaction();
             gameInnings.AddRange(Connection.Query<GameInningDto>(SELECT_QUERY));
-            Connection.Close();
+            Connection.Commit();
 
             return gameInnings;
         }
@@ -25,7 +25,7 @@ namespace Dartball.DataLayer.Device.Repository
         public GameInningDto LoadByCompositeKey(Guid gameAlternateKey, int inningNumber)
         {
             GameInningDto gameInning = null;
-            Connection.Open();
+            Connection.BeginTransaction();
 
             var result = Connection.Query<GameInningDto>(
                 SELECT_QUERY + " WHERE GameAlternateKey = @GameAlternateKey " +
@@ -34,7 +34,7 @@ namespace Dartball.DataLayer.Device.Repository
 
             gameInning = result.FirstOrDefault();
 
-            Connection.Close();
+            Connection.Commit();
 
             return gameInning;
         }
@@ -43,11 +43,11 @@ namespace Dartball.DataLayer.Device.Repository
         {
             List<GameInningDto> gameInnings = new List<GameInningDto>();
 
-            Connection.Open();
+            Connection.BeginTransaction();
             gameInnings.AddRange(Connection.Query<GameInningDto>(
                 SELECT_QUERY + " WHERE GameAlternateKey = @GameAlternateKey ",
                 new { GameAlternateKey = gameAlternateKey.ToString() }));
-            Connection.Close();
+            Connection.Commit();
 
             return gameInnings;
         }
@@ -85,9 +85,9 @@ namespace Dartball.DataLayer.Device.Repository
                         @InningNumber, 
                         @DeleteDate)";
 
-            Connection.Open();
-            Connection.Query(insertQuery, gameInning);
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(insertQuery, gameInning);
+            Connection.Commit();
         }
         private void UpdateGameInning(GameInningDto gameInning)
         {
@@ -96,9 +96,9 @@ namespace Dartball.DataLayer.Device.Repository
             DeleteDate = @DeleteDate 
             WHERE GameAlternateKey = @GameAlternateKey AND InningNumber = @InningNumber";
 
-            Connection.Open();
-            Connection.Query(updateQuery, gameInning);
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(updateQuery, gameInning);
+            Connection.Commit();
         }
 
 
@@ -106,20 +106,20 @@ namespace Dartball.DataLayer.Device.Repository
         {
             string deleteQuery = @"DELETE FROM GameInning WHERE GameAlternateKey = @GameAlternateKey AND InningNumber = @InningNumber";
 
-            Connection.Open();
-            Connection.Query(deleteQuery, new { GameAlternateKey = gameAlternateKey.ToString(), InningNumber = innningNumber });
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(deleteQuery, new { GameAlternateKey = gameAlternateKey.ToString(), InningNumber = innningNumber });
+            Connection.Commit();
         }
 
 
         public bool ExistsInDb(GameInningDto gameInning)
         {
-            Connection.Open();
+            Connection.BeginTransaction();
 
             var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM GameInning 
             WHERE GameAlternateKey = @GameAlternateKey AND InningNumber = @InningNumber",
             new { gameInning.GameAlternateKey, gameInning.InningNumber });
-            Connection.Close();
+            Connection.Commit();
 
             return rows.First() > 0;
         }

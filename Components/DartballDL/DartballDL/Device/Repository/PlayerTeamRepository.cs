@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Data.SQLite;
+using SQLite;
 using Dapper;
 using System.Linq;
 using Dartball.DataLayer.Device.Dto;
@@ -15,9 +15,9 @@ namespace Dartball.DataLayer.Device.Repository
         {
             List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
 
-            Connection.Open();
+            Connection.BeginTransaction();
             playerTeams.AddRange(Connection.Query<PlayerTeamDto>(SELECT_QUERY));
-            Connection.Close();
+            Connection.Commit();
 
             return playerTeams;
         }
@@ -25,7 +25,7 @@ namespace Dartball.DataLayer.Device.Repository
         public PlayerTeamDto LoadByCompositeKey(Guid playerAlternateKey, Guid teamAlternateKey)
         {
             PlayerTeamDto playerTeam = null;
-            Connection.Open();
+            Connection.BeginTransaction();
 
             var result = Connection.Query<PlayerTeamDto>(
                 SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey " +
@@ -34,7 +34,7 @@ namespace Dartball.DataLayer.Device.Repository
 
             playerTeam = result.FirstOrDefault();
 
-            Connection.Close();
+            Connection.Commit();
 
             return playerTeam;
         }
@@ -43,11 +43,11 @@ namespace Dartball.DataLayer.Device.Repository
         {
             List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
 
-            Connection.Open();
+            Connection.BeginTransaction();
             playerTeams.AddRange(Connection.Query<PlayerTeamDto>(
                 SELECT_QUERY + " WHERE TeamAlternateKey = @TeamAlternateKey ",
                 new { TeamAlternateKey = teamAlternateKey.ToString() }));
-            Connection.Close();
+            Connection.Commit();
 
             return playerTeams;
         }
@@ -56,11 +56,11 @@ namespace Dartball.DataLayer.Device.Repository
         {
             List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
 
-            Connection.Open();
+            Connection.BeginTransaction();
             playerTeams.AddRange(Connection.Query<PlayerTeamDto>(
                 SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey ",
                 new { PlayerAlternateKey = playerAlternateKey.ToString() }));
-            Connection.Close();
+            Connection.Commit();
 
             return playerTeams;
         }
@@ -96,9 +96,9 @@ namespace Dartball.DataLayer.Device.Repository
                         @TeamAlternateKey, 
                         @DeleteDate)";
 
-            Connection.Open();
-            Connection.Query(insertQuery, playerTeam);
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(insertQuery, playerTeam);
+            Connection.Commit();
         }
         private void UpdatePlayerTeam(PlayerTeamDto playerTeam)
         {
@@ -109,9 +109,9 @@ namespace Dartball.DataLayer.Device.Repository
             DeleteDate = @DeleteDate 
             WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
 
-            Connection.Open();
-            Connection.Query(updateQuery, playerTeam);
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(updateQuery, playerTeam);
+            Connection.Commit();
         }
 
 
@@ -119,20 +119,20 @@ namespace Dartball.DataLayer.Device.Repository
         {
             string deleteQuery = @"DELETE FROM PlayerTeam WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
 
-            Connection.Open();
-            Connection.Query(deleteQuery, new { PlayerAlternateKey = playerAlternateKey.ToString(), TeamAlternateKey = teamAlternateKey.ToString() });
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(deleteQuery, new { PlayerAlternateKey = playerAlternateKey.ToString(), TeamAlternateKey = teamAlternateKey.ToString() });
+            Connection.Commit();
         }
 
 
         public bool ExistsInDb(PlayerTeamDto playerTeam)
         {
-            Connection.Open();
+            Connection.BeginTransaction();
 
             var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM PlayerTeam 
             WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey", 
             new { playerTeam.PlayerAlternateKey, playerTeam.TeamAlternateKey });
-            Connection.Close();
+            Connection.Commit();
 
             return rows.First() > 0;
         }

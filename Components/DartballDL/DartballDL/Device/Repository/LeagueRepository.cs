@@ -15,11 +15,11 @@ namespace Dartball.DataLayer.Device.Repository
         public List<LeagueDto> LoadAll()
         {
             List<LeagueDto> leagues = new List<LeagueDto>();
-            Connection.Open();
+            Connection.BeginTransaction();
 
             leagues.AddRange(Connection.Query<LeagueDto>(SELECT_QUERY));
 
-            Connection.Close();
+            Connection.Commit();
 
             return leagues;
         }
@@ -27,7 +27,7 @@ namespace Dartball.DataLayer.Device.Repository
         public LeagueDto LoadByKey(Guid leagueAlternateKey)
         {
             LeagueDto league = null;
-            Connection.Open();
+            Connection.BeginTransaction();
 
             var result = Connection.Query<LeagueDto>(
                 SELECT_QUERY + " where LeagueAlternateKey = @LeagueAlternateKey",
@@ -35,7 +35,7 @@ namespace Dartball.DataLayer.Device.Repository
 
             league = result.FirstOrDefault();
 
-            Connection.Close();
+            Connection.Commit();
 
             return league;
         }
@@ -68,9 +68,9 @@ namespace Dartball.DataLayer.Device.Repository
                     (LeagueAlternateKey, Name, Password, DeleteDate)
                     values(@LeagueAlternateKey, @Name, @Password, @DeleteDate)";
 
-            Connection.Open();
-            Connection.Query(insertQuery, league);
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(insertQuery, league);
+            Connection.Commit();
         }
         private void UpdateLeague(LeagueDto league)
         {
@@ -80,9 +80,9 @@ namespace Dartball.DataLayer.Device.Repository
             Password = @Password
             where LeagueAlternateKey = @LeagueAlternateKey";
 
-            Connection.Open();
-            Connection.Query(updateQuery, league);
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(updateQuery, league);
+            Connection.Commit();
         }
 
 
@@ -90,18 +90,18 @@ namespace Dartball.DataLayer.Device.Repository
         {
             string deleteQuery = @"delete from League where LeagueAlternateKey = @LeagueAlternateKey";
 
-            Connection.Open();
-            Connection.Query(deleteQuery, new { LeagueAlternateKey = leagueAlternateKey.ToString() });
-            Connection.Close();
+            Connection.BeginTransaction();
+            Connection.Execute(deleteQuery, new { LeagueAlternateKey = leagueAlternateKey.ToString() });
+            Connection.Commit();
         }
 
 
         public bool ExistsInDb(LeagueDto league)
         {
-            Connection.Open();
+            Connection.BeginTransaction();
 
             var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM League WHERE LeagueAlternateKey = @LeagueAlternateKey", new { LeagueAlternateKey = league.LeagueAlternateKey });
-            Connection.Close();
+            Connection.Commit();
 
             return rows.First() > 0;
         }

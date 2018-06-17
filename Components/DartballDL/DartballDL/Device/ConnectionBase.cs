@@ -13,7 +13,7 @@ namespace Dartball.DataLayer.Device
             var path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             path = Path.Combine(path, "Dartball.db3");
 
-            Connection = new SQLiteConnection($"Data Source = {path};");
+            Connection = new SQLiteConnection(path);
 
         }
 

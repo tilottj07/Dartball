@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DartballBL", "..\..\Compone
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DartballDL", "..\..\Components\DartballDL\DartballDL\DartballDL.csproj", "{9A251AB9-BC8A-4906-96EF-D3D3B296C91C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dartball.Data", "..\..\Components\Dartball.Data\Dartball.Data\Dartball.Data.csproj", "{5CDA1288-C546-4A80-8298-713E73476BB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dartball.Domain", "..\..\Components\Dartball.Domain\Dartball.Domain\Dartball.Domain.csproj", "{30BF19C8-BF2A-4E4D-9392-050CE6D0BD24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{9A251AB9-BC8A-4906-96EF-D3D3B296C91C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A251AB9-BC8A-4906-96EF-D3D3B296C91C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A251AB9-BC8A-4906-96EF-D3D3B296C91C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CDA1288-C546-4A80-8298-713E73476BB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CDA1288-C546-4A80-8298-713E73476BB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CDA1288-C546-4A80-8298-713E73476BB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CDA1288-C546-4A80-8298-713E73476BB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30BF19C8-BF2A-4E4D-9392-050CE6D0BD24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30BF19C8-BF2A-4E4D-9392-050CE6D0BD24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30BF19C8-BF2A-4E4D-9392-050CE6D0BD24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30BF19C8-BF2A-4E4D-9392-050CE6D0BD24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

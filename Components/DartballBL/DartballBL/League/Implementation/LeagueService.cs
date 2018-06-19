@@ -1,27 +1,24 @@
 ﻿using AutoMapper;
 using Dartball.BusinessLayer.League.Interface;
 using Dartball.BusinessLayer.League.Interface.Models;
-using Dartball.DataLayer.Device.Repository;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Dartball.BusinessLayer.League.Dto;
 using Dartball.BusinessLayer.Shared;
 using Dartball.BusinessLayer.Shared.Models;
+using System.Linq;
 
 namespace Dartball.BusinessLayer.League.Implementation
 {
     public class LeagueService : ILeagueService
     {
         private IMapper Mapper;
-        private LeagueRepository LeagueRepository;
 
         public LeagueService()
         {
-            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DataLayer.Device.Dto.LeagueDto, LeagueDto>());
+            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<Domain.League, LeagueDto>());
             Mapper = mapConfig.CreateMapper();
-
-            LeagueRepository = new LeagueRepository();
         }
 
 
@@ -30,8 +27,11 @@ namespace Dartball.BusinessLayer.League.Implementation
         {
             ILeague league = null;
 
-            var dl = LeagueRepository.LoadByKey(leagueAlternateKey);
-            if (dl != null && !dl.DeleteDate.HasValue) league = Mapper.Map<LeagueDto>(dl);
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.Leagues.FirstOrDefault(x => x.LeagueAlternateKey == leagueAlternateKey.ToString());
+                if (item != null) league = Mapper.Map<LeagueDto>(item);
+            }
 
             return league;
         }
@@ -40,9 +40,10 @@ namespace Dartball.BusinessLayer.League.Implementation
         {
             List<ILeague> leagues = new List<ILeague>();
 
-            foreach (var dl in LeagueRepository.LoadAll())
+            using (var context = new Data.DartballContext())
             {
-                if (!dl.DeleteDate.HasValue) leagues.Add(Mapper.Map<LeagueDto>(dl));
+                var items = context.Leagues.ToList().Where(x => !x.DeleteDate.HasValue);
+                foreach (var item in items) leagues.Add(Mapper.Map<LeagueDto>(item));
             }
 
             return leagues;
@@ -58,16 +59,19 @@ namespace Dartball.BusinessLayer.League.Implementation
             var result = Validate(leagues);
             if (result.IsSuccess)
             {
-                foreach (var league in leagues)
+                using (var context = new Data.DartballContext())
                 {
-                    DataLayer.Device.Dto.LeagueDto item = new DataLayer.Device.Dto.LeagueDto()
+                    foreach (var league in leagues)
                     {
-                        Name = Helper.CleanString(league.Name),
-                        LeagueAlternateKey = league.LeagueAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : league.LeagueAlternateKey.ToString(),
-                        Password = Helper.CleanString(league.Password), //TODO: add encryption
-                        DeleteDate = null
-                    };
-                    LeagueRepository.AddNew(item);
+                        context.Leagues.Add(new Domain.League()
+                        {
+                            Name = Helper.CleanString(league.Name),
+                            LeagueAlternateKey = league.LeagueAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : league.LeagueAlternateKey.ToString(),
+                            Password = Helper.CleanString(league.Password), //TODO: add encryption
+                            DeleteDate = null
+                        });
+                    }
+                    context.SaveChanges();
                 }
             }
             return result;
@@ -84,16 +88,19 @@ namespace Dartball.BusinessLayer.League.Implementation
             var result = Validate(leagues);
             if (result.IsSuccess)
             {
-                foreach (var league in leagues)
+                using (var context = new Data.DartballContext())
                 {
-                    DataLayer.Device.Dto.LeagueDto item = new DataLayer.Device.Dto.LeagueDto()
+                    foreach (var league in leagues)
                     {
-                        Name = Helper.CleanString(league.Name),
-                        LeagueAlternateKey = league.LeagueAlternateKey.ToString(),
-                        Password = Helper.CleanString(league.Password), //TODO: add encryption
-                        DeleteDate = null
-                    };
-                    LeagueRepository.Update(item);
+                        context.Leagues.Update(new Domain.League()
+                        {
+                            Name = Helper.CleanString(league.Name),
+                            LeagueAlternateKey = league.LeagueAlternateKey.ToString(),
+                            Password = Helper.CleanString(league.Password), //TODO: add encryption
+                            DeleteDate = null
+                        });
+                    }
+                    context.SaveChanges();
                 }
             }
             return result;
@@ -116,7 +123,7 @@ namespace Dartball.BusinessLayer.League.Implementation
                 else if (league.Name.Length > 100)
                 {
                     result.IsSuccess = false;
-                    result.ErrorMessages.Add("Leage Name must be less than 100 characters");
+                    result.ErrorMessages.Add("League Name must be less than 100 characters");
                 }
             }
 
@@ -128,7 +135,11 @@ namespace Dartball.BusinessLayer.League.Implementation
         public ChangeResult RemoveLeague(Guid leagueAltenateKey)
         {
             ChangeResult result = new ChangeResult();
-            LeagueRepository.Delete(leagueAltenateKey);
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.Leagues.FirstOrDefault(x => x.LeagueAlternateKey == leagueAltenateKey.ToString());
+                if (item != null) context.Remove(item);
+            }
 
             return result;
         }

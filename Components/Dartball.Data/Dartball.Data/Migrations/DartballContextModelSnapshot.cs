@@ -40,44 +40,40 @@ namespace Dartball.Data.Migrations
 
             modelBuilder.Entity("Dartball.Domain.GameInning", b =>
                 {
-                    b.Property<string>("GameAlternateKey");
-
-                    b.Property<int>("InningNumber");
+                    b.Property<string>("GameInningAlternateKey")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ChangeDate");
 
                     b.Property<DateTime?>("DeleteDate");
 
-                    b.Property<string>("GameInningAlternateKey");
+                    b.Property<string>("GameAlternateKey");
 
                     b.Property<int>("GameInningId");
 
-                    b.HasKey("GameAlternateKey", "InningNumber");
+                    b.Property<int>("InningNumber");
+
+                    b.HasKey("GameInningAlternateKey");
+
+                    b.HasIndex("GameAlternateKey", "InningNumber");
 
                     b.ToTable("GameInnings");
                 });
 
             modelBuilder.Entity("Dartball.Domain.GameInningTeam", b =>
                 {
-                    b.Property<string>("GameInningAlternateKey");
-
-                    b.Property<string>("GameTeamAlternateKey");
+                    b.Property<string>("GameInningTeamAlternateKey")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ChangeDate");
 
                     b.Property<DateTime?>("DeleteDate");
 
-                    b.Property<string>("GameInningGameAlternateKey");
-
-                    b.Property<int?>("GameInningInningNumber");
-
-                    b.Property<string>("GameInningTeamAlternateKey");
+                    b.Property<string>("GameInningAlternateKey");
 
                     b.Property<int>("GameInningTeamId");
 
-                    b.Property<string>("GameTeamGameAlternateKey");
-
-                    b.Property<string>("GameTeamTeamAlternateKey");
+                    b.Property<string>("GameTeamAlternateKey");
 
                     b.Property<int>("IsRunnerOnFirst");
 
@@ -89,20 +85,17 @@ namespace Dartball.Data.Migrations
 
                     b.Property<int>("Score");
 
-                    b.HasKey("GameInningAlternateKey", "GameTeamAlternateKey");
+                    b.HasKey("GameInningTeamAlternateKey");
 
-                    b.HasIndex("GameInningGameAlternateKey", "GameInningInningNumber");
-
-                    b.HasIndex("GameTeamGameAlternateKey", "GameTeamTeamAlternateKey");
+                    b.HasIndex("GameInningAlternateKey", "GameTeamAlternateKey");
 
                     b.ToTable("GameInningTeams");
                 });
 
             modelBuilder.Entity("Dartball.Domain.GameInningTeamBatter", b =>
                 {
-                    b.Property<string>("GameInningTeamAlternateKey");
-
-                    b.Property<int>("Sequence");
+                    b.Property<string>("GameInningTeamBatterAlternateKey")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ChangeDate");
 
@@ -110,25 +103,23 @@ namespace Dartball.Data.Migrations
 
                     b.Property<int>("EventType");
 
-                    b.Property<string>("GameInningTeamBatterAlternateKey");
+                    b.Property<string>("GameInningTeamAlternateKey");
 
                     b.Property<int>("GameInningTeamBatterId");
-
-                    b.Property<string>("GameInningTeamGameInningAlternateKey");
-
-                    b.Property<string>("GameInningTeamGameTeamAlternateKey");
 
                     b.Property<string>("PlayerAlternateKey");
 
                     b.Property<int>("RBIs");
 
+                    b.Property<int>("Sequence");
+
                     b.Property<int?>("TargetEventType");
 
-                    b.HasKey("GameInningTeamAlternateKey", "Sequence");
+                    b.HasKey("GameInningTeamBatterAlternateKey");
+
+                    b.HasIndex("GameInningTeamAlternateKey");
 
                     b.HasIndex("PlayerAlternateKey");
-
-                    b.HasIndex("GameInningTeamGameInningAlternateKey", "GameInningTeamGameTeamAlternateKey");
 
                     b.ToTable("GameInningTeamBatters");
                 });
@@ -285,30 +276,25 @@ namespace Dartball.Data.Migrations
                 {
                     b.HasOne("Dartball.Domain.Game", "Game")
                         .WithMany("GameInnings")
-                        .HasForeignKey("GameAlternateKey")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("GameAlternateKey");
                 });
 
             modelBuilder.Entity("Dartball.Domain.GameInningTeam", b =>
                 {
                     b.HasOne("Dartball.Domain.GameInning", "GameInning")
                         .WithMany("GameInningTeams")
-                        .HasForeignKey("GameInningGameAlternateKey", "GameInningInningNumber");
-
-                    b.HasOne("Dartball.Domain.GameTeam", "GameTeam")
-                        .WithMany()
-                        .HasForeignKey("GameTeamGameAlternateKey", "GameTeamTeamAlternateKey");
+                        .HasForeignKey("GameInningAlternateKey");
                 });
 
             modelBuilder.Entity("Dartball.Domain.GameInningTeamBatter", b =>
                 {
+                    b.HasOne("Dartball.Domain.GameInningTeam", "GameInningTeam")
+                        .WithMany("GameInningTeamBatters")
+                        .HasForeignKey("GameInningTeamAlternateKey");
+
                     b.HasOne("Dartball.Domain.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerAlternateKey");
-
-                    b.HasOne("Dartball.Domain.GameInningTeam", "GameInningTeam")
-                        .WithMany("GameInningTeamBatters")
-                        .HasForeignKey("GameInningTeamGameInningAlternateKey", "GameInningTeamGameTeamAlternateKey");
                 });
 
             modelBuilder.Entity("Dartball.Domain.GameTeam", b =>

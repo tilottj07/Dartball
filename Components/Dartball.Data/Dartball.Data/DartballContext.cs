@@ -50,16 +50,28 @@ namespace Dartball.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region set disinct keys
+
             modelBuilder.Entity<Game>().HasKey(x => x.GameAlternateKey);
-            modelBuilder.Entity<GameInning>().HasKey(x => new { x.GameAlternateKey, x.InningNumber });
-            modelBuilder.Entity<GameInningTeam>().HasKey(x => new { x.GameInningAlternateKey, x.GameTeamAlternateKey });
-            modelBuilder.Entity<GameInningTeamBatter>().HasKey(x => new { x.GameInningTeamAlternateKey, x.Sequence });
+            modelBuilder.Entity<GameInning>().HasKey(x => x.GameInningAlternateKey);
+            modelBuilder.Entity<GameInningTeam>().HasKey(x => x.GameInningTeamAlternateKey);
+            modelBuilder.Entity<GameInningTeamBatter>().HasKey(x => x.GameInningTeamBatterAlternateKey);
             modelBuilder.Entity<GameTeam>().HasKey(x => new { x.GameAlternateKey, x.TeamAlternateKey });
             modelBuilder.Entity<League>().HasKey(x => x.LeagueAlternateKey);
             modelBuilder.Entity<Player>().HasKey(x => x.PlayerAlternateKey);
             modelBuilder.Entity<PlayerTeam>().HasKey(x => new { x.PlayerAlternateKey, x.TeamAlternateKey });
             modelBuilder.Entity<Team>().HasKey(x => x.TeamAlternateKey);
             modelBuilder.Entity<TeamPlayerLineup>().HasKey(x => new { x.TeamAlternateKey, x.PlayerAlternateKey });
+
+            #endregion
+
+
+            #region set indexes
+
+            modelBuilder.Entity<GameInning>().HasIndex(x => new { x.GameAlternateKey, x.InningNumber });
+            modelBuilder.Entity<GameInningTeam>().HasIndex(x => new { x.GameInningAlternateKey, x.GameTeamAlternateKey });
+
+            #endregion
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {

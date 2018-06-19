@@ -19,7 +19,6 @@ namespace Dartball.Domain
         public DateTime? DeleteDate { get; set; }
 
         public GameInning GameInning { get; set; }
-        public GameTeam GameTeam { get; set; }
         public List<GameInningTeamBatter> GameInningTeamBatters { get; set; }
 
     }

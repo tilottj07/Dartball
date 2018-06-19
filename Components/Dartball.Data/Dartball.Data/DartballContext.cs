@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dartball.Domain;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Dartball.DataLayer.Local.Data;
-using Microsoft.EntityFrameworkCore;
 
-namespace Dartball.DataLayer.Local
+namespace Dartball.Data
 {
     public class DartballContext : DbContext
     {
-        public DartballContext(DbContextOptions<DartballContext> options) : base(options)
-        {
+        //public DartballContext(DbContextOptions<DartballContext> options) : base(options)
+        //{
 
-        }
+        //}
 
         public DbSet<Game> Games { get; set; }
         public DbSet<GameInning> GameInnings { get; set; }
@@ -34,7 +32,7 @@ namespace Dartball.DataLayer.Local
             var path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             path = Path.Combine(path, "DartballDataBase.db3");
 
-            optionsBuilder.UseSqlite("test.db");
+            optionsBuilder.UseSqlite($"Data Source={path}");
         }
 
         public override int SaveChanges()

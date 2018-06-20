@@ -38,10 +38,10 @@ namespace Dartball.BusinessLayer.GameEngine.InGame.Implementation
 
 
 
-        public IHalfInningActions GetHalfInningActions(Guid gameInningTeamAlternateKey)
+        public IHalfInningActions GetHalfInningActions(Guid gameInningTeamId)
         {
             Game.Interface.IGameInningTeamBatterService service = new Game.Implementation.GameInningTeamBatterService();
-            return GetHalfInningActions(service.GetGameInningTeamBatters(gameInningTeamAlternateKey));
+            return GetHalfInningActions(service.GetGameInningTeamBatters(gameInningTeamId));
         }
 
         public IHalfInningActions GetHalfInningActions(List<IGameInningTeamBatter> gameInningTeamBatters)

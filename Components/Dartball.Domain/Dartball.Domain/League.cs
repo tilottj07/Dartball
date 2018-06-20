@@ -6,8 +6,7 @@ namespace Dartball.Domain
     public class League : ChangeTracker
     {
 
-        public int LeagueId { get; set; }
-        public string LeagueAlternateKey { get; set; }
+        public string LeagueId { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public DateTime ChangeDate { get; set; }

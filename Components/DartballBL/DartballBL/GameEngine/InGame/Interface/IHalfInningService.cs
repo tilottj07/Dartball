@@ -10,7 +10,7 @@ namespace Dartball.BusinessLayer.GameEngine.InGame.Interface
     {
 
         IHalfInningActions GetHalfInningActions(List<IGameInningTeamBatter> gameInningTeamBatters);
-        IHalfInningActions GetHalfInningActions(Guid gameInningTeamAlternateKey);
+        IHalfInningActions GetHalfInningActions(Guid gameInningTeamId);
 
     }
 }

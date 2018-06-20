@@ -28,7 +28,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningDto dto = new GameInningDto()
             {
-                GameAlternateKey = TEST_GAME_ALTERNATE_KEY,
+                GameId = TEST_GAME_ALTERNATE_KEY,
                 InningNumber = TEST_INNING_NUMBER
             };
 
@@ -37,7 +37,7 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             var item = GameInning.GetGameInning(TEST_GAME_ALTERNATE_KEY, TEST_INNING_NUMBER);
             Assert.IsNotNull(item);
-            Assert.AreEqual(TEST_GAME_ALTERNATE_KEY, item.GameAlternateKey);
+            Assert.AreEqual(TEST_GAME_ALTERNATE_KEY, item.GameId);
             Assert.AreEqual(TEST_INNING_NUMBER, item.InningNumber);
 
             dto.InningNumber = 4;
@@ -46,7 +46,7 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             item = GameInning.GetGameInning(TEST_GAME_ALTERNATE_KEY, inningNumber: 4);
 
-            dto.GameInningAlternateKey = item.GameInningAlternateKey;
+            dto.GameInningId = item.GameInningId;
             dto.DeleteDate = DateTime.UtcNow;
             var updateResult = GameInning.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
@@ -68,7 +68,7 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             foreach(var i in items)
             {
-                var removeResult = GameInning.Remove(i.GameAlternateKey, i.InningNumber);
+                var removeResult = GameInning.Remove(i.GameId, i.InningNumber);
                 Assert.IsTrue(removeResult.IsSuccess);
             }
 
@@ -78,7 +78,7 @@ namespace DartballBLUnitTest.IntegrationValidation
 
 
         [TestMethod]
-        public void InvalidGameAlternateKeyTest()
+        public void InvalidGameIdTest()
         {
             GameInningDto dto = new GameInningDto()
             {
@@ -94,7 +94,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningDto dto = new GameInningDto()
             {
-                GameAlternateKey = TEST_GAME_ALTERNATE_KEY,
+                GameId = TEST_GAME_ALTERNATE_KEY,
                 InningNumber = -2
             };
 
@@ -103,11 +103,11 @@ namespace DartballBLUnitTest.IntegrationValidation
         }
 
         [TestMethod]
-        public void InvalidGameInningAlternateKeyTest()
+        public void InvalidGameInningIdTest()
         {
             GameInningDto dto = new GameInningDto()
             {
-                GameAlternateKey = TEST_GAME_ALTERNATE_KEY,
+                GameId = TEST_GAME_ALTERNATE_KEY,
                 InningNumber = TEST_INNING_NUMBER
             };
 

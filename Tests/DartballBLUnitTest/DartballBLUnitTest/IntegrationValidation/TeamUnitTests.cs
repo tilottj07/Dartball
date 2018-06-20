@@ -33,8 +33,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamDto dto = new TeamDto()
             {
-                TeamAlternateKey = TEST_ALTERNATE_ID,
-                LeagueAlternateKey = TEST_LEAGUE_ALTERNATE_KEY,
+                TeamId = TEST_ALTERNATE_ID,
+                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
                 Name = TEST_TEAM_NAME,
                 Password = TEST_TEAM_PASSWORD,
                 Handicap = TEST_HANDICAP,
@@ -70,8 +70,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamDto dto = new TeamDto()
             {
-                TeamAlternateKey = TEST_ALTERNATE_ID,
-                LeagueAlternateKey = TEST_LEAGUE_ALTERNATE_KEY,
+                TeamId = TEST_ALTERNATE_ID,
+                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
                 Name = string.Empty,
                 Password = TEST_TEAM_PASSWORD,
                 Handicap = TEST_HANDICAP,
@@ -87,8 +87,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamDto dto = new TeamDto()
             {
-                TeamAlternateKey = TEST_ALTERNATE_ID,
-                LeagueAlternateKey = TEST_LEAGUE_ALTERNATE_KEY,
+                TeamId = TEST_ALTERNATE_ID,
+                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
                 Name = TEST_TEAM_NAME + "kjadsjhglkasdhglksjdhglksjdhglkasjhdglksjdhglkajshdglkajhdglkajhdglkasjdhglkasjhdglkasdjhglkasdjghlaksdgjh",
                 Password = TEST_TEAM_PASSWORD,
                 Handicap = TEST_HANDICAP,
@@ -104,7 +104,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamDto dto = new TeamDto()
             {
-                TeamAlternateKey = TEST_ALTERNATE_ID,
+                TeamId = TEST_ALTERNATE_ID,
                 Name = string.Empty,
                 Password = TEST_TEAM_PASSWORD,
                 Handicap = TEST_HANDICAP,

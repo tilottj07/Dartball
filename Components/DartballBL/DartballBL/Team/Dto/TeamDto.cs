@@ -8,9 +8,8 @@ namespace Dartball.BusinessLayer.Team.Dto
     public class TeamDto : ITeam
     {
 
-        public int TeamId { get; set; }
-        public Guid TeamAlternateKey { get; set; }
-        public Guid LeagueAlternateKey { get; set; }
+        public Guid TeamId { get; set; }
+        public Guid LeagueId { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public int? Handicap { get; set; }

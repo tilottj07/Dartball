@@ -6,43 +6,44 @@ using AutoMapper;
 using Dartball.BusinessLayer.Game.Dto;
 using Dartball.BusinessLayer.Game.Interface.Models;
 using Dartball.BusinessLayer.Shared.Models;
+using System.Linq;
 
 namespace Dartball.BusinessLayer.Game.Implementation
 {
     public class GameTeamService : IGameTeamService
     {
         private IMapper Mapper;
-        private DataLayer.Device.Repository.GameTeamRepository Repository;
 
         public GameTeamService()
         {
-            var mapConfig = new MapperConfiguration(c => c.CreateMap<DataLayer.Device.Dto.GameTeamDto, GameTeamDto>());
+            var mapConfig = new MapperConfiguration(c => c.CreateMap<Domain.GameTeam, GameTeamDto>());
             Mapper = mapConfig.CreateMapper();
-
-            Repository = new DataLayer.Device.Repository.GameTeamRepository();
         }
 
 
 
-        public IGameTeam GetGameTeam(Guid gameAlternateKey, Guid teamAlternateKey)
+        public IGameTeam GetGameTeam(Guid gameId, Guid teamId)
         {
             IGameTeam gameTeam = null;
 
-            var dl = Repository.LoadByCompositeKey(gameAlternateKey, teamAlternateKey);
-            if (dl != null) gameTeam = Mapper.Map<GameTeamDto>(dl);
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.GameTeams.FirstOrDefault(x => x.GameId == gameId.ToString() && x.TeamId == teamId.ToString());
+                if (item != null) gameTeam = Mapper.Map<GameTeamDto>(item);
+            }
 
-            return gameTeam;
+                return gameTeam;
         }
 
-        public List<IGameTeam> GetGameTeams(Guid gameAlternateKey)
+        public List<IGameTeam> GetGameTeams(Guid gameId)
         {
             List<IGameTeam> gameTeams = new List<IGameTeam>();
 
-            foreach(var item in Repository.LoadByGameAlternateKey(gameAlternateKey))
+            using (var context = new Data.DartballContext())
             {
-                if (!item.DeleteDate.HasValue) gameTeams.Add(Mapper.Map<GameTeamDto>(item));
+                var items = context.GameTeams.Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue).ToList();
+                foreach (var item in items) gameTeams.Add(Mapper.Map<GameTeamDto>(item));
             }
-
             return gameTeams;
         }
 
@@ -50,9 +51,10 @@ namespace Dartball.BusinessLayer.Game.Implementation
         {
             List<IGameTeam> gameTeams = new List<IGameTeam>();
 
-            foreach(var item in Repository.LoadAll())
+            using (var context = new Data.DartballContext())
             {
-                if (!item.DeleteDate.HasValue) gameTeams.Add(Mapper.Map<GameTeamDto>(item));
+                var items = context.Games.Where(x => !x.DeleteDate.HasValue).ToList();
+                foreach (var item in items) gameTeams.Add(Mapper.Map<GameTeamDto>(item));
             }
 
             return gameTeams;
@@ -69,16 +71,19 @@ namespace Dartball.BusinessLayer.Game.Implementation
             var result = Validate(gameTeams, isAddNew: true);
             if (result.IsSuccess)
             {
-                foreach(var item in gameTeams)
+                using (var context = new Data.DartballContext())
                 {
-                    DataLayer.Device.Dto.GameTeamDto dto = new DataLayer.Device.Dto.GameTeamDto()
+                    foreach (var item in gameTeams)
                     {
-                        GameTeamAlternateKey = item.GameTeamAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : item.GameTeamAlternateKey.ToString(),
-                        GameAlternateKey = item.GameAlternateKey.ToString(),
-                        TeamAlternateKey = item.TeamAlternateKey.ToString(),
-                        DeleteDate = item.DeleteDate
-                    };
-                    Repository.AddNew(dto);
+                        context.GameTeams.Add(new Domain.GameTeam()
+                        {
+                            GameTeamId = item.GameTeamId == Guid.Empty ? Guid.NewGuid().ToString() : item.GameTeamId.ToString(),
+                            GameId = item.GameId.ToString(),
+                            TeamId = item.TeamId.ToString(),
+                            DeleteDate = item.DeleteDate
+                        });
+                    }
+                    context.SaveChanges();
                 }
             }
             return result;
@@ -93,16 +98,19 @@ namespace Dartball.BusinessLayer.Game.Implementation
             var result = Validate(gameTeams, isAddNew: false);
             if (result.IsSuccess)
             {
-                foreach (var item in gameTeams)
+                using (var context = new Data.DartballContext())
                 {
-                    DataLayer.Device.Dto.GameTeamDto dto = new DataLayer.Device.Dto.GameTeamDto()
+                    foreach (var item in gameTeams)
                     {
-                        GameTeamAlternateKey = item.GameTeamAlternateKey.ToString(),
-                        GameAlternateKey = item.GameAlternateKey.ToString(),
-                        TeamAlternateKey = item.TeamAlternateKey.ToString(),
-                        DeleteDate = item.DeleteDate
-                    };
-                    Repository.Update(dto);
+                        context.GameTeams.Update(new Domain.GameTeam()
+                        {
+                            GameTeamId = item.GameTeamId.ToString(),
+                            GameId = item.GameId.ToString(),
+                            TeamId = item.TeamId.ToString(),
+                            DeleteDate = item.DeleteDate
+                        });
+                    }
+                    context.SaveChanges();
                 }
             }
             return result;
@@ -118,13 +126,13 @@ namespace Dartball.BusinessLayer.Game.Implementation
             {
                 if (!result.IsSuccess) break;
 
-                if (item.GameAlternateKey == Guid.Empty)
+                if (item.GameId == Guid.Empty)
                 {
                     result.IsSuccess = false;
                     result.ErrorMessages.Add("Invalid Game.");
                 }
 
-                if (item.TeamAlternateKey == Guid.Empty)
+                if (item.TeamId == Guid.Empty)
                 {
                     result.IsSuccess = false;
                     result.ErrorMessages.Add("Invalid Team.");
@@ -132,7 +140,7 @@ namespace Dartball.BusinessLayer.Game.Implementation
 
                 if (isAddNew == false)
                 {
-                    if (item.GameTeamAlternateKey == Guid.Empty)
+                    if (item.GameTeamId == Guid.Empty)
                     {
                         result.IsSuccess = false;
                         result.ErrorMessages.Add("Invalid Game Team Id.");
@@ -145,10 +153,18 @@ namespace Dartball.BusinessLayer.Game.Implementation
 
 
 
-        public ChangeResult Remove(Guid gameAlternateKey, Guid teamAlternateKey)
+        public ChangeResult Remove(Guid gameId, Guid teamId)
         {
             ChangeResult result = new ChangeResult();
-            Repository.Delete(gameAlternateKey, teamAlternateKey);
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.GameTeams.FirstOrDefault(x => x.GameId == gameId.ToString() && x.TeamId == teamId.ToString());
+                if (item != null)
+                {
+                    context.GameTeams.Remove(item);
+                    context.SaveChanges();
+                }
+            }
             return result;
         }
 

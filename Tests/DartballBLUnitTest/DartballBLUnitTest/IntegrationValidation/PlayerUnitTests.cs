@@ -32,7 +32,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerAlternateKey = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ALTERNATE_KEY,
                 Name = TEST_NAME,
                 UserName = TEST_USERNAME,
                 Password = TEST_PASSWORD,
@@ -65,7 +65,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerAlternateKey = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ALTERNATE_KEY,
                 Name = string.Empty,
                 UserName = TEST_USERNAME,
                 Password = TEST_PASSWORD,
@@ -82,7 +82,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerAlternateKey = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ALTERNATE_KEY,
                 Name = "ads;kfj;alsdkjf;lasjdg;lasdhgkjhdlfasgdfljhgsdflkjaghsdkgjhklasjdghjsjhdgkljashdgkajshdglkjahsdkgjhaslkjdghaslkdgjhasljkdgh",
                 UserName = TEST_USERNAME,
                 Password = TEST_PASSWORD,
@@ -99,7 +99,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerAlternateKey = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ALTERNATE_KEY,
                 Name = TEST_NAME,
                 UserName = string.Empty,
                 Password = TEST_PASSWORD,
@@ -116,7 +116,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerAlternateKey = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ALTERNATE_KEY,
                 Name = TEST_NAME,
                 UserName = "etuyewrtoiuewyroityweoiurtyoiweutoiweyrtoiweyrtoiulqewytoiqwerytoiqeywoituyqeroiutyqoierutyoiqueytoiqueyrtoiuq",
                 Password = TEST_PASSWORD,
@@ -133,7 +133,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerAlternateKey = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ALTERNATE_KEY,
                 Name = TEST_NAME,
                 UserName = TEST_USERNAME,
                 Password = TEST_PASSWORD,

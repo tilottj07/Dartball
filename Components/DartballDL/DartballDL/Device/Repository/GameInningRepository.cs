@@ -22,15 +22,15 @@ namespace Dartball.DataLayer.Device.Repository
             return gameInnings;
         }
 
-        public GameInningDto LoadByCompositeKey(Guid gameAlternateKey, int inningNumber)
+        public GameInningDto LoadByCompositeKey(Guid gameId, int inningNumber)
         {
             GameInningDto gameInning = null;
             Connection.BeginTransaction();
 
             var result = Connection.Query<GameInningDto>(
-                SELECT_QUERY + " WHERE GameAlternateKey = @GameAlternateKey " +
+                SELECT_QUERY + " WHERE GameId = @GameId " +
                 "AND InningNumber = @InningNumber",
-                new { GameAlternateKey = gameAlternateKey.ToString(), InningNumber = inningNumber });
+                new { GameId = gameId.ToString(), InningNumber = inningNumber });
 
             gameInning = result.FirstOrDefault();
 
@@ -39,14 +39,14 @@ namespace Dartball.DataLayer.Device.Repository
             return gameInning;
         }
 
-        public List<GameInningDto> LoadByGameAlternateKey(Guid gameAlternateKey)
+        public List<GameInningDto> LoadByGameId(Guid gameId)
         {
             List<GameInningDto> gameInnings = new List<GameInningDto>();
 
             Connection.BeginTransaction();
             gameInnings.AddRange(Connection.Query<GameInningDto>(
-                SELECT_QUERY + " WHERE GameAlternateKey = @GameAlternateKey ",
-                new { GameAlternateKey = gameAlternateKey.ToString() }));
+                SELECT_QUERY + " WHERE GameId = @GameId ",
+                new { GameId = gameId.ToString() }));
             Connection.Commit();
 
             return gameInnings;
@@ -78,10 +78,10 @@ namespace Dartball.DataLayer.Device.Repository
         private void InsertGameInning(GameInningDto gameInning)
         {
             string insertQuery = @"INSERT INTO GameInning
-                    (GameInningAlternateKey, GameAlternateKey, InningNumber, DeleteDate)
+                    (GameInningId, GameId, InningNumber, DeleteDate)
                     VALUES(
-                        @GameInningAlternateKey, 
-                        @GameAlternateKey, 
+                        @GameInningId, 
+                        @GameId, 
                         @InningNumber, 
                         @DeleteDate)";
 
@@ -92,9 +92,9 @@ namespace Dartball.DataLayer.Device.Repository
         private void UpdateGameInning(GameInningDto gameInning)
         {
             string updateQuery = @"UPDATE GameInning
-            SET GameInningAlternateKey = @GameInningAlternateKey,
+            SET GameInningId = @GameInningId,
             DeleteDate = @DeleteDate 
-            WHERE GameAlternateKey = @GameAlternateKey AND InningNumber = @InningNumber";
+            WHERE GameId = @GameId AND InningNumber = @InningNumber";
 
             Connection.BeginTransaction();
             Connection.Execute(updateQuery, gameInning);
@@ -102,12 +102,12 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
-        public void Delete(Guid gameAlternateKey, int innningNumber)
+        public void Delete(Guid gameId, int innningNumber)
         {
-            string deleteQuery = @"DELETE FROM GameInning WHERE GameAlternateKey = @GameAlternateKey AND InningNumber = @InningNumber";
+            string deleteQuery = @"DELETE FROM GameInning WHERE GameId = @GameId AND InningNumber = @InningNumber";
 
             Connection.BeginTransaction();
-            Connection.Execute(deleteQuery, new { GameAlternateKey = gameAlternateKey.ToString(), InningNumber = innningNumber });
+            Connection.Execute(deleteQuery, new { GameId = gameId.ToString(), InningNumber = innningNumber });
             Connection.Commit();
         }
 
@@ -117,8 +117,8 @@ namespace Dartball.DataLayer.Device.Repository
             Connection.BeginTransaction();
 
             var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM GameInning 
-            WHERE GameAlternateKey = @GameAlternateKey AND InningNumber = @InningNumber",
-            new { gameInning.GameAlternateKey, gameInning.InningNumber });
+            WHERE GameId = @GameId AND InningNumber = @InningNumber",
+            new { gameInning.GameId, gameInning.InningNumber });
             Connection.Commit();
 
             return rows.First() > 0;
@@ -129,8 +129,8 @@ namespace Dartball.DataLayer.Device.Repository
         private const string SELECT_QUERY =
         @"SELECT 
             GameInningId, 
-            GameInningAlternateKey, 
-            GameAlternateKey, 
+            GameInningId, 
+            GameId, 
             InningNumber, 
             ChangeDate, 
             DeleteDate

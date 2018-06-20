@@ -22,15 +22,15 @@ namespace Dartball.DataLayer.Device.Repository
             return gameInningTeamBatters;
         }
 
-        public GameInningTeamBatterDto LoadByCompositeKey(Guid gameInningTeamAlternateKey, int sequence)
+        public GameInningTeamBatterDto LoadByCompositeKey(Guid gameInningTeamId, int sequence)
         {
             GameInningTeamBatterDto gameInningTeamBatter = null;
             Connection.BeginTransaction();
 
             var result = Connection.Query<GameInningTeamBatterDto>(
-                SELECT_QUERY + " WHERE GameInningTeamAlternateKey = @GameInningTeamAlternateKey " +
+                SELECT_QUERY + " WHERE GameInningTeamId = @GameInningTeamId " +
                 "AND Sequence = @Sequence",
-                new { GameInningTeamAlternateKey = gameInningTeamAlternateKey.ToString(), Sequence = sequence });
+                new { GameInningTeamId = gameInningTeamId.ToString(), Sequence = sequence });
 
             gameInningTeamBatter = result.FirstOrDefault();
 
@@ -39,34 +39,34 @@ namespace Dartball.DataLayer.Device.Repository
             return gameInningTeamBatter;
         }
 
-        public List<GameInningTeamBatterDto> LoadByGameInningTeamAlternateKey(Guid gameInningTeamAlternateKey)
+        public List<GameInningTeamBatterDto> LoadByGameInningTeamId(Guid gameInningTeamId)
         {
             List<GameInningTeamBatterDto> gameInningTeamBatters = new List<GameInningTeamBatterDto>();
 
             Connection.BeginTransaction();
             gameInningTeamBatters.AddRange(Connection.Query<GameInningTeamBatterDto>(
-                SELECT_QUERY + " WHERE GameInningTeamAlternateKey = @GameInningTeamAlternateKey ",
-                new { GameInningTeamAlternateKey = gameInningTeamAlternateKey.ToString() }));
+                SELECT_QUERY + " WHERE GameInningTeamId = @GameInningTeamId ",
+                new { GameInningTeamId = gameInningTeamId.ToString() }));
             Connection.Commit();
 
             return gameInningTeamBatters;
         }
 
-        public List<GameInningTeamBatterDto> LoadByPlayerAlternateKey(Guid playerAlternateKey)
+        public List<GameInningTeamBatterDto> LoadByPlayerId(Guid playerId)
         {
             List<GameInningTeamBatterDto> gameInningTeamBatters = new List<GameInningTeamBatterDto>();
 
             Connection.BeginTransaction();
             gameInningTeamBatters.AddRange(Connection.Query<GameInningTeamBatterDto>(
-                SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey ",
-                new { PlayerAlternateKey = playerAlternateKey.ToString() }));
+                SELECT_QUERY + " WHERE PlayerId = @PlayerId ",
+                new { PlayerId = playerId.ToString() }));
             Connection.Commit();
 
             return gameInningTeamBatters;
         }
 
 
-        public List<GameInningTeamBatterDto> LoadByGameAlternateKeyPlayerAlternateKey(Guid gameAlternateKey, Guid playerAlternateKey)
+        public List<GameInningTeamBatterDto> LoadByGameIdPlayerId(Guid gameId, Guid playerId)
         {
             List<GameInningTeamBatterDto> gameInningTeamBatters = new List<GameInningTeamBatterDto>();
 
@@ -74,9 +74,9 @@ namespace Dartball.DataLayer.Device.Repository
             gameInningTeamBatters.AddRange(Connection.Query<GameInningTeamBatterDto>(
                 @"SELECT
                 a.GameInningTeamBatterId,
-                a.GameInningTeamBatterAlternateKey,
-                a.GameInningTeamAlternateKey,
-                a.PlayerAlternateKey,
+                a.GameInningTeamBatterId,
+                a.GameInningTeamId,
+                a.PlayerId,
                 a.Sequence,
                 a.EventType,
                 a.TargetEventType,
@@ -85,12 +85,12 @@ namespace Dartball.DataLayer.Device.Repository
                 a.DeleteDate
                 FROM GameInningTeamBatter a
                 INNER JOIN GameInningTeam b
-                    ON a.GameInningTeamAlternateKey = b.GameInningTeamAlternateKey
+                    ON a.GameInningTeamId = b.GameInningTeamId
                 INNER JOIN GameTeam c
-                    ON b.GameTeamAlternateKey = c.GameTeamAlternateKey
-                WHERE c.GameAlternateKey = @GameAlternateKey
-                AND a.PlayerAlternateKey = @PlayerAlternateKey ",
-                new { GameAlternateKey = gameAlternateKey.ToString(), PlayerAlternateKey = playerAlternateKey.ToString() }));
+                    ON b.GameTeamId = c.GameTeamId
+                WHERE c.GameId = @GameId
+                AND a.PlayerId = @PlayerId ",
+                new { GameId = gameId.ToString(), PlayerId = playerId.ToString() }));
             Connection.Commit();
 
             return gameInningTeamBatters;
@@ -120,12 +120,12 @@ namespace Dartball.DataLayer.Device.Repository
         private void InsertGameInningTeamBatter(GameInningTeamBatterDto gameInningTeamBatter)
         {
             string insertQuery = @"INSERT INTO GameInningTeamBatter
-                    (GameInningTeamBatterAlternateKey, GameInningTeamAlternateKey, PlayerAlternateKey, Sequence, 
+                    (GameInningTeamBatterId, GameInningTeamId, PlayerId, Sequence, 
                     EventType, TargetEventType, RBIs, DeleteDate)
                     VALUES(
-                        @GameInningTeamBatterAlternateKey, 
-                        @GameInningTeamAlternateKey, 
-                        @PlayerAlternateKey, 
+                        @GameInningTeamBatterId, 
+                        @GameInningTeamId, 
+                        @PlayerId, 
                         @Sequence,
                         @EventType,
                         @TargetEventType,
@@ -139,13 +139,13 @@ namespace Dartball.DataLayer.Device.Repository
         private void UpdateGameInningTeamBatter(GameInningTeamBatterDto gameInningTeamBatter)
         {
             string updateQuery = @"UPDATE GameInningTeamBatter
-            SET GameInningTeamBatterAlternateKey = @GameInningTeamBatterAlternateKey,
-            PlayerAlternateKey = @PlayerAlternateKey, 
+            SET GameInningTeamBatterId = @GameInningTeamBatterId,
+            PlayerId = @PlayerId, 
             EventType = @EventType,
             TargetEventType = @TargetEventType,
             RBIs = @RBIs, 
             DeleteDate = @DeleteDate
-            WHERE GameInningTeamAlternateKey = @GameInningTeamAlternateKey AND Sequence = @Sequence";
+            WHERE GameInningTeamId = @GameInningTeamId AND Sequence = @Sequence";
 
             Connection.BeginTransaction();
             Connection.Execute(updateQuery, gameInningTeamBatter);
@@ -153,12 +153,12 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
-        public void Delete(Guid gameInningTeamAlternateKey, int sequence)
+        public void Delete(Guid gameInningTeamId, int sequence)
         {
-            string deleteQuery = @"DELETE FROM GameInningTeamBatter WHERE GameInningTeamAlternateKey = @GameInningTeamAlternateKey AND Sequence = @Sequence";
+            string deleteQuery = @"DELETE FROM GameInningTeamBatter WHERE GameInningTeamId = @GameInningTeamId AND Sequence = @Sequence";
 
             Connection.BeginTransaction();
-            Connection.Execute(deleteQuery, new { GameInningTeamAlternateKey = gameInningTeamAlternateKey.ToString(), Sequence = sequence });
+            Connection.Execute(deleteQuery, new { GameInningTeamId = gameInningTeamId.ToString(), Sequence = sequence });
             Connection.Commit();
         }
 
@@ -168,8 +168,8 @@ namespace Dartball.DataLayer.Device.Repository
             Connection.BeginTransaction();
 
             var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM GameInningTeamBatter 
-            WHERE GameInningTeamAlternateKey = @GameInningTeamAlternateKey AND Sequence = @Sequence",
-            new { gameInningTeamBatter.GameInningTeamAlternateKey, gameInningTeamBatter.Sequence });
+            WHERE GameInningTeamId = @GameInningTeamId AND Sequence = @Sequence",
+            new { gameInningTeamBatter.GameInningTeamId, gameInningTeamBatter.Sequence });
             Connection.Commit();
 
             return rows.First() > 0;
@@ -180,9 +180,9 @@ namespace Dartball.DataLayer.Device.Repository
         private const string SELECT_QUERY =
         @"SELECT 
             GameInningTeamBatterId, 
-            GameInningTeamBatterAlternateKey, 
-            GameInningTeamAlternateKey,
-            PlayerAlternateKey, 
+            GameInningTeamBatterId, 
+            GameInningTeamId,
+            PlayerId, 
             Sequence, 
             EventType,
             TargetEventType, 

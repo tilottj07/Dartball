@@ -7,10 +7,9 @@ namespace Dartball.BusinessLayer.Game.Interface.Models
     public interface IGameInningTeam
     {
 
-        int GameInningTeamId { get; }
-        Guid GameInningTeamAlternateKey { get; }
-        Guid GameInningAlternateKey { get; }
-        Guid GameTeamAlternateKey { get; }
+        Guid GameInningTeamId { get; }
+        Guid GameInningId { get; }
+        Guid GameTeamId { get; }
         int Score { get; }
         int Outs { get; }
         bool IsRunnerOnFirst { get; }

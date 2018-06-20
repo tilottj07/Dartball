@@ -7,29 +7,30 @@ using Dartball.BusinessLayer.Player.Dto;
 using Dartball.BusinessLayer.Player.Interface.Models;
 using Dartball.BusinessLayer.Shared.Models;
 using Dartball.BusinessLayer.Shared;
+using System.Linq;
 
 namespace Dartball.BusinessLayer.Player.Implementation
 {
     public class PlayerService : IPlayerService
     {
         private IMapper Mapper;
-        private DataLayer.Device.Repository.PlayerRepository PlayerRepository;
 
         public PlayerService()
         {
-            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<DataLayer.Device.Dto.PlayerDto, PlayerDto>());
+            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<Domain.Player, PlayerDto>());
             Mapper = mapConfig.CreateMapper();
-
-            PlayerRepository = new DataLayer.Device.Repository.PlayerRepository();
         }
 
 
-        public IPlayer GetPlayer(Guid playerAlternateKey)
+        public IPlayer GetPlayer(Guid playerId)
         {
             IPlayer player = null;
 
-            var dl = PlayerRepository.LoadByKey(playerAlternateKey);
-            if (dl != null) player = Mapper.Map<PlayerDto>(dl);
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.Players.FirstOrDefault(x => x.PlayerId == playerId.ToString());
+                if (item != null) player = Mapper.Map<PlayerDto>(item);
+            }
 
             return player;
         }
@@ -37,9 +38,10 @@ namespace Dartball.BusinessLayer.Player.Implementation
         public List<IPlayer> GetPlayers()
         {
             List<IPlayer> players = new List<IPlayer>();
-            foreach(var item in PlayerRepository.LoadAll())
+            using (var context = new Data.DartballContext())
             {
-                if (!item.DeleteDate.HasValue) players.Add(Mapper.Map<PlayerDto>(item));
+                var items = context.Players.Where(x => !x.DeleteDate.HasValue).ToList();
+                foreach (var item in items) players.Add(Mapper.Map<PlayerDto>(item));
             }
             return players;
         }
@@ -54,20 +56,23 @@ namespace Dartball.BusinessLayer.Player.Implementation
             var result = Validate(players);
             if (result.IsSuccess)
             {
-                foreach(var player in players)
+                using (var context = new Data.DartballContext())
                 {
-                    DataLayer.Device.Dto.PlayerDto dto = new DataLayer.Device.Dto.PlayerDto()
+                    foreach (var player in players)
                     {
-                        PlayerAlternateKey = player.PlayerAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : player.PlayerAlternateKey.ToString(),
-                        Name = Helper.CleanString(player.Name),
-                        Photo = player.Photo,
-                        EmailAddress = Helper.CleanString(player.EmailAddress),
-                        UserName = Helper.CleanString(player.UserName),
-                        Password = Helper.CleanString(player.Password), //TODO: add encryption
-                        ShouldSync = player.ShouldSync ? 1 : 0,
-                        DeleteDate = player.DeleteDate
-                    };
-                    PlayerRepository.AddNew(dto);
+                        context.Players.Add(new Domain.Player()
+                        {
+                            PlayerId = player.PlayerId == Guid.Empty ? Guid.NewGuid().ToString() : player.PlayerId.ToString(),
+                            Name = Helper.CleanString(player.Name),
+                            Photo = player.Photo,
+                            EmailAddress = Helper.CleanString(player.EmailAddress),
+                            UserName = Helper.CleanString(player.UserName),
+                            Password = Helper.CleanString(player.Password), //TODO: add encryption
+                            ShouldSync = player.ShouldSync ? 1 : 0,
+                            DeleteDate = player.DeleteDate
+                        });
+                    }
+                    context.SaveChanges();
                 }
             }
             return result;
@@ -83,20 +88,23 @@ namespace Dartball.BusinessLayer.Player.Implementation
             var result = Validate(players);
             if (result.IsSuccess)
             {
-                foreach (var player in players)
+                using (var context = new Data.DartballContext())
                 {
-                    DataLayer.Device.Dto.PlayerDto dto = new DataLayer.Device.Dto.PlayerDto()
+                    foreach (var player in players)
                     {
-                        PlayerAlternateKey = player.PlayerAlternateKey.ToString(),
-                        Name = Helper.CleanString(player.Name),
-                        Photo = player.Photo,
-                        EmailAddress = Helper.CleanString(player.EmailAddress),
-                        UserName = Helper.CleanString(player.UserName),
-                        Password = Helper.CleanString(player.Password), //TODO: add encryption
-                        ShouldSync = player.ShouldSync ? 1 : 0,
-                        DeleteDate = player.DeleteDate
-                    };
-                    PlayerRepository.Update(dto);
+                        context.Players.Update(new Domain.Player()
+                        {
+                            PlayerId = player.PlayerId.ToString(),
+                            Name = Helper.CleanString(player.Name),
+                            Photo = player.Photo,
+                            EmailAddress = Helper.CleanString(player.EmailAddress),
+                            UserName = Helper.CleanString(player.UserName),
+                            Password = Helper.CleanString(player.Password), //TODO: add encryption
+                            ShouldSync = player.ShouldSync ? 1 : 0,
+                            DeleteDate = player.DeleteDate
+                        });
+                    }
+                    context.SaveChanges(); 
                 }
             }
             return result;
@@ -149,10 +157,19 @@ namespace Dartball.BusinessLayer.Player.Implementation
 
 
 
-        public ChangeResult Remove(Guid playerAlternateKey)
+        public ChangeResult Remove(Guid playerId)
         {
             ChangeResult result = new ChangeResult();
-            PlayerRepository.Delete(playerAlternateKey);
+
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.Players.FirstOrDefault(x => x.PlayerId == playerId.ToString());
+                if (item != null)
+                {
+                    context.Players.Remove(item);
+                    context.SaveChanges();
+                }
+            }
 
             return result;
         }

@@ -7,9 +7,8 @@ namespace Dartball.BusinessLayer.Game.Interface.Models
     public interface IGameInning
     {
 
-        int GameInningId { get; }
-        Guid GameInningAlternateKey { get; }
-        Guid GameAlternateKey { get; }
+        Guid GameInningId { get; }
+        Guid GameId { get; }
         int InningNumber { get; }
         DateTime ChangeDate { get; }
         DateTime? DeleteDate { get; }

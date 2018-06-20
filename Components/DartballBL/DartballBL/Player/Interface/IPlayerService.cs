@@ -8,7 +8,7 @@ namespace Dartball.BusinessLayer.Player.Interface
 {
     public interface IPlayerService
     {
-        IPlayer GetPlayer(Guid playerAlternateKey);
+        IPlayer GetPlayer(Guid playerId);
         List<IPlayer> GetPlayers();
 
         ChangeResult AddNew(IPlayer player);
@@ -17,7 +17,7 @@ namespace Dartball.BusinessLayer.Player.Interface
         ChangeResult Update(IPlayer player);
         ChangeResult Update(List<IPlayer> players);
 
-        ChangeResult Remove(Guid playerAlternateKey);
+        ChangeResult Remove(Guid playerId);
 
     }
 }

@@ -8,9 +8,9 @@ namespace Dartball.BusinessLayer.Game.Interface
 {
     public interface IGameInningTeamService
     {
-        IGameInningTeam GetGameInningTeam(Guid gameTeamAlternateKey, Guid gameInningAlternateKey);
-        List<IGameInningTeam> GetInningTeams(Guid gameInningAlternateKey);
-        List<IGameInningTeam> GetTeamInnings(Guid gameTeamAlternateKey);
+        IGameInningTeam GetGameInningTeam(Guid gameTeamId, Guid gameInningId);
+        List<IGameInningTeam> GetInningTeams(Guid gameInningId);
+        List<IGameInningTeam> GetTeamInnings(Guid gameTeamId);
 
         ChangeResult AddNew(IGameInningTeam gameInningTeam);
         ChangeResult AddNew(List<IGameInningTeam> gameInningTeams);
@@ -18,7 +18,7 @@ namespace Dartball.BusinessLayer.Game.Interface
         ChangeResult Update(IGameInningTeam gameInningTeam);
         ChangeResult Update(List<IGameInningTeam> gameInningTeams);
 
-        ChangeResult Remove(Guid gameInningAlternateKey, Guid gameTeamAlternateKey);
+        ChangeResult Remove(Guid gameInningId, Guid gameTeamId);
 
     }
 }

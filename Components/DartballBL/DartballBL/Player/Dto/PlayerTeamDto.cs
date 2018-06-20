@@ -8,10 +8,9 @@ namespace Dartball.BusinessLayer.Player.Dto
     public class PlayerTeamDto : IPlayerTeam
     {
 
-        public int PlayerTeamId { get; set; }
-        public Guid PlayerTeamAlternateKey { get; set; }
-        public Guid PlayerAlternateKey { get; set; }
-        public Guid TeamAlternateKey { get; set; }
+        public Guid PlayerTeamId { get; set; }
+        public Guid PlayerId { get; set; }
+        public Guid TeamId { get; set; }
         public DateTime ChangeDate { get; set; }
         public DateTime? DeleteDate { get; set; }
 

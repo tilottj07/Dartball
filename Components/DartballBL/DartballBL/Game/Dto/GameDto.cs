@@ -8,9 +8,8 @@ namespace Dartball.BusinessLayer.Game.Dto
     public class GameDto : IGame
     {
 
-        public int GameId { get; set; }
-        public Guid GameAlternateKey { get; set; }
-        public Guid LeagueAlternateKey { get; set; }
+        public Guid GameId { get; set; }
+        public Guid LeagueId { get; set; }
         public DateTime GameDate { get; set; }
         public DateTime ChangeDate { get; set; }
         public DateTime? DeleteDate { get; set; }

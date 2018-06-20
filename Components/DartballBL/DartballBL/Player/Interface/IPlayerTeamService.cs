@@ -8,8 +8,8 @@ namespace Dartball.BusinessLayer.Player.Interface
 {
     public interface IPlayerTeamService
     {
-        List<IPlayerTeam> GetTeamPlayers(Guid teamAlternateKey);
-        IPlayerTeam GetPlayerTeam(Guid teamAlternateKey, Guid playerAlternateKey);
+        List<IPlayerTeam> GetTeamPlayers(Guid teamId);
+        IPlayerTeam GetPlayerTeam(Guid teamId, Guid playerId);
 
         ChangeResult AddNew(IPlayerTeam playerTeam);
         ChangeResult AddNew(List<IPlayerTeam> playerTeams);
@@ -17,6 +17,6 @@ namespace Dartball.BusinessLayer.Player.Interface
         ChangeResult Update(IPlayerTeam playerTeam);
         ChangeResult Update(List<IPlayerTeam> playerTeams);
 
-        ChangeResult Remove(Guid playerAlternateKey, Guid teamAlternateKey);
+        ChangeResult Remove(Guid playerId, Guid teamId);
     }
 }

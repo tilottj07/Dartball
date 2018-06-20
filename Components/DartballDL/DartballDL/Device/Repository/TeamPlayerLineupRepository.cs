@@ -22,15 +22,15 @@ namespace Dartball.DataLayer.Device.Repository
             return teamPlayerLineups;
         }
 
-        public TeamPlayerLineupDto LoadByCompositeKey(Guid playerAlternateKey, Guid teamAlternateKey)
+        public TeamPlayerLineupDto LoadByCompositeKey(Guid playerId, Guid teamId)
         {
             TeamPlayerLineupDto teamPlayerLineup = null;
             Connection.BeginTransaction();
 
             var result = Connection.Query<TeamPlayerLineupDto>(
-                SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey " +
-                "AND TeamAlternateKey = @TeamAlternateKey",
-                new { PlayerAlternateKey = playerAlternateKey.ToString(), TeamAlternateKey = teamAlternateKey.ToString() });
+                SELECT_QUERY + " WHERE PlayerId = @PlayerId " +
+                "AND TeamId = @TeamId",
+                new { PlayerId = playerId.ToString(), TeamId = teamId.ToString() });
 
             teamPlayerLineup = result.FirstOrDefault();
 
@@ -39,27 +39,27 @@ namespace Dartball.DataLayer.Device.Repository
             return teamPlayerLineup;
         }
 
-        public List<TeamPlayerLineupDto> LoadByTeamAlternateKey(Guid teamAlternateKey)
+        public List<TeamPlayerLineupDto> LoadByTeamId(Guid teamId)
         {
             List<TeamPlayerLineupDto> teamPlayerLineups = new List<TeamPlayerLineupDto>();
 
             Connection.BeginTransaction();
             teamPlayerLineups.AddRange(Connection.Query<TeamPlayerLineupDto>(
-                SELECT_QUERY + " WHERE TeamAlternateKey = @TeamAlternateKey ",
-                new { TeamAlternateKey = teamAlternateKey.ToString() }));
+                SELECT_QUERY + " WHERE TeamId = @TeamId ",
+                new { TeamId = teamId.ToString() }));
             Connection.Commit();
 
             return teamPlayerLineups;
         }
 
-        public List<TeamPlayerLineupDto> LoadByPlayerAlternateKey(Guid playerAlternateKey)
+        public List<TeamPlayerLineupDto> LoadByPlayerId(Guid playerId)
         {
             List<TeamPlayerLineupDto> teamPlayerLineups = new List<TeamPlayerLineupDto>();
 
             Connection.BeginTransaction();
             var result = Connection.Query<TeamPlayerLineupDto>(
-                SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey ",
-                new { PlayerAlternateKey = playerAlternateKey.ToString() });
+                SELECT_QUERY + " WHERE PlayerId = @PlayerId ",
+                new { PlayerId = playerId.ToString() });
             Connection.Commit();
 
             return teamPlayerLineups;
@@ -89,11 +89,11 @@ namespace Dartball.DataLayer.Device.Repository
         private void InsertTeamPlayerLineup(TeamPlayerLineupDto teamPlayerLineup)
         {
             string insertQuery = @"INSERT INTO TeamPlayerLineup
-                    (TeamPlayerLineupAlternateKey, TeamAlternateKey, PlayerAlternateKey, BattingOrder, DeleteDate)
+                    (TeamPlayerLineupId, TeamId, PlayerId, BattingOrder, DeleteDate)
                     VALUES(
-                        @TeamPlayerLineupAlternateKey, 
-                        @TeamAlternateKey, 
-                        @PlayerAlternateKey, 
+                        @TeamPlayerLineupId, 
+                        @TeamId, 
+                        @PlayerId, 
                         @BattingOrder, 
                         @DeleteDate)";
 
@@ -104,12 +104,12 @@ namespace Dartball.DataLayer.Device.Repository
         private void UpdateTeamPlayerLineup(TeamPlayerLineupDto teamPlayerLineup)
         {
             string updateQuery = @"UPDATE TeamPlayerLineup
-            SET TeamPlayerLineupAlternateKey = @TeamPlayerLineupAlternateKey,
-            PlayerAlternateKey = @PlayerAlternateKey,
-            TeamAlternateKey = @TeamAlternateKey,
+            SET TeamPlayerLineupId = @TeamPlayerLineupId,
+            PlayerId = @PlayerId,
+            TeamId = @TeamId,
             BattingOrder = @BattingOrder, 
             DeleteDate = @DeleteDate 
-            WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
+            WHERE PlayerId = @PlayerId AND TeamId = @TeamId";
 
             Connection.BeginTransaction();
             Connection.Execute(updateQuery, teamPlayerLineup);
@@ -117,12 +117,12 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
-        public void Delete(Guid playerAlternateKey, Guid teamAlternateKey)
+        public void Delete(Guid playerId, Guid teamId)
         {
-            string deleteQuery = @"DELETE FROM TeamPlayerLineup WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
+            string deleteQuery = @"DELETE FROM TeamPlayerLineup WHERE PlayerId = @PlayerId AND TeamId = @TeamId";
 
             Connection.BeginTransaction();
-            Connection.Execute(deleteQuery, new { PlayerAlternateKey = playerAlternateKey.ToString(), TeamAlternateKey = teamAlternateKey.ToString() });
+            Connection.Execute(deleteQuery, new { PlayerId = playerId.ToString(), TeamId = teamId.ToString() });
             Connection.Commit();
         }
 
@@ -132,8 +132,8 @@ namespace Dartball.DataLayer.Device.Repository
             Connection.BeginTransaction();
 
             var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM TeamPlayerLineup 
-            WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey",
-            new { teamPlayerLineup.PlayerAlternateKey, teamPlayerLineup.TeamAlternateKey });
+            WHERE PlayerId = @PlayerId AND TeamId = @TeamId",
+            new { teamPlayerLineup.PlayerId, teamPlayerLineup.TeamId });
             Connection.Commit();
 
             return rows.First() > 0;
@@ -144,9 +144,9 @@ namespace Dartball.DataLayer.Device.Repository
         private const string SELECT_QUERY =
             @"SELECT 
             TeamPlayerLineupId, 
-            TeamPlayerLineupAlternateKey, 
-            TeamAlternateKey, 
-            PlayerAlternateKey, 
+            TeamPlayerLineupId, 
+            TeamId, 
+            PlayerId, 
             BattingOrder,
             ChangeDate, 
             DeleteDate

@@ -8,10 +8,9 @@ namespace Dartball.BusinessLayer.Game.Dto
     public class GameInningTeamDto : IGameInningTeam
     {
 
-        public int GameInningTeamId { get; set; }
-        public Guid GameInningTeamAlternateKey { get; set; }
-        public Guid GameInningAlternateKey { get; set; }
-        public Guid GameTeamAlternateKey { get; set; }
+        public Guid GameInningTeamId { get; set; }
+        public Guid GameInningId { get; set; }
+        public Guid GameTeamId { get; set; }
         public int Score { get; set; }
         public int Outs { get; set; }
         public bool IsRunnerOnFirst { get; set; }

@@ -25,14 +25,14 @@ namespace Dartball.DataLayer.Device.Repository
             return games;
         }
 
-        public GameDto LoadByKey(Guid gameAlternateKey)
+        public GameDto LoadByKey(Guid gameId)
         {
             GameDto game = null;
             Connection.BeginTransaction();
 
             var result = Connection.Query<GameDto>(
-                SELECT_QUERY + " where GameAlternateKey = @GameAlternateKey",
-                new { GameAlternateKey = gameAlternateKey.ToString() });
+                SELECT_QUERY + " where GameId = @GameId",
+                new { GameId = gameId.ToString() });
 
             game = result.FirstOrDefault();
 
@@ -41,14 +41,14 @@ namespace Dartball.DataLayer.Device.Repository
             return game;
         }
 
-        public List<GameDto> LoadByLeagueAlternateKey(Guid leagueAlternateKey)
+        public List<GameDto> LoadByLeagueId(Guid leagueId)
         {
             List<GameDto> games = new List<GameDto>();
             Connection.BeginTransaction();
 
             games.AddRange(Connection.Query<GameDto>(
-                SELECT_QUERY + " where LeagueAlternateKey = @LeagueAlternateKey",
-                new { LeagueAlternateKey = leagueAlternateKey.ToString() }));
+                SELECT_QUERY + " where LeagueId = @LeagueId",
+                new { LeagueId = leagueId.ToString() }));
 
             Connection.Commit();
 
@@ -80,10 +80,10 @@ namespace Dartball.DataLayer.Device.Repository
         private void InsertGame(GameDto game)
         {
             string insertQuery = @"INSERT INTO Game
-                    (GameAlternateKey, LeagueAlternateKey, GameDate, DeleteDate)
+                    (GameId, LeagueId, GameDate, DeleteDate)
                     VALUES(
-                            @GameAlternateKey, 
-                            @LeagueAlternateKey, 
+                            @GameId, 
+                            @LeagueId, 
                             @GameDate, 
                             @DeleteDate)";
 
@@ -94,10 +94,10 @@ namespace Dartball.DataLayer.Device.Repository
         private void UpdateGame(GameDto game)
         {
             string updateQuery = @"UPDATE Game
-            SET LeagueAlternateKey = @LeagueAlternateKey,
+            SET LeagueId = @LeagueId,
             GameDate = @GameDate,
             DeleteDate = @DeleteDate
-            WHERE GameAlternateKey = @GameAlternateKey";
+            WHERE GameId = @GameId";
 
             Connection.BeginTransaction();
             Connection.Execute(updateQuery, game);
@@ -105,12 +105,12 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
-        public void Delete(Guid gameAlternateKey)
+        public void Delete(Guid gameId)
         {
-            string deleteQuery = @"DELETE FROM Game WHERE GameAlternateKey = @GameAlternateKey";
+            string deleteQuery = @"DELETE FROM Game WHERE GameId = @GameId";
 
             Connection.BeginTransaction();
-            Connection.Execute(deleteQuery, new { GameAlternateKey = gameAlternateKey.ToString() });
+            Connection.Execute(deleteQuery, new { GameId = gameId.ToString() });
             Connection.Commit();
         }
 
@@ -119,7 +119,7 @@ namespace Dartball.DataLayer.Device.Repository
         {
             Connection.BeginTransaction();
 
-            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM Game WHERE GameAlternateKey = @GameAlternateKey", new { game.GameAlternateKey });
+            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM Game WHERE GameId = @GameId", new { game.GameId });
             Connection.Commit();
 
             return rows.First() > 0;
@@ -130,8 +130,8 @@ namespace Dartball.DataLayer.Device.Repository
 
         private const string SELECT_QUERY = @"SELECT 
                                                 GameId, 
-                                                GameAlternateKey,
-                                                LeagueAlternateKey, 
+                                                GameId,
+                                                LeagueId, 
                                                 GameDate, 
                                                 ChangeDate, 
                                                 DeleteDate

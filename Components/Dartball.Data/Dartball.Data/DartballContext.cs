@@ -23,9 +23,7 @@ namespace Dartball.Data
         public DbSet<PlayerTeam> PlayerTeams { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamPlayerLineup> TeamPlayerLineups { get; set; }
-
-
-
+        public object FirstOrDefault { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -52,24 +50,24 @@ namespace Dartball.Data
         {
             #region set disinct keys
 
-            modelBuilder.Entity<Game>().HasKey(x => x.GameAlternateKey);
-            modelBuilder.Entity<GameInning>().HasKey(x => x.GameInningAlternateKey);
-            modelBuilder.Entity<GameInningTeam>().HasKey(x => x.GameInningTeamAlternateKey);
-            modelBuilder.Entity<GameInningTeamBatter>().HasKey(x => x.GameInningTeamBatterAlternateKey);
-            modelBuilder.Entity<GameTeam>().HasKey(x => new { x.GameAlternateKey, x.TeamAlternateKey });
-            modelBuilder.Entity<League>().HasKey(x => x.LeagueAlternateKey);
-            modelBuilder.Entity<Player>().HasKey(x => x.PlayerAlternateKey);
-            modelBuilder.Entity<PlayerTeam>().HasKey(x => new { x.PlayerAlternateKey, x.TeamAlternateKey });
-            modelBuilder.Entity<Team>().HasKey(x => x.TeamAlternateKey);
-            modelBuilder.Entity<TeamPlayerLineup>().HasKey(x => new { x.TeamAlternateKey, x.PlayerAlternateKey });
+            modelBuilder.Entity<Game>().HasKey(x => x.GameId);
+            modelBuilder.Entity<GameInning>().HasKey(x => x.GameInningId);
+            modelBuilder.Entity<GameInningTeam>().HasKey(x => x.GameInningTeamId);
+            modelBuilder.Entity<GameInningTeamBatter>().HasKey(x => x.GameInningTeamBatterId);
+            modelBuilder.Entity<GameTeam>().HasKey(x => new { x.GameId, x.TeamId });
+            modelBuilder.Entity<League>().HasKey(x => x.LeagueId);
+            modelBuilder.Entity<Player>().HasKey(x => x.PlayerId);
+            modelBuilder.Entity<PlayerTeam>().HasKey(x => new { x.PlayerId, x.TeamId });
+            modelBuilder.Entity<Team>().HasKey(x => x.TeamId);
+            modelBuilder.Entity<TeamPlayerLineup>().HasKey(x => new { x.TeamId, x.PlayerId });
 
             #endregion
 
 
             #region set indexes
 
-            modelBuilder.Entity<GameInning>().HasIndex(x => new { x.GameAlternateKey, x.InningNumber });
-            modelBuilder.Entity<GameInningTeam>().HasIndex(x => new { x.GameInningAlternateKey, x.GameTeamAlternateKey });
+            modelBuilder.Entity<GameInning>().HasIndex(x => new { x.GameId, x.InningNumber });
+            modelBuilder.Entity<GameInningTeam>().HasIndex(x => new { x.GameInningId, x.GameTeamId });
 
             #endregion
 

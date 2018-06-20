@@ -27,7 +27,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             LeagueDto dto = new LeagueDto
             {
-                LeagueAlternateKey = TEST_ALTERNATE_ID,
+                LeagueId = TEST_ALTERNATE_ID,
                 Name = TEST_LEAGUE_NAME,
                 Password = TEST_LEAGUE_PASSWORD
             };
@@ -65,7 +65,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             LeagueDto dto = new LeagueDto
             {
-                LeagueAlternateKey = TEST_ALTERNATE_ID,
+                LeagueId = TEST_ALTERNATE_ID,
                 Name = TEST_LEAGUE_NAME + "dfaodsfhoas;dhg;oahg;oahego;ha;ldgjh;sadjghadfasdfadfasdgfasdgsadasdgasdgasdgasdg;kasjdhg;kjsahdg;hasdg;jhasdg;jhas;dgkjh;sadkjh;asjhg;kajhgd",
                 Password = TEST_LEAGUE_PASSWORD
             };
@@ -79,7 +79,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             LeagueDto dto = new LeagueDto
             {
-                LeagueAlternateKey = TEST_ALTERNATE_ID,
+                LeagueId = TEST_ALTERNATE_ID,
                 Name = string.Empty,
                 Password = TEST_LEAGUE_PASSWORD
             };

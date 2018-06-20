@@ -52,16 +52,16 @@ namespace Dartball.DataLayer.Local
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Game>().HasKey(x => x.GameAlternateKey);
-            modelBuilder.Entity<GameInning>().HasKey(x => new { x.GameAlternateKey, x.InningNumber });
-            modelBuilder.Entity<GameInningTeam>().HasKey(x => new { x.GameInningAlternateKey, x.GameTeamAlternateKey });
-            modelBuilder.Entity<GameInningTeamBatter>().HasKey(x => new { x.GameInningTeamAlternateKey, x.Sequence });
-            modelBuilder.Entity<GameTeam>().HasKey(x => new { x.GameAlternateKey, x.TeamAlternateKey });
-            modelBuilder.Entity<League>().HasKey(x => x.LeagueAlternateKey);
-            modelBuilder.Entity<Player>().HasKey(x => x.PlayerAlternateKey);
-            modelBuilder.Entity<PlayerTeam>().HasKey(x => new { x.PlayerAlternateKey, x.TeamAlternateKey });
-            modelBuilder.Entity<Team>().HasKey(x => x.TeamAlternateKey);
-            modelBuilder.Entity<TeamPlayerLineup>().HasKey(x => new { x.TeamAlternateKey, x.PlayerAlternateKey });
+            modelBuilder.Entity<Game>().HasKey(x => x.GameId);
+            modelBuilder.Entity<GameInning>().HasKey(x => new { x.GameId, x.InningNumber });
+            modelBuilder.Entity<GameInningTeam>().HasKey(x => new { x.GameInningId, x.GameTeamId });
+            modelBuilder.Entity<GameInningTeamBatter>().HasKey(x => new { x.GameInningTeamId, x.Sequence });
+            modelBuilder.Entity<GameTeam>().HasKey(x => new { x.GameId, x.TeamId });
+            modelBuilder.Entity<League>().HasKey(x => x.LeagueId);
+            modelBuilder.Entity<Player>().HasKey(x => x.PlayerId);
+            modelBuilder.Entity<PlayerTeam>().HasKey(x => new { x.PlayerId, x.TeamId });
+            modelBuilder.Entity<Team>().HasKey(x => x.TeamId);
+            modelBuilder.Entity<TeamPlayerLineup>().HasKey(x => new { x.TeamId, x.PlayerId });
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {

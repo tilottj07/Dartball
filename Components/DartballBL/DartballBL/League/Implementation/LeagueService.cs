@@ -23,13 +23,13 @@ namespace Dartball.BusinessLayer.League.Implementation
 
 
 
-        public ILeague GetLeague(Guid leagueAlternateKey)
+        public ILeague GetLeague(Guid leagueId)
         {
             ILeague league = null;
 
             using (var context = new Data.DartballContext())
             {
-                var item = context.Leagues.FirstOrDefault(x => x.LeagueAlternateKey == leagueAlternateKey.ToString());
+                var item = context.Leagues.FirstOrDefault(x => x.LeagueId == leagueId.ToString());
                 if (item != null) league = Mapper.Map<LeagueDto>(item);
             }
 
@@ -66,7 +66,7 @@ namespace Dartball.BusinessLayer.League.Implementation
                         context.Leagues.Add(new Domain.League()
                         {
                             Name = Helper.CleanString(league.Name),
-                            LeagueAlternateKey = league.LeagueAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : league.LeagueAlternateKey.ToString(),
+                            LeagueId = league.LeagueId == Guid.Empty ? Guid.NewGuid().ToString() : league.LeagueId.ToString(),
                             Password = Helper.CleanString(league.Password), //TODO: add encryption
                             DeleteDate = null
                         });
@@ -95,7 +95,7 @@ namespace Dartball.BusinessLayer.League.Implementation
                         context.Leagues.Update(new Domain.League()
                         {
                             Name = Helper.CleanString(league.Name),
-                            LeagueAlternateKey = league.LeagueAlternateKey.ToString(),
+                            LeagueId = league.LeagueId.ToString(),
                             Password = Helper.CleanString(league.Password), //TODO: add encryption
                             DeleteDate = null
                         });
@@ -137,8 +137,12 @@ namespace Dartball.BusinessLayer.League.Implementation
             ChangeResult result = new ChangeResult();
             using (var context = new Data.DartballContext())
             {
-                var item = context.Leagues.FirstOrDefault(x => x.LeagueAlternateKey == leagueAltenateKey.ToString());
-                if (item != null) context.Remove(item);
+                var item = context.Leagues.FirstOrDefault(x => x.LeagueId == leagueAltenateKey.ToString());
+                if (item != null)
+                {
+                    context.Leagues.Remove(item);
+                    context.SaveChanges();
+                }
             }
 
             return result;

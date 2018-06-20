@@ -22,15 +22,15 @@ namespace Dartball.DataLayer.Device.Repository
             return playerTeams;
         }
 
-        public PlayerTeamDto LoadByCompositeKey(Guid playerAlternateKey, Guid teamAlternateKey)
+        public PlayerTeamDto LoadByCompositeKey(Guid playerId, Guid teamId)
         {
             PlayerTeamDto playerTeam = null;
             Connection.BeginTransaction();
 
             var result = Connection.Query<PlayerTeamDto>(
-                SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey " +
-                "AND TeamAlternateKey = @TeamAlternateKey",
-                new { PlayerAlternateKey = playerAlternateKey.ToString(), TeamAlternateKey = teamAlternateKey.ToString() });
+                SELECT_QUERY + " WHERE PlayerId = @PlayerId " +
+                "AND TeamId = @TeamId",
+                new { PlayerId = playerId.ToString(), TeamId = teamId.ToString() });
 
             playerTeam = result.FirstOrDefault();
 
@@ -39,27 +39,27 @@ namespace Dartball.DataLayer.Device.Repository
             return playerTeam;
         }
 
-        public List<PlayerTeamDto> LoadByTeamAlternateKey(Guid teamAlternateKey)
+        public List<PlayerTeamDto> LoadByTeamId(Guid teamId)
         {
             List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
 
             Connection.BeginTransaction();
             playerTeams.AddRange(Connection.Query<PlayerTeamDto>(
-                SELECT_QUERY + " WHERE TeamAlternateKey = @TeamAlternateKey ",
-                new { TeamAlternateKey = teamAlternateKey.ToString() }));
+                SELECT_QUERY + " WHERE TeamId = @TeamId ",
+                new { TeamId = teamId.ToString() }));
             Connection.Commit();
 
             return playerTeams;
         }
 
-        public List<PlayerTeamDto> LoadByPlayerAlternateKey(Guid playerAlternateKey)
+        public List<PlayerTeamDto> LoadByPlayerId(Guid playerId)
         {
             List<PlayerTeamDto> playerTeams = new List<PlayerTeamDto>();
 
             Connection.BeginTransaction();
             playerTeams.AddRange(Connection.Query<PlayerTeamDto>(
-                SELECT_QUERY + " WHERE PlayerAlternateKey = @PlayerAlternateKey ",
-                new { PlayerAlternateKey = playerAlternateKey.ToString() }));
+                SELECT_QUERY + " WHERE PlayerId = @PlayerId ",
+                new { PlayerId = playerId.ToString() }));
             Connection.Commit();
 
             return playerTeams;
@@ -89,11 +89,11 @@ namespace Dartball.DataLayer.Device.Repository
         private void InsertPlayerTeam(PlayerTeamDto playerTeam)
         {
             string insertQuery = @"INSERT INTO PlayerTeam
-                    (PlayerTeamAlternateKey, PlayerAlternateKey, TeamAlternateKey, DeleteDate)
+                    (PlayerTeamId, PlayerId, TeamId, DeleteDate)
                     VALUES(
-                        @PlayerTeamAlternateKey, 
-                        @PlayerAlternateKey, 
-                        @TeamAlternateKey, 
+                        @PlayerTeamId, 
+                        @PlayerId, 
+                        @TeamId, 
                         @DeleteDate)";
 
             Connection.BeginTransaction();
@@ -103,11 +103,11 @@ namespace Dartball.DataLayer.Device.Repository
         private void UpdatePlayerTeam(PlayerTeamDto playerTeam)
         {
             string updateQuery = @"UPDATE PlayerTeam
-            SET PlayerTeamAlternateKey = @PlayerTeamAlternateKey,
-            PlayerAlternateKey = @PlayerAlternateKey,
-            TeamAlternateKey = @TeamAlternateKey,
+            SET PlayerTeamId = @PlayerTeamId,
+            PlayerId = @PlayerId,
+            TeamId = @TeamId,
             DeleteDate = @DeleteDate 
-            WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
+            WHERE PlayerId = @PlayerId AND TeamId = @TeamId";
 
             Connection.BeginTransaction();
             Connection.Execute(updateQuery, playerTeam);
@@ -115,12 +115,12 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
-        public void Delete(Guid playerAlternateKey, Guid teamAlternateKey)
+        public void Delete(Guid playerId, Guid teamId)
         {
-            string deleteQuery = @"DELETE FROM PlayerTeam WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey";
+            string deleteQuery = @"DELETE FROM PlayerTeam WHERE PlayerId = @PlayerId AND TeamId = @TeamId";
 
             Connection.BeginTransaction();
-            Connection.Execute(deleteQuery, new { PlayerAlternateKey = playerAlternateKey.ToString(), TeamAlternateKey = teamAlternateKey.ToString() });
+            Connection.Execute(deleteQuery, new { PlayerId = playerId.ToString(), TeamId = teamId.ToString() });
             Connection.Commit();
         }
 
@@ -130,8 +130,8 @@ namespace Dartball.DataLayer.Device.Repository
             Connection.BeginTransaction();
 
             var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM PlayerTeam 
-            WHERE PlayerAlternateKey = @PlayerAlternateKey AND TeamAlternateKey = @TeamAlternateKey", 
-            new { playerTeam.PlayerAlternateKey, playerTeam.TeamAlternateKey });
+            WHERE PlayerId = @PlayerId AND TeamId = @TeamId", 
+            new { playerTeam.PlayerId, playerTeam.TeamId });
             Connection.Commit();
 
             return rows.First() > 0;
@@ -140,7 +140,7 @@ namespace Dartball.DataLayer.Device.Repository
 
 
         private const string SELECT_QUERY =
-        @"SELECT PlayerTeamId, PlayerTeamAlternateKey, PlayerAlternateKey, TeamAlternateKey, ChangeDate, DeleteDate
+        @"SELECT PlayerTeamId, PlayerTeamId, PlayerId, TeamId, ChangeDate, DeleteDate
         FROM PlayerTeam ";
 
     }

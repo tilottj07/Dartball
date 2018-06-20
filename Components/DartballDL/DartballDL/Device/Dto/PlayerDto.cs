@@ -8,7 +8,7 @@ namespace Dartball.DataLayer.Device.Dto
     {
 
         public int PlayerId { get; set; }
-        public string PlayerAlternateKey { get; set; }
+        public string PlayerId { get; set; }
         public string Name { get; set; }
         public byte[] Photo { get; set; }
         public string EmailAddress { get; set; }

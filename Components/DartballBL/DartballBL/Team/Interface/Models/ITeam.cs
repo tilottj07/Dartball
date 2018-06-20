@@ -6,9 +6,8 @@ namespace Dartball.BusinessLayer.Team.Interface.Models
 {
     public interface ITeam
     {
-        int TeamId { get; }
-        Guid TeamAlternateKey { get; }
-        Guid LeagueAlternateKey { get; }
+        Guid TeamId { get; }
+        Guid LeagueId { get; }
         string Name { get; }
         string Password { get; }
         int? Handicap { get; }

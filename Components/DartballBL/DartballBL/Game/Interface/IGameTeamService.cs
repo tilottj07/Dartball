@@ -9,8 +9,8 @@ namespace Dartball.BusinessLayer.Game.Interface
     public interface IGameTeamService
     {
 
-        IGameTeam GetGameTeam(Guid gameAlternateKey, Guid teamAlternateKey);
-        List<IGameTeam> GetGameTeams(Guid gameAlternateKey);
+        IGameTeam GetGameTeam(Guid gameId, Guid teamId);
+        List<IGameTeam> GetGameTeams(Guid gameId);
         List<IGameTeam> GetAllGames();
 
         ChangeResult AddNew(List<IGameTeam> gameTeams);
@@ -19,7 +19,7 @@ namespace Dartball.BusinessLayer.Game.Interface
         ChangeResult Update(IGameTeam gameTeam);
         ChangeResult Update(List<IGameTeam> gameTeams);
 
-        ChangeResult Remove(Guid gameAlternateKey, Guid teamAlternateKey);
+        ChangeResult Remove(Guid gameId, Guid teamId);
 
 
     }

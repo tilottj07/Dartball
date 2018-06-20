@@ -9,7 +9,7 @@ namespace Dartball.BusinessLayer.League.Interface
     public interface ILeagueService
     {
 
-        ILeague GetLeague(Guid leagueAlternateKey);
+        ILeague GetLeague(Guid leagueId);
         List<ILeague> GetLeagues();
 
         ChangeResult AddNew(ILeague league);
@@ -18,7 +18,7 @@ namespace Dartball.BusinessLayer.League.Interface
         ChangeResult Update(ILeague league);
         ChangeResult Update(List<ILeague> leagues);
 
-        ChangeResult RemoveLeague(Guid leagueAlternateKey);
+        ChangeResult RemoveLeague(Guid leagueId);
 
     }
 }

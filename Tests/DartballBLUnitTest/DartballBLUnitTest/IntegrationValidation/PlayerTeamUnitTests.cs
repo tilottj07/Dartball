@@ -30,8 +30,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerTeamDto dto = new PlayerTeamDto()
             {
-                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
-                TeamAlternateKey = TEST_TEAM_ALTERNATE_KEY
+                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                TeamId = TEST_TEAM_ALTERNATE_KEY
             };
 
             var addResult = PlayerTeamService.AddNew(dto);
@@ -39,11 +39,11 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             var playerTeam = PlayerTeamService.GetPlayerTeam(TEST_TEAM_ALTERNATE_KEY, TEST_PLAYER_ALTERNATE_KEY);
             Assert.IsNotNull(playerTeam);
-            Assert.AreEqual(TEST_TEAM_ALTERNATE_KEY, playerTeam.TeamAlternateKey);
-            Assert.AreEqual(TEST_PLAYER_ALTERNATE_KEY, playerTeam.PlayerAlternateKey);
-            Assert.IsFalse(playerTeam.PlayerTeamAlternateKey == Guid.Empty);
+            Assert.AreEqual(TEST_TEAM_ALTERNATE_KEY, playerTeam.TeamId);
+            Assert.AreEqual(TEST_PLAYER_ALTERNATE_KEY, playerTeam.PlayerId);
+            Assert.IsFalse(playerTeam.PlayerTeamId == Guid.Empty);
 
-            dto.PlayerTeamAlternateKey = playerTeam.PlayerTeamAlternateKey;
+            dto.PlayerTeamId = playerTeam.PlayerTeamId;
             var updateResult = PlayerTeamService.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
@@ -59,12 +59,12 @@ namespace DartballBLUnitTest.IntegrationValidation
 
 
         [TestMethod]
-        public void InvalidTeamAlternateKeyTest()
+        public void InvalidTeamIdTest()
         {
             PlayerTeamDto dto = new PlayerTeamDto()
             {
-                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
-                TeamAlternateKey = Guid.Empty
+                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                TeamId = Guid.Empty
             };
 
             var addResult = PlayerTeamService.AddNew(dto);
@@ -72,12 +72,12 @@ namespace DartballBLUnitTest.IntegrationValidation
         }
 
         [TestMethod]
-        public void InvalidPlayerAlternateKeyTest()
+        public void InvalidPlayerIdTest()
         {
             PlayerTeamDto dto = new PlayerTeamDto()
             {
-                PlayerAlternateKey = Guid.Empty,
-                TeamAlternateKey = TEST_TEAM_ALTERNATE_KEY
+                PlayerId = Guid.Empty,
+                TeamId = TEST_TEAM_ALTERNATE_KEY
             };
 
             var addResult = PlayerTeamService.AddNew(dto);
@@ -85,12 +85,12 @@ namespace DartballBLUnitTest.IntegrationValidation
         }
 
         [TestMethod]
-        public void InvalidTeamPlayerAlternateKeyTest()
+        public void InvalidTeamPlayerIdTest()
         {
             PlayerTeamDto dto = new PlayerTeamDto()
             {
-                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
-                TeamAlternateKey = Guid.Empty
+                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                TeamId = Guid.Empty
             };
 
             var result = PlayerTeamService.Update(dto);

@@ -6,9 +6,9 @@ namespace Dartball.DataLayer.Local.Data
     public class PlayerTeam : ChangeTracker
     {
         public int PlayerTeamId { get; set; }
-        public string PlayerTeamAlternateKey { get; set; }
-        public string PlayerAlternateKey { get; set; }
-        public string TeamAlternateKey { get; set; }
+        public string PlayerTeamId { get; set; }
+        public string PlayerId { get; set; }
+        public string TeamId { get; set; }
         public DateTime ChangeDate { get; set; }
         public DateTime? DeleteDate { get; set; }
 

@@ -35,8 +35,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameDto dto = new GameDto()
             {
-                GameAlternateKey = TEST_GAME_ALTERNATE_KEY,
-                LeagueAlternateKey = TEST_LEAGUE_ALTERNATE_KEY,
+                GameId = TEST_GAME_ALTERNATE_KEY,
+                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
                 GameDate = TEST_GAME_DATE
             };
 
@@ -45,9 +45,9 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             var item = Game.GetGame(TEST_GAME_ALTERNATE_KEY);
             Assert.IsNotNull(item);
-            Assert.AreEqual(TEST_LEAGUE_ALTERNATE_KEY, item.LeagueAlternateKey);
+            Assert.AreEqual(TEST_LEAGUE_ALTERNATE_KEY, item.LeagueId);
             Assert.AreEqual(TEST_GAME_DATE, item.GameDate);
-            Assert.AreEqual(TEST_GAME_ALTERNATE_KEY, item.GameAlternateKey);
+            Assert.AreEqual(TEST_GAME_ALTERNATE_KEY, item.GameId);
             Assert.IsNull(item.DeleteDate);
 
             dto.GameDate = TEST_GAME_DATE_2;
@@ -73,11 +73,11 @@ namespace DartballBLUnitTest.IntegrationValidation
 
 
         [TestMethod]
-        public void InvalidLeagueAlternateKeyTest()
+        public void InvalidLeagueIdTest()
         {
             GameDto dto = new GameDto()
             {
-                GameAlternateKey = TEST_GAME_ALTERNATE_KEY,
+                GameId = TEST_GAME_ALTERNATE_KEY,
                 GameDate = TEST_GAME_DATE
             };
 
@@ -90,8 +90,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameDto dto = new GameDto()
             {
-                GameAlternateKey = TEST_GAME_ALTERNATE_KEY,
-                LeagueAlternateKey = TEST_LEAGUE_ALTERNATE_KEY,
+                GameId = TEST_GAME_ALTERNATE_KEY,
+                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
                 GameDate = TEST_GAME_DATE.AddDays(10)
             };
 
@@ -100,11 +100,11 @@ namespace DartballBLUnitTest.IntegrationValidation
         }
 
         [TestMethod]
-        public void InvalidGameAlternateKeyTest()
+        public void InvalidGameIdTest()
         {
             GameDto dto = new GameDto()
             {
-                LeagueAlternateKey = TEST_LEAGUE_ALTERNATE_KEY,
+                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
                 GameDate = TEST_GAME_DATE
             };
 

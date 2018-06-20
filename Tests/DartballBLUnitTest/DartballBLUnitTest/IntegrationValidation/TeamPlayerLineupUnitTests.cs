@@ -32,8 +32,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
             {
-                TeamAlternateKey = TEST_TEAM_ALTERNATE_KEY,
-                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
+                TeamId = TEST_TEAM_ALTERNATE_KEY,
+                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
                 BattingOrder = TEST_BATTING_ORDER
             };
 
@@ -42,11 +42,11 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             var teamPlayerLineupItem = Lineup.GetTeamPlayerLineupItem(TEST_TEAM_ALTERNATE_KEY, TEST_PLAYER_ALTERNATE_KEY);
             Assert.IsNotNull(teamPlayerLineupItem);
-            Assert.IsFalse(teamPlayerLineupItem.TeamPlayerLineupAlternateKey == Guid.Empty);
-            Assert.AreEqual(teamPlayerLineupItem.TeamAlternateKey, TEST_TEAM_ALTERNATE_KEY);
-            Assert.AreEqual(teamPlayerLineupItem.PlayerAlternateKey, TEST_PLAYER_ALTERNATE_KEY);
+            Assert.IsFalse(teamPlayerLineupItem.TeamPlayerLineupId == Guid.Empty);
+            Assert.AreEqual(teamPlayerLineupItem.TeamId, TEST_TEAM_ALTERNATE_KEY);
+            Assert.AreEqual(teamPlayerLineupItem.PlayerId, TEST_PLAYER_ALTERNATE_KEY);
 
-            dto.TeamPlayerLineupAlternateKey = teamPlayerLineupItem.TeamPlayerLineupAlternateKey;
+            dto.TeamPlayerLineupId = teamPlayerLineupItem.TeamPlayerLineupId;
             dto.BattingOrder = TEST_BATTING_ORDER_2;
 
             var updateResult = Lineup.Update(dto);
@@ -67,11 +67,11 @@ namespace DartballBLUnitTest.IntegrationValidation
         }
 
         [TestMethod]
-        public void InvalidTeamAlternateKeyTest()
+        public void InvalidTeamIdTest()
         {
             TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
             {
-                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
+                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
                 BattingOrder = TEST_BATTING_ORDER
             };
 
@@ -80,11 +80,11 @@ namespace DartballBLUnitTest.IntegrationValidation
         }
 
         [TestMethod]
-        public void InvalidPlayerAlternateKeyTest()
+        public void InvalidPlayerIdTest()
         {
             TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
             {
-                TeamAlternateKey = TEST_TEAM_ALTERNATE_KEY,
+                TeamId = TEST_TEAM_ALTERNATE_KEY,
                 BattingOrder = TEST_BATTING_ORDER
             };
 
@@ -93,12 +93,12 @@ namespace DartballBLUnitTest.IntegrationValidation
         }
 
         [TestMethod]
-        public void InvalidTeamPlayerLineupAlternateKeyTest()
+        public void InvalidTeamPlayerLineupIdTest()
         {
             TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
             {
-                TeamAlternateKey = TEST_TEAM_ALTERNATE_KEY,
-                PlayerAlternateKey = TEST_PLAYER_ALTERNATE_KEY,
+                TeamId = TEST_TEAM_ALTERNATE_KEY,
+                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
                 BattingOrder = TEST_BATTING_ORDER
             };
 

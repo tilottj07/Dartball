@@ -34,9 +34,9 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
                 Sequence = TEST_SEQUENCE_TRACKER,
-                PlayerAlternateKey = GetPlayerAlternateKey(),
+                PlayerId = GetPlayerId(),
                 EventType = (int)EventType.Out,
                 RBIs = 0,
                 TargetEventType = (int)EventType.Single
@@ -48,9 +48,9 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
                 Sequence = TEST_SEQUENCE_TRACKER,
-                PlayerAlternateKey = GetPlayerAlternateKey(),
+                PlayerId = GetPlayerId(),
                 EventType = (int)EventType.Single,
                 RBIs = rBIs,
                 TargetEventType = (int)EventType.Single
@@ -62,9 +62,9 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
                 Sequence = TEST_SEQUENCE_TRACKER,
-                PlayerAlternateKey = GetPlayerAlternateKey(),
+                PlayerId = GetPlayerId(),
                 EventType = (int)EventType.Double,
                 RBIs = rBIs,
                 TargetEventType = (int)EventType.Double
@@ -76,9 +76,9 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
                 Sequence = TEST_SEQUENCE_TRACKER,
-                PlayerAlternateKey = GetPlayerAlternateKey(),
+                PlayerId = GetPlayerId(),
                 EventType = (int)EventType.Triple,
                 RBIs = rBIs,
                 TargetEventType = (int)EventType.Triple
@@ -90,9 +90,9 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
                 Sequence = TEST_SEQUENCE_TRACKER,
-                PlayerAlternateKey = GetPlayerAlternateKey(),
+                PlayerId = GetPlayerId(),
                 EventType = (int)EventType.HomeRun,
                 RBIs = rBIs,
                 TargetEventType = (int)EventType.HomeRun
@@ -104,9 +104,9 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
                 Sequence = TEST_SEQUENCE_TRACKER,
-                PlayerAlternateKey = GetPlayerAlternateKey(),
+                PlayerId = GetPlayerId(),
                 EventType = (int)EventType.DoublePlay,
                 RBIs = 0,
                 TargetEventType = (int)EventType.DoublePlay
@@ -118,9 +118,9 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
                 Sequence = TEST_SEQUENCE_TRACKER,
-                PlayerAlternateKey = GetPlayerAlternateKey(),
+                PlayerId = GetPlayerId(),
                 EventType = (int)EventType.SacraficeHit,
                 RBIs = 0,
                 TargetEventType = (int)EventType.SacraficeHit
@@ -132,16 +132,16 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamAlternateKey = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
                 Sequence = TEST_SEQUENCE_TRACKER,
-                PlayerAlternateKey = GetPlayerAlternateKey(),
+                PlayerId = GetPlayerId(),
                 EventType = (int)EventType.TwoBaseSingle,
                 RBIs = 0,
                 TargetEventType = (int)EventType.TwoBaseSingle
             };
         }
 
-        private Guid GetPlayerAlternateKey()
+        private Guid GetPlayerId()
         {
             switch (TEST_SEQUENCE_TRACKER)
             {

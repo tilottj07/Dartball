@@ -6,8 +6,7 @@ namespace Dartball.BusinessLayer.Player.Interface.Models
 {
     public interface IPlayer
     {
-        int PlayerId { get; }
-        Guid PlayerAlternateKey { get; }
+        Guid PlayerId { get; }
         string Name { get; }
         byte[] Photo { get; }
         string EmailAddress { get; }

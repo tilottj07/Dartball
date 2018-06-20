@@ -6,10 +6,9 @@ namespace Dartball.DataLayer.Device.Dto
 {
     public class GameInningTeamDto
     {
-        public int GameInningTeamId { get; set; }
-        public string GameInningTeamAlternateKey { get; set; }
-        public string GameInningAlternateKey { get; set; }
-        public string GameTeamAlternateKey { get; set; }
+        public string GameInningTeamId { get; set; }
+        public string GameInningId { get; set; }
+        public string GameTeamId { get; set; }
         public int Score { get; set; }
         public int Outs { get; set; }
         public int IsRunnerOnFirst { get; set; }

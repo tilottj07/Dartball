@@ -6,40 +6,42 @@ using AutoMapper;
 using Dartball.BusinessLayer.Team.Dto;
 using Dartball.BusinessLayer.Team.Interface.Models;
 using Dartball.BusinessLayer.Shared.Models;
+using System.Linq;
 
 namespace Dartball.BusinessLayer.Team.Implementation
 {
     public class TeamPlayerLineupService : ITeamPlayerLineupService
     {
         private IMapper Mapper;
-        private DataLayer.Device.Repository.TeamPlayerLineupRepository TeamPlayerLineupRepository;
 
         public TeamPlayerLineupService()
         {
-            var mapConfig = new MapperConfiguration(c => c.CreateMap<DataLayer.Device.Dto.TeamPlayerLineupDto, TeamPlayerLineupDto>());
+            var mapConfig = new MapperConfiguration(c => c.CreateMap<Domain.TeamPlayerLineup, TeamPlayerLineupDto>());
             Mapper = mapConfig.CreateMapper();
-
-            TeamPlayerLineupRepository = new DataLayer.Device.Repository.TeamPlayerLineupRepository();
         }
 
 
-        public ITeamPlayerLineup GetTeamPlayerLineupItem(Guid teamAlternateKey, Guid playerAlternateKey)
+        public ITeamPlayerLineup GetTeamPlayerLineupItem(Guid teamId, Guid playerId)
         {
             ITeamPlayerLineup teamPlayerLineup = null;
 
-            var dl = TeamPlayerLineupRepository.LoadByCompositeKey(playerAlternateKey, teamAlternateKey);
-            if (dl != null) teamPlayerLineup = Mapper.Map<TeamPlayerLineupDto>(dl);
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.TeamPlayerLineups.FirstOrDefault(x => x.TeamId == teamId.ToString() && x.PlayerId == playerId.ToString());
+                if (item != null) teamPlayerLineup = Mapper.Map<TeamPlayerLineupDto>(item);
+            }
 
             return teamPlayerLineup;
         }
 
-        public List<ITeamPlayerLineup> GetTeamLineup(Guid teamAlternateKey)
+        public List<ITeamPlayerLineup> GetTeamLineup(Guid teamId)
         {
             List<ITeamPlayerLineup> teamPlayerLineups = new List<ITeamPlayerLineup>();
 
-            foreach(var item in TeamPlayerLineupRepository.LoadByTeamAlternateKey(teamAlternateKey))
+            using (var context = new Data.DartballContext())
             {
-                if (!item.DeleteDate.HasValue) teamPlayerLineups.Add(Mapper.Map<TeamPlayerLineupDto>(item));
+                var items = context.TeamPlayerLineups.Where(x => x.TeamId == teamId.ToString() && !x.DeleteDate.HasValue).OrderBy(x => x.BattingOrder).ToList();
+                foreach (var item in items) teamPlayerLineups.Add(Mapper.Map<TeamPlayerLineupDto>(item));
             }
 
             return teamPlayerLineups;
@@ -57,17 +59,20 @@ namespace Dartball.BusinessLayer.Team.Implementation
             var result = Validate(teamPlayerLineups, isAddNew: true);
             if (result.IsSuccess)
             {
-                foreach(var item in teamPlayerLineups)
+                using (var context = new Data.DartballContext())
                 {
-                    DataLayer.Device.Dto.TeamPlayerLineupDto dto = new DataLayer.Device.Dto.TeamPlayerLineupDto()
+                    foreach (var item in teamPlayerLineups)
                     {
-                        TeamPlayerLineupAlternateKey = item.TeamPlayerLineupAlternateKey == Guid.Empty ? Guid.NewGuid().ToString() : item.TeamPlayerLineupAlternateKey.ToString(),
-                        TeamAlternateKey = item.TeamAlternateKey.ToString(),
-                        PlayerAlternateKey = item.PlayerAlternateKey.ToString(),
-                        BattingOrder = item.BattingOrder,
-                        DeleteDate = item.DeleteDate
-                    };
-                    TeamPlayerLineupRepository.AddNew(dto);
+                        context.TeamPlayerLineups.Add(new Domain.TeamPlayerLineup()
+                        {
+                            TeamPlayerLineupId = item.TeamPlayerLineupId == Guid.Empty ? Guid.NewGuid().ToString() : item.TeamPlayerLineupId.ToString(),
+                            TeamId = item.TeamId.ToString(),
+                            PlayerId = item.PlayerId.ToString(),
+                            BattingOrder = item.BattingOrder,
+                            DeleteDate = item.DeleteDate
+                        });
+                    }
+                    context.SaveChanges();
                 }
             }
             return result;
@@ -82,17 +87,20 @@ namespace Dartball.BusinessLayer.Team.Implementation
             var result = Validate(teamPlayerLineups, isAddNew: false);
             if (result.IsSuccess)
             {
-                foreach (var item in teamPlayerLineups)
+                using (var context = new Data.DartballContext())
                 {
-                    DataLayer.Device.Dto.TeamPlayerLineupDto dto = new DataLayer.Device.Dto.TeamPlayerLineupDto()
+                    foreach (var item in teamPlayerLineups)
                     {
-                        TeamPlayerLineupAlternateKey = item.TeamPlayerLineupAlternateKey.ToString(),
-                        TeamAlternateKey = item.TeamAlternateKey.ToString(),
-                        PlayerAlternateKey = item.PlayerAlternateKey.ToString(),
-                        BattingOrder = item.BattingOrder,
-                        DeleteDate = item.DeleteDate
-                    };
-                    TeamPlayerLineupRepository.Update(dto);
+                        context.TeamPlayerLineups.Update(new Domain.TeamPlayerLineup()
+                        {
+                            TeamPlayerLineupId = item.TeamPlayerLineupId.ToString(),
+                            TeamId = item.TeamId.ToString(),
+                            PlayerId = item.PlayerId.ToString(),
+                            BattingOrder = item.BattingOrder,
+                            DeleteDate = item.DeleteDate
+                        });
+                    }
+                    context.SaveChanges();
                 }
             }
             return result;
@@ -107,12 +115,12 @@ namespace Dartball.BusinessLayer.Team.Implementation
             {
                 if (!result.IsSuccess) break;
 
-                if (item.TeamAlternateKey == Guid.Empty)
+                if (item.TeamId == Guid.Empty)
                 {
                     result.IsSuccess = false;
                     result.ErrorMessages.Add("Invalid Team.");
                 }
-                else if (item.PlayerAlternateKey == Guid.Empty)
+                else if (item.PlayerId == Guid.Empty)
                 {
                     result.IsSuccess = false;
                     result.ErrorMessages.Add("Invalid Player.");
@@ -120,7 +128,7 @@ namespace Dartball.BusinessLayer.Team.Implementation
 
                 if (isAddNew == false)
                 {
-                    if (item.TeamPlayerLineupAlternateKey == Guid.Empty)
+                    if (item.TeamPlayerLineupId == Guid.Empty)
                     {
                         result.IsSuccess = false;
                         result.ErrorMessages.Add("Invalid Team Player Lineup Alternate Key.");
@@ -135,10 +143,20 @@ namespace Dartball.BusinessLayer.Team.Implementation
 
 
 
-        public ChangeResult Remove(Guid teamAlternateKey, Guid playerAlternateKey)
+        public ChangeResult Remove(Guid teamId, Guid playerId)
         {
             ChangeResult result = new ChangeResult();
-            TeamPlayerLineupRepository.Delete(playerAlternateKey, teamAlternateKey);
+
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.TeamPlayerLineups.FirstOrDefault(x => x.TeamId == teamId.ToString() && x.PlayerId == playerId.ToString());
+                if (item != null)
+                {
+                    context.TeamPlayerLineups.Remove(item);
+                    context.SaveChanges();
+                }
+            }
+
             return result;
         }
 

@@ -22,14 +22,14 @@ namespace Dartball.DataLayer.Device.Repository
             return teams;
         }
 
-        public TeamDto LoadByKey(Guid teamAlternateKey)
+        public TeamDto LoadByKey(Guid teamId)
         {
             TeamDto team = null;
             Connection.BeginTransaction();
 
             var result = Connection.Query<TeamDto>(
-                SELECT_QUERY + " WHERE TeamAlternateKey = @TeamAlternateKey",
-                new { TeamAlternateKey = teamAlternateKey.ToString() });
+                SELECT_QUERY + " WHERE TeamId = @TeamId",
+                new { TeamId = teamId.ToString() });
 
             team = result.FirstOrDefault();
 
@@ -38,14 +38,14 @@ namespace Dartball.DataLayer.Device.Repository
             return team;
         }
 
-        public List<TeamDto> LoadByLeagueKey(Guid leagueAlternateKey)
+        public List<TeamDto> LoadByLeagueKey(Guid leagueId)
         {
             List<TeamDto> teams = new List<TeamDto>();
             Connection.BeginTransaction();
 
             teams.AddRange(Connection.Query<TeamDto>(
-                SELECT_QUERY + " WHERE LeagueAlternateKey = @LeagueAlternateKey",
-                new { LeagueAlternateKey = leagueAlternateKey.ToString() }));
+                SELECT_QUERY + " WHERE LeagueId = @LeagueId",
+                new { LeagueId = leagueId.ToString() }));
 
 
             Connection.Commit();
@@ -78,10 +78,10 @@ namespace Dartball.DataLayer.Device.Repository
         private void InsertTeam(TeamDto team)
         {
             string insertQuery = @"INSERT INTO Team
-                    (TeamAlternateKey, LeagueAlternateKey, Name, Password, Handicap, ShouldSync, DeleteDate)
+                    (TeamId, LeagueId, Name, Password, Handicap, ShouldSync, DeleteDate)
                     VALUES(
-                        @TeamAlternateKey, 
-                        @LeagueAlternateKey, 
+                        @TeamId, 
+                        @LeagueId, 
                         @Name, 
                         @Password, 
                         @Handicap, 
@@ -95,12 +95,12 @@ namespace Dartball.DataLayer.Device.Repository
         private void UpdateTeam(TeamDto team)
         {
             string updateQuery = @"UPDATE Team
-            SET LeagueAlternateKey = @LeagueAlternateKey,
+            SET LeagueId = @LeagueId,
             Name = @Name,
             Password = @Password,
             Handicap = @Handicap,
             ShouldSync = @ShouldSync
-            WHERE TeamAlternateKey = @TeamAlternateKey";
+            WHERE TeamId = @TeamId";
 
             Connection.BeginTransaction();
             Connection.Execute(updateQuery, team);
@@ -108,12 +108,12 @@ namespace Dartball.DataLayer.Device.Repository
         }
 
 
-        public void Delete(Guid teamAlternateKey)
+        public void Delete(Guid teamId)
         {
-            string deleteQuery = @"DELETE FROM Team WHERE TeamAlternateKey = @TeamAlternateKey";
+            string deleteQuery = @"DELETE FROM Team WHERE TeamId = @TeamId";
 
             Connection.BeginTransaction();
-            Connection.Execute(deleteQuery, new { TeamAlternateKey = teamAlternateKey.ToString() });
+            Connection.Execute(deleteQuery, new { TeamId = teamId.ToString() });
             Connection.Commit();
         }
 
@@ -122,7 +122,7 @@ namespace Dartball.DataLayer.Device.Repository
         {
             Connection.BeginTransaction();
 
-            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM Team WHERE TeamAlternateKey = @TeamAlternateKey", new { TeamAlternateKey = team.TeamAlternateKey });
+            var rows = Connection.Query<int>(@"SELECT COUNT(1) as 'Count' FROM Team WHERE TeamId = @TeamId", new { TeamId = team.TeamId });
             Connection.Commit();
 
             return rows.First() > 0;
@@ -131,7 +131,7 @@ namespace Dartball.DataLayer.Device.Repository
 
 
         private const string SELECT_QUERY = 
-        @"SELECT TeamId, TeamAlternateKey, LeagueAlternateKey, Name, Password, Handicap, ShouldSync, ChangeDate, DeleteDate 
+        @"SELECT TeamId, TeamId, LeagueId, Name, Password, Handicap, ShouldSync, ChangeDate, DeleteDate 
         from Team ";
 
     }

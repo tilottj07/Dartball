@@ -12,7 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Dartball.Data\Dartball.Data\Dartball.Data.csproj" />
     <ProjectReference Include="..\..\Dartball.Domain\Dartball.Domain\Dartball.Domain.csproj" />
-    <ProjectReference Include="..\..\DartballDL\DartballDL\DartballDL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,8 +11,7 @@ namespace Dartball.Data.Migrations
                 name: "Leagues",
                 columns: table => new
                 {
-                    LeagueId = table.Column<int>(nullable: false),
-                    LeagueAlternateKey = table.Column<string>(nullable: false),
+                    LeagueId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     ChangeDate = table.Column<DateTime>(nullable: false),
@@ -20,15 +19,14 @@ namespace Dartball.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Leagues", x => x.LeagueAlternateKey);
+                    table.PrimaryKey("PK_Leagues", x => x.LeagueId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
-                    PlayerId = table.Column<int>(nullable: false),
-                    PlayerAlternateKey = table.Column<string>(nullable: false),
+                    PlayerId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Photo = table.Column<byte[]>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
@@ -40,28 +38,27 @@ namespace Dartball.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Players", x => x.PlayerAlternateKey);
+                    table.PrimaryKey("PK_Players", x => x.PlayerId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
                 {
-                    GameId = table.Column<int>(nullable: false),
-                    GameAlternateKey = table.Column<string>(nullable: false),
-                    LeagueAlternateKey = table.Column<string>(nullable: true),
+                    GameId = table.Column<string>(nullable: false),
+                    LeagueId = table.Column<string>(nullable: true),
                     GameDate = table.Column<DateTime>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     DeleteDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Games", x => x.GameAlternateKey);
+                    table.PrimaryKey("PK_Games", x => x.GameId);
                     table.ForeignKey(
-                        name: "FK_Games_Leagues_LeagueAlternateKey",
-                        column: x => x.LeagueAlternateKey,
+                        name: "FK_Games_Leagues_LeagueId",
+                        column: x => x.LeagueId,
                         principalTable: "Leagues",
-                        principalColumn: "LeagueAlternateKey",
+                        principalColumn: "LeagueId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -69,9 +66,8 @@ namespace Dartball.Data.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    TeamId = table.Column<int>(nullable: false),
-                    TeamAlternateKey = table.Column<string>(nullable: false),
-                    LeagueAlternateKey = table.Column<string>(nullable: true),
+                    TeamId = table.Column<string>(nullable: false),
+                    LeagueId = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     Handicap = table.Column<int>(nullable: true),
@@ -81,12 +77,12 @@ namespace Dartball.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Teams", x => x.TeamAlternateKey);
+                    table.PrimaryKey("PK_Teams", x => x.TeamId);
                     table.ForeignKey(
-                        name: "FK_Teams_Leagues_LeagueAlternateKey",
-                        column: x => x.LeagueAlternateKey,
+                        name: "FK_Teams_Leagues_LeagueId",
+                        column: x => x.LeagueId,
                         principalTable: "Leagues",
-                        principalColumn: "LeagueAlternateKey",
+                        principalColumn: "LeagueId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -94,21 +90,20 @@ namespace Dartball.Data.Migrations
                 name: "GameInnings",
                 columns: table => new
                 {
-                    GameInningId = table.Column<int>(nullable: false),
-                    GameInningAlternateKey = table.Column<string>(nullable: false),
-                    GameAlternateKey = table.Column<string>(nullable: true),
+                    GameInningId = table.Column<string>(nullable: false),
+                    GameId = table.Column<string>(nullable: true),
                     InningNumber = table.Column<int>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     DeleteDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameInnings", x => x.GameInningAlternateKey);
+                    table.PrimaryKey("PK_GameInnings", x => x.GameInningId);
                     table.ForeignKey(
-                        name: "FK_GameInnings_Games_GameAlternateKey",
-                        column: x => x.GameAlternateKey,
+                        name: "FK_GameInnings_Games_GameId",
+                        column: x => x.GameId,
                         principalTable: "Games",
-                        principalColumn: "GameAlternateKey",
+                        principalColumn: "GameId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -116,27 +111,26 @@ namespace Dartball.Data.Migrations
                 name: "GameTeams",
                 columns: table => new
                 {
-                    GameTeamId = table.Column<int>(nullable: false),
-                    GameTeamAlternateKey = table.Column<string>(nullable: true),
-                    GameAlternateKey = table.Column<string>(nullable: false),
-                    TeamAlternateKey = table.Column<string>(nullable: false),
+                    GameTeamId = table.Column<string>(nullable: true),
+                    GameId = table.Column<string>(nullable: false),
+                    TeamId = table.Column<string>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     DeleteDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameTeams", x => new { x.GameAlternateKey, x.TeamAlternateKey });
+                    table.PrimaryKey("PK_GameTeams", x => new { x.GameId, x.TeamId });
                     table.ForeignKey(
-                        name: "FK_GameTeams_Games_GameAlternateKey",
-                        column: x => x.GameAlternateKey,
+                        name: "FK_GameTeams_Games_GameId",
+                        column: x => x.GameId,
                         principalTable: "Games",
-                        principalColumn: "GameAlternateKey",
+                        principalColumn: "GameId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GameTeams_Teams_TeamAlternateKey",
-                        column: x => x.TeamAlternateKey,
+                        name: "FK_GameTeams_Teams_TeamId",
+                        column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "TeamAlternateKey",
+                        principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -144,27 +138,26 @@ namespace Dartball.Data.Migrations
                 name: "PlayerTeams",
                 columns: table => new
                 {
-                    PlayerTeamId = table.Column<int>(nullable: false),
-                    PlayerTeamAlternateKey = table.Column<string>(nullable: true),
-                    PlayerAlternateKey = table.Column<string>(nullable: false),
-                    TeamAlternateKey = table.Column<string>(nullable: false),
+                    PlayerTeamId = table.Column<string>(nullable: true),
+                    PlayerId = table.Column<string>(nullable: false),
+                    TeamId = table.Column<string>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     DeleteDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayerTeams", x => new { x.PlayerAlternateKey, x.TeamAlternateKey });
+                    table.PrimaryKey("PK_PlayerTeams", x => new { x.PlayerId, x.TeamId });
                     table.ForeignKey(
-                        name: "FK_PlayerTeams_Players_PlayerAlternateKey",
-                        column: x => x.PlayerAlternateKey,
+                        name: "FK_PlayerTeams_Players_PlayerId",
+                        column: x => x.PlayerId,
                         principalTable: "Players",
-                        principalColumn: "PlayerAlternateKey",
+                        principalColumn: "PlayerId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PlayerTeams_Teams_TeamAlternateKey",
-                        column: x => x.TeamAlternateKey,
+                        name: "FK_PlayerTeams_Teams_TeamId",
+                        column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "TeamAlternateKey",
+                        principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -172,28 +165,27 @@ namespace Dartball.Data.Migrations
                 name: "TeamPlayerLineups",
                 columns: table => new
                 {
-                    TeamPlayerLineupId = table.Column<int>(nullable: false),
-                    TeamPlayerLineupAlternateKey = table.Column<string>(nullable: true),
-                    TeamAlternateKey = table.Column<string>(nullable: false),
-                    PlayerAlternateKey = table.Column<string>(nullable: false),
+                    TeamPlayerLineupId = table.Column<string>(nullable: true),
+                    TeamId = table.Column<string>(nullable: false),
+                    PlayerId = table.Column<string>(nullable: false),
                     BattingOrder = table.Column<int>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     DeleteDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamPlayerLineups", x => new { x.TeamAlternateKey, x.PlayerAlternateKey });
+                    table.PrimaryKey("PK_TeamPlayerLineups", x => new { x.TeamId, x.PlayerId });
                     table.ForeignKey(
-                        name: "FK_TeamPlayerLineups_Players_PlayerAlternateKey",
-                        column: x => x.PlayerAlternateKey,
+                        name: "FK_TeamPlayerLineups_Players_PlayerId",
+                        column: x => x.PlayerId,
                         principalTable: "Players",
-                        principalColumn: "PlayerAlternateKey",
+                        principalColumn: "PlayerId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TeamPlayerLineups_Teams_TeamAlternateKey",
-                        column: x => x.TeamAlternateKey,
+                        name: "FK_TeamPlayerLineups_Teams_TeamId",
+                        column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "TeamAlternateKey",
+                        principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -201,10 +193,9 @@ namespace Dartball.Data.Migrations
                 name: "GameInningTeams",
                 columns: table => new
                 {
-                    GameInningTeamId = table.Column<int>(nullable: false),
-                    GameInningTeamAlternateKey = table.Column<string>(nullable: false),
-                    GameInningAlternateKey = table.Column<string>(nullable: true),
-                    GameTeamAlternateKey = table.Column<string>(nullable: true),
+                    GameInningTeamId = table.Column<string>(nullable: false),
+                    GameInningId = table.Column<string>(nullable: true),
+                    GameTeamId = table.Column<string>(nullable: true),
                     Score = table.Column<int>(nullable: false),
                     Outs = table.Column<int>(nullable: false),
                     IsRunnerOnFirst = table.Column<int>(nullable: false),
@@ -215,12 +206,12 @@ namespace Dartball.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameInningTeams", x => x.GameInningTeamAlternateKey);
+                    table.PrimaryKey("PK_GameInningTeams", x => x.GameInningTeamId);
                     table.ForeignKey(
-                        name: "FK_GameInningTeams_GameInnings_GameInningAlternateKey",
-                        column: x => x.GameInningAlternateKey,
+                        name: "FK_GameInningTeams_GameInnings_GameInningId",
+                        column: x => x.GameInningId,
                         principalTable: "GameInnings",
-                        principalColumn: "GameInningAlternateKey",
+                        principalColumn: "GameInningId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -228,10 +219,9 @@ namespace Dartball.Data.Migrations
                 name: "GameInningTeamBatters",
                 columns: table => new
                 {
-                    GameInningTeamBatterId = table.Column<int>(nullable: false),
-                    GameInningTeamBatterAlternateKey = table.Column<string>(nullable: false),
-                    GameInningTeamAlternateKey = table.Column<string>(nullable: true),
-                    PlayerAlternateKey = table.Column<string>(nullable: true),
+                    GameInningTeamBatterId = table.Column<string>(nullable: false),
+                    GameInningTeamId = table.Column<string>(nullable: true),
+                    PlayerId = table.Column<string>(nullable: true),
                     Sequence = table.Column<int>(nullable: false),
                     EventType = table.Column<int>(nullable: false),
                     TargetEventType = table.Column<int>(nullable: true),
@@ -241,65 +231,65 @@ namespace Dartball.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameInningTeamBatters", x => x.GameInningTeamBatterAlternateKey);
+                    table.PrimaryKey("PK_GameInningTeamBatters", x => x.GameInningTeamBatterId);
                     table.ForeignKey(
-                        name: "FK_GameInningTeamBatters_GameInningTeams_GameInningTeamAlternateKey",
-                        column: x => x.GameInningTeamAlternateKey,
+                        name: "FK_GameInningTeamBatters_GameInningTeams_GameInningTeamId",
+                        column: x => x.GameInningTeamId,
                         principalTable: "GameInningTeams",
-                        principalColumn: "GameInningTeamAlternateKey",
+                        principalColumn: "GameInningTeamId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_GameInningTeamBatters_Players_PlayerAlternateKey",
-                        column: x => x.PlayerAlternateKey,
+                        name: "FK_GameInningTeamBatters_Players_PlayerId",
+                        column: x => x.PlayerId,
                         principalTable: "Players",
-                        principalColumn: "PlayerAlternateKey",
+                        principalColumn: "PlayerId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameInnings_GameAlternateKey_InningNumber",
+                name: "IX_GameInnings_GameId_InningNumber",
                 table: "GameInnings",
-                columns: new[] { "GameAlternateKey", "InningNumber" });
+                columns: new[] { "GameId", "InningNumber" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameInningTeamBatters_GameInningTeamAlternateKey",
+                name: "IX_GameInningTeamBatters_GameInningTeamId",
                 table: "GameInningTeamBatters",
-                column: "GameInningTeamAlternateKey");
+                column: "GameInningTeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameInningTeamBatters_PlayerAlternateKey",
+                name: "IX_GameInningTeamBatters_PlayerId",
                 table: "GameInningTeamBatters",
-                column: "PlayerAlternateKey");
+                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameInningTeams_GameInningAlternateKey_GameTeamAlternateKey",
+                name: "IX_GameInningTeams_GameInningId_GameTeamId",
                 table: "GameInningTeams",
-                columns: new[] { "GameInningAlternateKey", "GameTeamAlternateKey" });
+                columns: new[] { "GameInningId", "GameTeamId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Games_LeagueAlternateKey",
+                name: "IX_Games_LeagueId",
                 table: "Games",
-                column: "LeagueAlternateKey");
+                column: "LeagueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameTeams_TeamAlternateKey",
+                name: "IX_GameTeams_TeamId",
                 table: "GameTeams",
-                column: "TeamAlternateKey");
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerTeams_TeamAlternateKey",
+                name: "IX_PlayerTeams_TeamId",
                 table: "PlayerTeams",
-                column: "TeamAlternateKey");
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeamPlayerLineups_PlayerAlternateKey",
+                name: "IX_TeamPlayerLineups_PlayerId",
                 table: "TeamPlayerLineups",
-                column: "PlayerAlternateKey");
+                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Teams_LeagueAlternateKey",
+                name: "IX_Teams_LeagueId",
                 table: "Teams",
-                column: "LeagueAlternateKey");
+                column: "LeagueId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

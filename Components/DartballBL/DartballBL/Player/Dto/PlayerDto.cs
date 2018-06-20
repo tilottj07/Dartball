@@ -8,8 +8,7 @@ namespace Dartball.BusinessLayer.Player.Dto
     public class PlayerDto : IPlayer
     {
 
-        public int PlayerId { get; set; }
-        public Guid PlayerAlternateKey { get; set; }
+        public Guid PlayerId { get; set; }
         public string Name { get; set; }
         public byte[] Photo { get; set; }
         public string EmailAddress { get; set; }

@@ -9,6 +9,7 @@ namespace Dartball.BusinessLayer.Game.Interface
     public interface IGameInningService
     {
 
+        IGameInning GetGameInning(Guid gameInningId);
         IGameInning GetGameInning(Guid gameId, int inningNumber);
         List<IGameInning> GetGameInnings(Guid gameId);
         List<IGameInning> GetAllGameInnings();

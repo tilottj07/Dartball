@@ -9,20 +9,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DartballBLUnitTest.IntegrationValidation
 {
     [TestClass]
-    public class TeamPlayerLineupUnitTests
+    public class TeamPlayerLineupUnitTests : IntegrationBase
     {
         private ITeamPlayerLineupService Lineup;
 
         public TeamPlayerLineupUnitTests()
         {
             Lineup = new TeamPlayerLineupService();
-
-            TEST_TEAM_ID = Guid.NewGuid();
-            TEST_PLAYER_ID = Guid.NewGuid();
         }
 
-        private Guid TEST_TEAM_ID;
-        private Guid TEST_PLAYER_ID;
         private const int TEST_BATTING_ORDER = 3;
         private const int TEST_BATTING_ORDER_2 = 4;
 
@@ -30,21 +25,24 @@ namespace DartballBLUnitTest.IntegrationValidation
         [TestMethod]
         public void AddUpdateTeamPlayerLineupTest()
         {
+            Guid seedTeamId = SeedTeam();
+            Guid seedPlayerId = SeedPlayer();
+
             TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
             {
-                TeamId = TEST_TEAM_ID,
-                PlayerId = TEST_PLAYER_ID,
+                TeamId = seedTeamId,
+                PlayerId = seedPlayerId,
                 BattingOrder = TEST_BATTING_ORDER
             };
 
             var addResult = Lineup.AddNew(dto);
             Assert.IsTrue(addResult.IsSuccess);
 
-            var teamPlayerLineupItem = Lineup.GetTeamPlayerLineupItem(TEST_TEAM_ID, TEST_PLAYER_ID);
+            var teamPlayerLineupItem = Lineup.GetTeamPlayerLineupItem(seedTeamId, seedPlayerId);
             Assert.IsNotNull(teamPlayerLineupItem);
             Assert.IsFalse(teamPlayerLineupItem.TeamPlayerLineupId == Guid.Empty);
-            Assert.AreEqual(teamPlayerLineupItem.TeamId, TEST_TEAM_ID);
-            Assert.AreEqual(teamPlayerLineupItem.PlayerId, TEST_PLAYER_ID);
+            Assert.AreEqual(teamPlayerLineupItem.TeamId, seedTeamId);
+            Assert.AreEqual(teamPlayerLineupItem.PlayerId, seedPlayerId);
 
             dto.TeamPlayerLineupId = teamPlayerLineupItem.TeamPlayerLineupId;
             dto.BattingOrder = TEST_BATTING_ORDER_2;
@@ -52,18 +50,21 @@ namespace DartballBLUnitTest.IntegrationValidation
             var updateResult = Lineup.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            teamPlayerLineupItem = Lineup.GetTeamPlayerLineupItem(TEST_TEAM_ID, TEST_PLAYER_ID);
+            teamPlayerLineupItem = Lineup.GetTeamPlayerLineupItem(seedTeamId, seedPlayerId);
             Assert.IsNotNull(teamPlayerLineupItem);
             Assert.AreEqual(TEST_BATTING_ORDER_2, teamPlayerLineupItem.BattingOrder);
 
-            var teamLineup = Lineup.GetTeamLineup(TEST_TEAM_ID);
+            var teamLineup = Lineup.GetTeamLineup(seedTeamId);
             Assert.IsTrue(teamLineup.Count >= 1);
 
-            var removeResult = Lineup.Remove(TEST_TEAM_ID, TEST_PLAYER_ID);
+            var removeResult = Lineup.Remove(seedTeamId, seedPlayerId);
             Assert.IsTrue(removeResult.IsSuccess);
 
-            teamPlayerLineupItem = Lineup.GetTeamPlayerLineupItem(TEST_TEAM_ID, TEST_PLAYER_ID);
+            teamPlayerLineupItem = Lineup.GetTeamPlayerLineupItem(seedTeamId, seedPlayerId);
             Assert.IsNull(teamPlayerLineupItem);
+
+            DeleteSeededTeam(seedTeamId);
+            DeleteSeededPlayer(seedPlayerId);
         }
 
         [TestMethod]
@@ -71,7 +72,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
             {
-                PlayerId = TEST_PLAYER_ID,
+                PlayerId = Guid.NewGuid(),
                 BattingOrder = TEST_BATTING_ORDER
             };
 
@@ -84,7 +85,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
             {
-                TeamId = TEST_TEAM_ID,
+                TeamId = Guid.NewGuid(),
                 BattingOrder = TEST_BATTING_ORDER
             };
 
@@ -97,8 +98,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
             {
-                TeamId = TEST_TEAM_ID,
-                PlayerId = TEST_PLAYER_ID,
+                TeamId = Guid.NewGuid(),
+                PlayerId = Guid.NewGuid(),
                 BattingOrder = TEST_BATTING_ORDER
             };
 

@@ -68,6 +68,8 @@ namespace Dartball.Data
 
             modelBuilder.Entity<GameInning>().HasIndex(x => new { x.GameId, x.InningNumber });
             modelBuilder.Entity<GameInningTeam>().HasIndex(x => new { x.GameInningId, x.GameTeamId });
+            modelBuilder.Entity<GameTeam>().HasIndex(x => x.GameTeamId);
+            modelBuilder.Entity<PlayerTeam>().HasIndex(x => x.PlayerTeamId);
 
             #endregion
 

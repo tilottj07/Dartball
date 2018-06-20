@@ -21,6 +21,19 @@ namespace Dartball.BusinessLayer.Game.Implementation
         }
 
 
+        public IGameInning GetGameInning(Guid gameInningId)
+        {
+            IGameInning gameInning = null;
+
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.GameInnings.FirstOrDefault(x => x.GameInningId == gameInningId.ToString());
+                if (item != null) gameInning = Mapper.Map<GameInningDto>(item);
+            }
+
+            return gameInning;
+        }
+
         public IGameInning GetGameInning(Guid gameId, int inningNumber)
         {
             IGameInning gameInning = null;

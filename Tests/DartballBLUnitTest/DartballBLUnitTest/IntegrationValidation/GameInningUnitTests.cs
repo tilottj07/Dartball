@@ -9,49 +9,49 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DartballBLUnitTest.IntegrationValidation
 {
     [TestClass]
-    public class GameInningUnitTests
+    public class GameInningUnitTests : IntegrationBase
     {
         private IGameInningService GameInning;
 
         public GameInningUnitTests()
         {
             GameInning = new GameInningService();
-            TEST_GAME_ID = Guid.NewGuid();
         }
 
-        private Guid TEST_GAME_ID;
         private const int TEST_INNING_NUMBER = 3;
 
 
         [TestMethod]
         public void AddUpdateGameInningTest()
         {
+            Guid seedGameId = SeedGame();
+
             GameInningDto dto = new GameInningDto()
             {
-                GameId = TEST_GAME_ID,
+                GameId = seedGameId,
                 InningNumber = TEST_INNING_NUMBER
             };
 
             var addResult = GameInning.AddNew(dto);
             Assert.IsTrue(addResult.IsSuccess);
 
-            var item = GameInning.GetGameInning(TEST_GAME_ID, TEST_INNING_NUMBER);
+            var item = GameInning.GetGameInning(seedGameId, TEST_INNING_NUMBER);
             Assert.IsNotNull(item);
-            Assert.AreEqual(TEST_GAME_ID, item.GameId);
+            Assert.AreEqual(seedGameId, item.GameId);
             Assert.AreEqual(TEST_INNING_NUMBER, item.InningNumber);
 
             dto.InningNumber = 4;
             addResult = GameInning.AddNew(dto);
             Assert.IsTrue(addResult.IsSuccess);
 
-            item = GameInning.GetGameInning(TEST_GAME_ID, inningNumber: 4);
+            item = GameInning.GetGameInning(seedGameId, inningNumber: 4);
 
             dto.GameInningId = item.GameInningId;
             dto.DeleteDate = DateTime.UtcNow;
             var updateResult = GameInning.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            item = GameInning.GetGameInning(TEST_GAME_ID, inningNumber: 4);
+            item = GameInning.GetGameInning(seedGameId, inningNumber: 4);
             Assert.IsNotNull(item);
             Assert.IsNotNull(item.DeleteDate);
 
@@ -59,11 +59,11 @@ namespace DartballBLUnitTest.IntegrationValidation
             updateResult = GameInning.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            item = GameInning.GetGameInning(TEST_GAME_ID, inningNumber: 4);
+            item = GameInning.GetGameInning(seedGameId, inningNumber: 4);
             Assert.IsNotNull(item);
             Assert.IsNull(item.DeleteDate);
 
-            var items = GameInning.GetGameInnings(TEST_GAME_ID);
+            var items = GameInning.GetGameInnings(seedGameId);
             Assert.IsTrue(items.Count >= 1);
 
             foreach(var i in items)
@@ -72,8 +72,10 @@ namespace DartballBLUnitTest.IntegrationValidation
                 Assert.IsTrue(removeResult.IsSuccess);
             }
 
-            items = GameInning.GetGameInnings(TEST_GAME_ID);
+            items = GameInning.GetGameInnings(seedGameId);
             Assert.IsTrue(items.Count == 0);
+
+            DeleteSeededGame(seedGameId);
         }
 
 
@@ -94,7 +96,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningDto dto = new GameInningDto()
             {
-                GameId = TEST_GAME_ID,
+                GameId = Guid.NewGuid(),
                 InningNumber = -2
             };
 
@@ -107,7 +109,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningDto dto = new GameInningDto()
             {
-                GameId = TEST_GAME_ID,
+                GameId = Guid.NewGuid(),
                 InningNumber = TEST_INNING_NUMBER
             };
 

@@ -8,6 +8,8 @@ namespace Dartball.BusinessLayer.Game.Interface
 {
     public interface IGameInningTeamService
     {
+
+        IGameInningTeam GetGameInningTeam(Guid gameInningTeamId);
         IGameInningTeam GetGameInningTeam(Guid gameTeamId, Guid gameInningId);
         List<IGameInningTeam> GetInningTeams(Guid gameInningId);
         List<IGameInningTeam> GetTeamInnings(Guid gameTeamId);

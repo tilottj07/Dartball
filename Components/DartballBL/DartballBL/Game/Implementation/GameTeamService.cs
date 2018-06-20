@@ -21,6 +21,18 @@ namespace Dartball.BusinessLayer.Game.Implementation
         }
 
 
+        public IGameTeam GetGameTeam(Guid gameTeamId)
+        {
+            IGameTeam gameTeam = null;
+
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.GameTeams.FirstOrDefault(x => x.GameTeamId == gameTeamId.ToString());
+                if (item != null) gameTeam = Mapper.Map<GameTeamDto>(item);
+            }
+
+            return gameTeam;
+        }
 
         public IGameTeam GetGameTeam(Guid gameId, Guid teamId)
         {

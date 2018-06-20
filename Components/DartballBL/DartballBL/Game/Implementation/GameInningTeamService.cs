@@ -20,6 +20,19 @@ namespace Dartball.BusinessLayer.Game.Implementation
             Mapper = mapConfig.CreateMapper();
         }
 
+        public IGameInningTeam GetGameInningTeam(Guid gameInningTeamId)
+        {
+            IGameInningTeam gameInningTeam = null;
+
+            using (var context = new Data.DartballContext())
+            {
+                var item = context.GameInningTeams.FirstOrDefault(x => x.GameInningTeamId == gameInningTeamId.ToString());
+                if (item != null) gameInningTeam = Mapper.Map<GameInningTeamDto>(item);
+            }
+
+            return gameInningTeam;
+        }
+
         public IGameInningTeam GetGameInningTeam(Guid gameTeamId, Guid gameInningId)
         {
             IGameInningTeam gameInningTeam = null;

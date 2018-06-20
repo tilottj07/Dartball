@@ -11,7 +11,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
     {
         public InGameBase()
         {
-            TEST_GAME_INNING_TEAM_ALTERNATE_KEY = Guid.NewGuid();
+            TEST_GAME_INNING_TEAM_ID = Guid.NewGuid();
 
             TEST_PLAYER_ONE = Guid.NewGuid();
             TEST_PLAYER_TWO = Guid.NewGuid();
@@ -20,7 +20,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_PLAYER_FIVE = Guid.NewGuid();
         }
 
-        private Guid TEST_GAME_INNING_TEAM_ALTERNATE_KEY;
+        private Guid TEST_GAME_INNING_TEAM_ID;
         private int TEST_SEQUENCE_TRACKER;
         private Guid TEST_PLAYER_ONE;
         private Guid TEST_PLAYER_TWO;
@@ -34,7 +34,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE_TRACKER,
                 PlayerId = GetPlayerId(),
                 EventType = (int)EventType.Out,
@@ -48,7 +48,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE_TRACKER,
                 PlayerId = GetPlayerId(),
                 EventType = (int)EventType.Single,
@@ -62,7 +62,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE_TRACKER,
                 PlayerId = GetPlayerId(),
                 EventType = (int)EventType.Double,
@@ -76,7 +76,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE_TRACKER,
                 PlayerId = GetPlayerId(),
                 EventType = (int)EventType.Triple,
@@ -90,7 +90,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE_TRACKER,
                 PlayerId = GetPlayerId(),
                 EventType = (int)EventType.HomeRun,
@@ -104,7 +104,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE_TRACKER,
                 PlayerId = GetPlayerId(),
                 EventType = (int)EventType.DoublePlay,
@@ -118,7 +118,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE_TRACKER,
                 PlayerId = GetPlayerId(),
                 EventType = (int)EventType.SacraficeHit,
@@ -132,7 +132,7 @@ namespace DartballBLUnitTest.GameLogic.InGame
             TEST_SEQUENCE_TRACKER++;
             return new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE_TRACKER,
                 PlayerId = GetPlayerId(),
                 EventType = (int)EventType.TwoBaseSingle,

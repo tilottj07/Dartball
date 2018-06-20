@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DartballBLUnitTest.IntegrationValidation
 {
     [TestClass]
-    public class TeamUnitTests
+    public class TeamUnitTests : IntegrationBase
     {
         private ITeamService TeamService;
 
@@ -17,7 +17,6 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamService = new TeamService();
             TEST_ALTERNATE_ID = Guid.NewGuid();
-            TEST_LEAGUE_ALTERNATE_KEY = Guid.NewGuid();
         }
 
         private const string TEST_TEAM_NAME = "TeamNameTestTravis123?";
@@ -26,15 +25,15 @@ namespace DartballBLUnitTest.IntegrationValidation
         private const int TEST_HANDICAP = 2;
         private const bool TEST_SHOULD_SYNC = false;
         private Guid TEST_ALTERNATE_ID;
-        private Guid TEST_LEAGUE_ALTERNATE_KEY;
 
         [TestMethod]
         public void AddRemoveTeamUnitTest()
         {
+            Guid seedLeagueId = SeedLeague();
             TeamDto dto = new TeamDto()
             {
                 TeamId = TEST_ALTERNATE_ID,
-                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
+                LeagueId = seedLeagueId,
                 Name = TEST_TEAM_NAME,
                 Password = TEST_TEAM_PASSWORD,
                 Handicap = TEST_HANDICAP,
@@ -55,7 +54,7 @@ namespace DartballBLUnitTest.IntegrationValidation
             Assert.AreEqual(TEST_TEAM_NAME_2, team.Name);
             Assert.AreEqual(true, team.ShouldSync);
 
-            var leagueTeams = TeamService.GetTeams(TEST_LEAGUE_ALTERNATE_KEY);
+            var leagueTeams = TeamService.GetTeams(seedLeagueId);
             Assert.IsTrue(leagueTeams.Count >= 1);
 
             var deleteResult = TeamService.Remove(TEST_ALTERNATE_ID);
@@ -63,6 +62,8 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             var emptyRecord = TeamService.GetTeam(TEST_ALTERNATE_ID);
             Assert.IsNull(emptyRecord);
+
+            DeleteSeededLeague(seedLeagueId);
         }
 
         [TestMethod]
@@ -71,7 +72,7 @@ namespace DartballBLUnitTest.IntegrationValidation
             TeamDto dto = new TeamDto()
             {
                 TeamId = TEST_ALTERNATE_ID,
-                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
+                LeagueId = Guid.NewGuid(),
                 Name = string.Empty,
                 Password = TEST_TEAM_PASSWORD,
                 Handicap = TEST_HANDICAP,
@@ -88,7 +89,7 @@ namespace DartballBLUnitTest.IntegrationValidation
             TeamDto dto = new TeamDto()
             {
                 TeamId = TEST_ALTERNATE_ID,
-                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
+                LeagueId = Guid.NewGuid(),
                 Name = TEST_TEAM_NAME + "kjadsjhglkasdhglksjdhglksjdhglkasjhdglksjdhglkajshdglkajhdglkajhdglkasjdhglkasjhdglkasdjhglkasdjghlaksdgjh",
                 Password = TEST_TEAM_PASSWORD,
                 Handicap = TEST_HANDICAP,

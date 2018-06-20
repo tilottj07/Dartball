@@ -18,12 +18,12 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeam = new GameInningTeamService();
 
-            TEST_GAME_INNING_ALTERNATE_KEY = Guid.NewGuid();
-            TEST_GAME_TEAM_ALTERNATE_KEY = Guid.NewGuid();
+            TEST_GAME_INNING_ID = Guid.NewGuid();
+            TEST_GAME_TEAM_ID = Guid.NewGuid();
         }
 
-        private Guid TEST_GAME_INNING_ALTERNATE_KEY;
-        private Guid TEST_GAME_TEAM_ALTERNATE_KEY;
+        private Guid TEST_GAME_INNING_ID;
+        private Guid TEST_GAME_TEAM_ID;
         private const int TEST_SCORE = 3;
         private const int TEST_SCORE_2 = 4;
         private const int TEST_OUTS = 1;
@@ -41,8 +41,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamDto dto = new GameInningTeamDto()
             {
-                GameInningId = TEST_GAME_INNING_ALTERNATE_KEY,
-                GameTeamId = TEST_GAME_TEAM_ALTERNATE_KEY,
+                GameInningId = TEST_GAME_INNING_ID,
+                GameTeamId = TEST_GAME_TEAM_ID,
                 Score = TEST_SCORE,
                 Outs = TEST_OUTS,
                 IsRunnerOnFirst = TEST_IS_RUNNER_ON_FIRST,
@@ -53,10 +53,10 @@ namespace DartballBLUnitTest.IntegrationValidation
             var addResult = GameInningTeam.AddNew(dto);
             Assert.IsTrue(addResult.IsSuccess);
 
-            var item = GameInningTeam.GetGameInningTeam(TEST_GAME_TEAM_ALTERNATE_KEY, TEST_GAME_INNING_ALTERNATE_KEY);
+            var item = GameInningTeam.GetGameInningTeam(TEST_GAME_TEAM_ID, TEST_GAME_INNING_ID);
             Assert.IsNotNull(item);
-            Assert.AreEqual(TEST_GAME_INNING_ALTERNATE_KEY, item.GameInningId);
-            Assert.AreEqual(TEST_GAME_TEAM_ALTERNATE_KEY, item.GameTeamId);
+            Assert.AreEqual(TEST_GAME_INNING_ID, item.GameInningId);
+            Assert.AreEqual(TEST_GAME_TEAM_ID, item.GameTeamId);
             Assert.AreEqual(TEST_SCORE, item.Score);
             Assert.AreEqual(TEST_OUTS, item.Outs);
             Assert.AreEqual(TEST_IS_RUNNER_ON_FIRST, item.IsRunnerOnFirst);
@@ -73,26 +73,26 @@ namespace DartballBLUnitTest.IntegrationValidation
             var updateResult = GameInningTeam.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            var inningTeams = GameInningTeam.GetInningTeams(TEST_GAME_INNING_ALTERNATE_KEY);
+            var inningTeams = GameInningTeam.GetInningTeams(TEST_GAME_INNING_ID);
             Assert.IsTrue(inningTeams.Count >= 1);
 
-            var teamInnings = GameInningTeam.GetTeamInnings(TEST_GAME_TEAM_ALTERNATE_KEY);
+            var teamInnings = GameInningTeam.GetTeamInnings(TEST_GAME_TEAM_ID);
             Assert.IsTrue(teamInnings.Count >= 1);
 
-            item = inningTeams.FirstOrDefault(x => x.GameTeamId == TEST_GAME_TEAM_ALTERNATE_KEY);
+            item = inningTeams.FirstOrDefault(x => x.GameTeamId == TEST_GAME_TEAM_ID);
             Assert.IsNotNull(item);
-            Assert.AreEqual(TEST_GAME_INNING_ALTERNATE_KEY, item.GameInningId);
-            Assert.AreEqual(TEST_GAME_TEAM_ALTERNATE_KEY, item.GameTeamId);
+            Assert.AreEqual(TEST_GAME_INNING_ID, item.GameInningId);
+            Assert.AreEqual(TEST_GAME_TEAM_ID, item.GameTeamId);
             Assert.AreEqual(TEST_SCORE_2, item.Score);
             Assert.AreEqual(TEST_OUTS_2, item.Outs);
             Assert.AreEqual(TEST_IS_RUNNER_ON_FIRST_2, item.IsRunnerOnFirst);
             Assert.AreEqual(TEST_IS_RUNNER_ON_SECOND_2, item.IsRunnerOnSecond);
             Assert.AreEqual(TEST_IS_RUNNER_ON_THIRD_2, item.IsRunnerOnThird);
 
-            var removeResult = GameInningTeam.Remove(TEST_GAME_INNING_ALTERNATE_KEY, TEST_GAME_TEAM_ALTERNATE_KEY);
+            var removeResult = GameInningTeam.Remove(TEST_GAME_INNING_ID, TEST_GAME_TEAM_ID);
             Assert.IsTrue(removeResult.IsSuccess);
 
-            item = GameInningTeam.GetGameInningTeam(TEST_GAME_TEAM_ALTERNATE_KEY, TEST_GAME_INNING_ALTERNATE_KEY);
+            item = GameInningTeam.GetGameInningTeam(TEST_GAME_TEAM_ID, TEST_GAME_INNING_ID);
             Assert.IsNull(item);
         }
 
@@ -101,7 +101,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamDto dto = new GameInningTeamDto()
             {
-                GameTeamId = TEST_GAME_TEAM_ALTERNATE_KEY,
+                GameTeamId = TEST_GAME_TEAM_ID,
                 Score = TEST_SCORE,
                 Outs = TEST_OUTS,
                 IsRunnerOnFirst = TEST_IS_RUNNER_ON_FIRST,
@@ -117,7 +117,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamDto dto = new GameInningTeamDto()
             {
-                GameInningId = TEST_GAME_INNING_ALTERNATE_KEY,
+                GameInningId = TEST_GAME_INNING_ID,
                 Score = TEST_SCORE,
                 Outs = TEST_OUTS,
                 IsRunnerOnFirst = TEST_IS_RUNNER_ON_FIRST,
@@ -133,8 +133,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamDto dto = new GameInningTeamDto()
             {
-                GameInningId = TEST_GAME_INNING_ALTERNATE_KEY,
-                GameTeamId = TEST_GAME_TEAM_ALTERNATE_KEY,
+                GameInningId = TEST_GAME_INNING_ID,
+                GameTeamId = TEST_GAME_TEAM_ID,
                 Score = TEST_SCORE,
                 Outs = TEST_OUTS,
                 IsRunnerOnFirst = TEST_IS_RUNNER_ON_FIRST,
@@ -150,8 +150,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamDto dto = new GameInningTeamDto()
             {
-                GameInningId = TEST_GAME_INNING_ALTERNATE_KEY,
-                GameTeamId = TEST_GAME_TEAM_ALTERNATE_KEY,
+                GameInningId = TEST_GAME_INNING_ID,
+                GameTeamId = TEST_GAME_TEAM_ID,
                 Score = TEST_SCORE,
                 Outs = 4,
                 IsRunnerOnFirst = TEST_IS_RUNNER_ON_FIRST,
@@ -167,8 +167,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamDto dto = new GameInningTeamDto()
             {
-                GameInningId = TEST_GAME_INNING_ALTERNATE_KEY,
-                GameTeamId = TEST_GAME_TEAM_ALTERNATE_KEY,
+                GameInningId = TEST_GAME_INNING_ID,
+                GameTeamId = TEST_GAME_TEAM_ID,
                 Score = TEST_SCORE,
                 Outs = -1,
                 IsRunnerOnFirst = TEST_IS_RUNNER_ON_FIRST,
@@ -184,8 +184,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamDto dto = new GameInningTeamDto()
             {
-                GameInningId = TEST_GAME_INNING_ALTERNATE_KEY,
-                GameTeamId = TEST_GAME_TEAM_ALTERNATE_KEY,
+                GameInningId = TEST_GAME_INNING_ID,
+                GameTeamId = TEST_GAME_TEAM_ID,
                 Score = -2,
                 Outs = TEST_OUTS,
                 IsRunnerOnFirst = TEST_IS_RUNNER_ON_FIRST,

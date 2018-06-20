@@ -104,7 +104,7 @@ namespace Dartball.BusinessLayer.Game.Implementation
                 {
                     foreach (var item in games)
                     {
-                        context.Games.Add(new Domain.Game()
+                        context.Games.Update(new Domain.Game()
                         {
                             GameId = item.GameId == Guid.Empty ? Guid.NewGuid().ToString() : item.GameId.ToString(),
                             LeagueId = item.LeagueId.ToString(),

@@ -16,10 +16,10 @@ namespace DartballBLUnitTest.IntegrationValidation
         public PlayerUnitTests()
         {
             PlayerService = new PlayerService();
-            TEST_ALTERNATE_KEY = Guid.NewGuid();
+            TEST_ID = Guid.NewGuid();
         }
 
-        private Guid TEST_ALTERNATE_KEY;
+        private Guid TEST_ID;
         private const string TEST_NAME = "Johnny Appleseed";
         private const string TEST_NAME2 = "Jonny Appleseed";
         private const string TEST_USERNAME = "johnnyappleseed";
@@ -32,7 +32,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerId = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ID,
                 Name = TEST_NAME,
                 UserName = TEST_USERNAME,
                 Password = TEST_PASSWORD,
@@ -48,7 +48,7 @@ namespace DartballBLUnitTest.IntegrationValidation
             var updateResult = PlayerService.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            var player = PlayerService.GetPlayer(TEST_ALTERNATE_KEY);
+            var player = PlayerService.GetPlayer(TEST_ID);
             Assert.IsNotNull(player);
             Assert.AreEqual(TEST_NAME2, player.Name);
             Assert.AreEqual(true, player.ShouldSync);
@@ -56,7 +56,7 @@ namespace DartballBLUnitTest.IntegrationValidation
             var players = PlayerService.GetPlayers();
             Assert.IsTrue(players.Count >= 1);
 
-            var deleteResult = PlayerService.Remove(TEST_ALTERNATE_KEY);
+            var deleteResult = PlayerService.Remove(TEST_ID);
             Assert.IsTrue(deleteResult.IsSuccess);
         }
 
@@ -65,7 +65,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerId = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ID,
                 Name = string.Empty,
                 UserName = TEST_USERNAME,
                 Password = TEST_PASSWORD,
@@ -82,7 +82,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerId = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ID,
                 Name = "ads;kfj;alsdkjf;lasjdg;lasdhgkjhdlfasgdfljhgsdflkjaghsdkgjhklasjdghjsjhdgkljashdgkajshdglkjahsdkgjhaslkjdghaslkdgjhasljkdgh",
                 UserName = TEST_USERNAME,
                 Password = TEST_PASSWORD,
@@ -99,7 +99,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerId = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ID,
                 Name = TEST_NAME,
                 UserName = string.Empty,
                 Password = TEST_PASSWORD,
@@ -116,7 +116,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerId = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ID,
                 Name = TEST_NAME,
                 UserName = "etuyewrtoiuewyroityweoiurtyoiweutoiweyrtoiweyrtoiulqewytoiqwerytoiqeywoituyqeroiutyqoierutyoiqueytoiqueyrtoiuq",
                 Password = TEST_PASSWORD,
@@ -133,7 +133,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerId = TEST_ALTERNATE_KEY,
+                PlayerId = TEST_ID,
                 Name = TEST_NAME,
                 UserName = TEST_USERNAME,
                 Password = TEST_PASSWORD,

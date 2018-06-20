@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DartballBLUnitTest.IntegrationValidation
 {
     [TestClass]
-    public class GameUnitTests
+    public class GameUnitTests : IntegrationBase
     {
         private IGameService Game;
 
@@ -17,15 +17,13 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             Game = new GameService();
 
-            TEST_LEAGUE_ALTERNATE_KEY = Guid.NewGuid();
-            TEST_GAME_ALTERNATE_KEY = Guid.NewGuid();
+            TEST_GAME_ID = Guid.NewGuid();
             TEST_GAME_DATE = DateTime.Today;
             TEST_GAME_DATE_2 = DateTime.Today.AddDays(-1);
         }
 
 
-        private Guid TEST_LEAGUE_ALTERNATE_KEY;
-        private Guid TEST_GAME_ALTERNATE_KEY;
+        private Guid TEST_GAME_ID;
         private DateTime TEST_GAME_DATE;
         private DateTime TEST_GAME_DATE_2;
 
@@ -33,42 +31,45 @@ namespace DartballBLUnitTest.IntegrationValidation
         [TestMethod]
         public void AddUpdateGameTest()
         {
+            Guid seedLeagueId = SeedLeague();
             GameDto dto = new GameDto()
             {
-                GameId = TEST_GAME_ALTERNATE_KEY,
-                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
+                GameId = TEST_GAME_ID,
+                LeagueId = seedLeagueId,
                 GameDate = TEST_GAME_DATE
             };
 
             var addNewResult = Game.AddNew(dto);
             Assert.IsTrue(addNewResult.IsSuccess);
 
-            var item = Game.GetGame(TEST_GAME_ALTERNATE_KEY);
+            var item = Game.GetGame(TEST_GAME_ID);
             Assert.IsNotNull(item);
-            Assert.AreEqual(TEST_LEAGUE_ALTERNATE_KEY, item.LeagueId);
+            Assert.AreEqual(seedLeagueId, item.LeagueId);
             Assert.AreEqual(TEST_GAME_DATE, item.GameDate);
-            Assert.AreEqual(TEST_GAME_ALTERNATE_KEY, item.GameId);
+            Assert.AreEqual(TEST_GAME_ID, item.GameId);
             Assert.IsNull(item.DeleteDate);
 
             dto.GameDate = TEST_GAME_DATE_2;
             var updateResult = Game.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            item = Game.GetGame(TEST_GAME_ALTERNATE_KEY);
+            item = Game.GetGame(TEST_GAME_ID);
             Assert.IsNotNull(item);
             Assert.AreEqual(TEST_GAME_DATE_2, item.GameDate);
 
-            var items = Game.GetLeagueGames(TEST_LEAGUE_ALTERNATE_KEY);
+            var items = Game.GetLeagueGames(seedLeagueId);
             Assert.IsTrue(items.Count >= 1);
 
             items = Game.GetAllGames();
             Assert.IsTrue(items.Count >= 1);
 
-            var removeResult = Game.Remove(TEST_GAME_ALTERNATE_KEY);
+            var removeResult = Game.Remove(TEST_GAME_ID);
             Assert.IsTrue(removeResult.IsSuccess);
 
-            item = Game.GetGame(TEST_GAME_ALTERNATE_KEY);
+            item = Game.GetGame(TEST_GAME_ID);
             Assert.IsNull(item);
+
+            DeleteSeededLeague(seedLeagueId);
         }
 
 
@@ -77,7 +78,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameDto dto = new GameDto()
             {
-                GameId = TEST_GAME_ALTERNATE_KEY,
+                GameId = TEST_GAME_ID,
                 GameDate = TEST_GAME_DATE
             };
 
@@ -90,8 +91,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameDto dto = new GameDto()
             {
-                GameId = TEST_GAME_ALTERNATE_KEY,
-                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
+                GameId = TEST_GAME_ID,
+                LeagueId = Guid.NewGuid(),
                 GameDate = TEST_GAME_DATE.AddDays(10)
             };
 
@@ -104,7 +105,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameDto dto = new GameDto()
             {
-                LeagueId = TEST_LEAGUE_ALTERNATE_KEY,
+                LeagueId = Guid.NewGuid(),
                 GameDate = TEST_GAME_DATE
             };
 

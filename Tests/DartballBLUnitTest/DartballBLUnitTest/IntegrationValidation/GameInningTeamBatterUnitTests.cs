@@ -18,12 +18,12 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             Service = new GameInningTeamBatterService();
 
-            TEST_GAME_INNING_TEAM_ALTERNATE_KEY = Guid.NewGuid();
-            TEST_PLAYER_ALTERNATE_KEY = Guid.NewGuid();
+            TEST_GAME_INNING_TEAM_ID = Guid.NewGuid();
+            TEST_PLAYER_ID = Guid.NewGuid();
         }
 
-        private Guid TEST_GAME_INNING_TEAM_ALTERNATE_KEY;
-        private Guid TEST_PLAYER_ALTERNATE_KEY;
+        private Guid TEST_GAME_INNING_TEAM_ID;
+        private Guid TEST_PLAYER_ID;
         private const int TEST_SEQUENCE = 1;
         private const int TEST_RBIS = 0;
         private const int TEST_RBIS_2 = 1;
@@ -39,8 +39,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
+                PlayerId = TEST_PLAYER_ID,
                 Sequence = TEST_SEQUENCE,
                 EventType = TEST_EVENT_TYPE,
                 TargetEventType = TEST_TARGET_EVENT_TYPE,
@@ -50,10 +50,10 @@ namespace DartballBLUnitTest.IntegrationValidation
             var addResult = Service.AddNew(dto);
             Assert.IsTrue(addResult.IsSuccess);
 
-            var item = Service.GetGameInningTeamBatter(TEST_GAME_INNING_TEAM_ALTERNATE_KEY, TEST_SEQUENCE);
+            var item = Service.GetGameInningTeamBatter(TEST_GAME_INNING_TEAM_ID, TEST_SEQUENCE);
             Assert.IsNotNull(item);
-            Assert.AreEqual(item.GameInningTeamId, TEST_GAME_INNING_TEAM_ALTERNATE_KEY);
-            Assert.AreEqual(item.PlayerId, TEST_PLAYER_ALTERNATE_KEY);
+            Assert.AreEqual(item.GameInningTeamId, TEST_GAME_INNING_TEAM_ID);
+            Assert.AreEqual(item.PlayerId, TEST_PLAYER_ID);
             Assert.AreEqual(item.Sequence, TEST_SEQUENCE);
             Assert.AreEqual(item.RBIs, TEST_RBIS);
             Assert.AreEqual(item.EventType, TEST_EVENT_TYPE);
@@ -67,22 +67,22 @@ namespace DartballBLUnitTest.IntegrationValidation
             var updateResult = Service.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            var inningAtBats = Service.GetGameInningTeamBatters(TEST_GAME_INNING_TEAM_ALTERNATE_KEY);
+            var inningAtBats = Service.GetGameInningTeamBatters(TEST_GAME_INNING_TEAM_ID);
             Assert.IsTrue(inningAtBats.Count > 0);
 
             item = inningAtBats.FirstOrDefault(x => x.Sequence == TEST_SEQUENCE);
             Assert.IsNotNull(item);
-            Assert.AreEqual(item.GameInningTeamId, TEST_GAME_INNING_TEAM_ALTERNATE_KEY);
-            Assert.AreEqual(item.PlayerId, TEST_PLAYER_ALTERNATE_KEY);
+            Assert.AreEqual(item.GameInningTeamId, TEST_GAME_INNING_TEAM_ID);
+            Assert.AreEqual(item.PlayerId, TEST_PLAYER_ID);
             Assert.AreEqual(item.Sequence, TEST_SEQUENCE);
             Assert.AreEqual(item.RBIs, TEST_RBIS_2);
             Assert.AreEqual(item.EventType, TEST_EVENT_TYPE_2);
             Assert.AreEqual(item.TargetEventType, TEST_TARGET_EVENT_TYPE_2);
 
-            var removeResult = Service.Remove(TEST_GAME_INNING_TEAM_ALTERNATE_KEY, TEST_SEQUENCE);
+            var removeResult = Service.Remove(TEST_GAME_INNING_TEAM_ID, TEST_SEQUENCE);
             Assert.IsTrue(removeResult.IsSuccess);
 
-            item = Service.GetGameInningTeamBatter(TEST_GAME_INNING_TEAM_ALTERNATE_KEY, TEST_SEQUENCE);
+            item = Service.GetGameInningTeamBatter(TEST_GAME_INNING_TEAM_ID, TEST_SEQUENCE);
             Assert.IsNull(item);
         }
 
@@ -91,7 +91,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
             {
-                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                PlayerId = TEST_PLAYER_ID,
                 Sequence = TEST_SEQUENCE,
                 EventType = TEST_EVENT_TYPE,
                 TargetEventType = TEST_TARGET_EVENT_TYPE,
@@ -107,7 +107,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
                 Sequence = TEST_SEQUENCE,
                 EventType = TEST_EVENT_TYPE,
                 TargetEventType = TEST_TARGET_EVENT_TYPE,
@@ -123,8 +123,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
+                PlayerId = TEST_PLAYER_ID,
                 Sequence = -1,
                 EventType = TEST_EVENT_TYPE,
                 TargetEventType = TEST_TARGET_EVENT_TYPE,
@@ -140,8 +140,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
+                PlayerId = TEST_PLAYER_ID,
                 Sequence = TEST_SEQUENCE,
                 EventType = TEST_EVENT_TYPE,
                 TargetEventType = TEST_TARGET_EVENT_TYPE,
@@ -157,8 +157,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
+                PlayerId = TEST_PLAYER_ID,
                 Sequence = TEST_SEQUENCE,
                 EventType = TEST_EVENT_TYPE,
                 TargetEventType = TEST_TARGET_EVENT_TYPE,
@@ -175,8 +175,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
+                PlayerId = TEST_PLAYER_ID,
                 Sequence = TEST_SEQUENCE,
                 EventType = 92,
                 TargetEventType = TEST_TARGET_EVENT_TYPE,
@@ -192,8 +192,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameInningTeamBatterDto dto = new GameInningTeamBatterDto()
             {
-                GameInningTeamId = TEST_GAME_INNING_TEAM_ALTERNATE_KEY,
-                PlayerId = TEST_PLAYER_ALTERNATE_KEY,
+                GameInningTeamId = TEST_GAME_INNING_TEAM_ID,
+                PlayerId = TEST_PLAYER_ID,
                 Sequence = TEST_SEQUENCE,
                 EventType = TEST_EVENT_TYPE,
                 TargetEventType = 105,

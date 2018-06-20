@@ -18,12 +18,12 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameTeam = new GameTeamService();
 
-            TEST_GAME_ALTERNATE_KEY = Guid.NewGuid();
-            TEST_TEAM_ALTERNATE_KEY = Guid.NewGuid();
+            TEST_GAME_ID = Guid.NewGuid();
+            TEST_TEAM_ID = Guid.NewGuid();
         }
 
-        private Guid TEST_GAME_ALTERNATE_KEY;
-        private Guid TEST_TEAM_ALTERNATE_KEY;
+        private Guid TEST_GAME_ID;
+        private Guid TEST_TEAM_ID;
 
 
         [TestMethod]
@@ -31,17 +31,17 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameTeamDto dto = new GameTeamDto()
             {
-                GameId = TEST_GAME_ALTERNATE_KEY,
-                TeamId = TEST_TEAM_ALTERNATE_KEY
+                GameId = TEST_GAME_ID,
+                TeamId = TEST_TEAM_ID
             };
 
             var addResult = GameTeam.AddNew(dto);
             Assert.IsTrue(addResult.IsSuccess);
 
-            var item = GameTeam.GetGameTeam(TEST_GAME_ALTERNATE_KEY, TEST_TEAM_ALTERNATE_KEY);
+            var item = GameTeam.GetGameTeam(TEST_GAME_ID, TEST_TEAM_ID);
             Assert.IsNotNull(item);
-            Assert.AreEqual(TEST_TEAM_ALTERNATE_KEY, item.TeamId);
-            Assert.AreEqual(TEST_GAME_ALTERNATE_KEY, item.GameId);
+            Assert.AreEqual(TEST_TEAM_ID, item.TeamId);
+            Assert.AreEqual(TEST_GAME_ID, item.GameId);
 
             dto.GameTeamId = item.GameTeamId;
             dto.DeleteDate = DateTime.UtcNow;
@@ -49,7 +49,7 @@ namespace DartballBLUnitTest.IntegrationValidation
             var updateResult = GameTeam.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            item = GameTeam.GetGameTeam(TEST_GAME_ALTERNATE_KEY, TEST_TEAM_ALTERNATE_KEY);
+            item = GameTeam.GetGameTeam(TEST_GAME_ID, TEST_TEAM_ID);
             Assert.IsNotNull(item);
             Assert.IsNotNull(item.DeleteDate);
 
@@ -57,16 +57,16 @@ namespace DartballBLUnitTest.IntegrationValidation
             updateResult = GameTeam.Update(dto);
             Assert.IsTrue(updateResult.IsSuccess);
 
-            var items = GameTeam.GetGameTeams(TEST_GAME_ALTERNATE_KEY);
+            var items = GameTeam.GetGameTeams(TEST_GAME_ID);
             Assert.IsTrue(items.Count >= 1);
 
-            item = items.FirstOrDefault(x => x.TeamId == TEST_TEAM_ALTERNATE_KEY);
+            item = items.FirstOrDefault(x => x.TeamId == TEST_TEAM_ID);
             Assert.IsNotNull(item);
 
-            var removeResult = GameTeam.Remove(TEST_GAME_ALTERNATE_KEY, TEST_TEAM_ALTERNATE_KEY);
+            var removeResult = GameTeam.Remove(TEST_GAME_ID, TEST_TEAM_ID);
             Assert.IsTrue(removeResult.IsSuccess);
 
-            item = GameTeam.GetGameTeam(TEST_GAME_ALTERNATE_KEY, TEST_TEAM_ALTERNATE_KEY);
+            item = GameTeam.GetGameTeam(TEST_GAME_ID, TEST_TEAM_ID);
             Assert.IsNull(item);
         }
 
@@ -75,7 +75,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameTeamDto dto = new GameTeamDto()
             {
-                TeamId = TEST_TEAM_ALTERNATE_KEY
+                TeamId = TEST_TEAM_ID
             };
 
             var result = GameTeam.AddNew(dto);
@@ -87,7 +87,7 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameTeamDto dto = new GameTeamDto()
             {
-                GameId = TEST_GAME_ALTERNATE_KEY,
+                GameId = TEST_GAME_ID,
             };
 
             var result = GameTeam.AddNew(dto);
@@ -99,8 +99,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             GameTeamDto dto = new GameTeamDto()
             {
-                GameId = TEST_GAME_ALTERNATE_KEY,
-                TeamId = TEST_TEAM_ALTERNATE_KEY
+                GameId = TEST_GAME_ID,
+                TeamId = TEST_TEAM_ID
             };
 
             var result = GameTeam.Update(dto);

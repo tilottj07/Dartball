@@ -3,14 +3,16 @@ using System;
 using Dartball.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dartball.Data.Migrations
 {
     [DbContext(typeof(DartballContext))]
-    partial class DartballContextModelSnapshot : ModelSnapshot
+    [Migration("20180620115004_IndexesAdded")]
+    partial class IndexesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

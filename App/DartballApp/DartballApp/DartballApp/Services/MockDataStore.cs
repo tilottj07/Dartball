@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using DartballApp.Models;
 
-[assembly: Xamarin.Forms.Dependency(typeof(DartballApp.Services.MockDataStore))]
 namespace DartballApp.Services
 {
     public class MockDataStore : IDataStore<Item>

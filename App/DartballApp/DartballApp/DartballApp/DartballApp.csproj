@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />  
+    <PackageReference Include="Xamarin.Forms" Version="3.0.0.561731" />  
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="Xam.Plugin.Connectivity" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Components\DartballBL\DartballBL\DartballBL.csproj" />
-    <ProjectReference Include="..\..\..\..\Components\DartballDL\DartballDL\DartballDL.csproj" />
   </ItemGroup>
 </Project>

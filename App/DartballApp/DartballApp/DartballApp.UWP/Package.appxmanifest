@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="b065a0f3-bdfa-429c-b969-1445c0b02273"
-    Publisher="CN=024adf2c-51bd-421b-b682-7d6ddcf92aca"
+    Name="6a9edf99-4ccd-4d5b-8649-f657336fc15b"
+    Publisher="CN=0a093b9f-16a0-4f29-aba2-f38bf61426a6"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="ec0cc741-fd3e-485c-81be-68815c480690" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>DartballApp.UWP</DisplayName>
-    <PublisherDisplayName>024adf2c-51bd-421b-b682-7d6ddcf92aca</PublisherDisplayName>
+    <PublisherDisplayName>0a093b9f-16a0-4f29-aba2-f38bf61426a6</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

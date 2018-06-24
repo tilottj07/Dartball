@@ -1,5 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
+using DartballApp.Services;
 using DartballApp.Views;
 using Xamarin.Forms.Xaml;
 
@@ -8,11 +9,18 @@ namespace DartballApp
 {
 	public partial class App : Application
 	{
+		//TODO: Replace with *.azurewebsites.net url after deploying backend to Azure
+        public static string AzureBackendUrl = "http://localhost:5000";
+        public static bool UseMockDataStore = true;
 		
 		public App ()
 		{
 			InitializeComponent();
 
+			if (UseMockDataStore)
+				DependencyService.Register<MockDataStore>();
+			else
+				DependencyService.Register<AzureDataStore>();
 
 			MainPage = new MainPage();
 		}

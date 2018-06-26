@@ -8,10 +8,10 @@ namespace Dartball.Data
 {
     public class DartballContext : DbContext
     {
-        //public DartballContext(DbContextOptions<DartballContext> options) : base(options)
-        //{
-
-        //}
+        public DartballContext()
+        {
+            this.Database.Migrate();
+        }
 
         public DbSet<Game> Games { get; set; }
         public DbSet<GameInning> GameInnings { get; set; }
@@ -39,7 +39,7 @@ namespace Dartball.Data
              .Where(e => e.State == EntityState.Added ||
                          e.State == EntityState.Modified))
             {
-                entry.Property("ChangeDate").CurrentValue = DateTime.Now;
+                entry.Property("ChangeDate").CurrentValue = DateTime.UtcNow;
             }
             return base.SaveChanges();
         }

@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using DartballApp.Services;
 using DartballApp.Views;
 using Xamarin.Forms.Xaml;
+using Dartball.BusinessLayer.Player.Interface;
 
 [assembly: XamlCompilation (XamlCompilationOptions.Compile)]
 namespace DartballApp
@@ -22,7 +23,9 @@ namespace DartballApp
 			else
 				DependencyService.Register<AzureDataStore>();
 
-			MainPage = new MainPage();
+            DependencyService.Register<IPlayerService>();
+
+			MainPage = new PlayerPage();
 		}
 
 		protected override void OnStart ()

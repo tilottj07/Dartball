@@ -16,7 +16,10 @@ namespace DartballApp
 
 		protected override void OnStart ()
 		{
-			// Handle when your app starts
+            // Handle when your app starts
+
+            Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
+            dartballContext.Migrate();
 		}
 
 		protected override void OnSleep ()

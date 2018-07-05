@@ -10,6 +10,12 @@ namespace Dartball.Data
     {
         public DartballContext()
         {
+            
+        }
+
+
+        public void Migrate()
+        {
             this.Database.Migrate();
         }
 

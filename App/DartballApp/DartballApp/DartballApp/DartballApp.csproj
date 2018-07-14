@@ -12,4 +12,9 @@
     <ProjectReference Include="..\..\..\..\Components\DartballBL\DartballBL\DartballBL.csproj" />
     <ProjectReference Include="..\..\..\..\Components\Dartball.Domain\Dartball.Domain\Dartball.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
 </Project>

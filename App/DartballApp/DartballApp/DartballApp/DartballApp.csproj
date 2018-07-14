@@ -5,10 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.637273" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Components\DartballBL\DartballBL\DartballBL.csproj" />
+    <ProjectReference Include="..\..\..\..\Components\Dartball.Domain\Dartball.Domain\Dartball.Domain.csproj" />
   </ItemGroup>
 </Project>

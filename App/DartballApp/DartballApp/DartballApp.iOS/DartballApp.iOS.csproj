@@ -147,12 +147,14 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
+    <PackageReference Include="Xamarin.Forms">
+      <Version>3.1.0.637273</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\DartballApp\DartballApp.csproj">
-      <Project>{8291298C-74FA-496E-92C4-BD79E5FC8E11}</Project>
+      <Project>{7286B60F-E4DF-4EBB-8D43-6F5B1B41B051}</Project>
       <Name>DartballApp</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,10 +1,11 @@
 ﻿using System;
+using Dartball.BusinessLayer.Player.Dto;
 using Dartball.BusinessLayer.Player.Implementation;
 using Dartball.BusinessLayer.Player.Interface;
 
 namespace DartballApp.ViewModels
 {
-    public class EditPlayer
+    public class EditPlayer 
     {
         IPlayerService Service;
 
@@ -15,20 +16,31 @@ namespace DartballApp.ViewModels
 
 
         public Models.Player Player { get; set; }
-        public bool IsAddNew { get; set; }
 
 
         public void FillPlayer(Guid? playerId)
         {
             if (playerId.HasValue) {
                 Player = new Models.Player(Service.GetPlayer(playerId.Value));
-                IsAddNew = false;
             }
             else {
                 Player = new Models.Player();
-                IsAddNew = true;
             }
+        }
 
+
+
+        public void SavePlayer(Models.Player player)
+        {
+            PlayerDto dto = new PlayerDto()
+            {
+                PlayerId = player.PlayerId,
+                EmailAddress = player.EmailAddress,
+                Name = player.Name,
+                UserName = player.UserName,
+                Password = player.Password
+            };
+            Service.Save(dto);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace DartballApp.Views
     {
         ViewModels.EditPlayer EditPlayerViewModel;
 
+
         public EditPlayer(Guid? playerId)
         {
             EditPlayerViewModel = new ViewModels.EditPlayer();
@@ -21,12 +22,15 @@ namespace DartballApp.Views
 
 
         public void Save(object sender, EventArgs args) {
+            
 
            
         }
 
         public void Cancel(object sender, EventArgs args) {
-            
+            Navigation.PushAsync(new PlayerList());
         }
+
+
     }
 }

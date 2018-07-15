@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace DartballApp
+namespace DartballApp.Views
 {
     public partial class MainPage : ContentPage
     {
@@ -17,7 +17,7 @@ namespace DartballApp
 
         public void GoToPlayerList(object sender, EventArgs args) 
         {          
-            Navigation.PushAsync(new Views.PlayerList());
+            Navigation.PushAsync(new PlayerList());
         }
     }
 }

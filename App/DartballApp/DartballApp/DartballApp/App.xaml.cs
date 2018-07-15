@@ -11,7 +11,7 @@ namespace DartballApp
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
+            MainPage = new NavigationPage(new Views.MainPage());
 		}
 
 		protected override void OnStart ()

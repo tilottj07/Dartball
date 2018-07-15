@@ -2,14 +2,22 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:DartballApp"
-             x:Class="DartballApp.MainPage">
+             x:Class="DartballApp.Views.MainPage" 
+             Title="Home">
 
+     <ContentPage.Content>
+        
+    
+    
     <StackLayout>
-        <!-- Place new controls here -->
-    	<Label Text="Welcome to Dartball :)" 
+
+ 
+        <Label Text="Welcome to Dartball :)" 
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand" />
         <Button Text="Go To Players" Clicked="GoToPlayerList" /> 
     </StackLayout>
 
+    </ContentPage.Content>
+        
 </ContentPage>

@@ -6,9 +6,10 @@
 
     <StackLayout>
         <!-- Place new controls here -->
-    	<Label Text="Welcome to Xamarin.Forms!  Travis was hdsrdsrtdstr" 
+    	<Label Text="Welcome to Dartball :)" 
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand" />
+        <Button Text="Go To Players" Clicked="GoToPlayerList" /> 
     </StackLayout>
 
 </ContentPage>

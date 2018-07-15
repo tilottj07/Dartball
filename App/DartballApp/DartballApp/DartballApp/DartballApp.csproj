@@ -17,4 +17,11 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Views\Navigation.cs" />
+    <Compile Remove="Views\Navigation.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\Navigation.xaml" />
+  </ItemGroup>
 </Project>

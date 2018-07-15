@@ -7,11 +7,17 @@ using Xamarin.Forms;
 
 namespace DartballApp
 {
-	public partial class MainPage : ContentPage
-	{
-		public MainPage()
-		{
-			InitializeComponent();
-		}
-	}
+    public partial class MainPage : ContentPage
+    {
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+
+
+        public void GoToPlayerList(object sender, EventArgs args) 
+        {          
+            Navigation.PushAsync(new Views.PlayerList());
+        }
+    }
 }

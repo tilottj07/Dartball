@@ -5,20 +5,26 @@ namespace DartballApp.Models
 {
     public class Player
     {
+        public Player(){ }
+
         public Player(IPlayer player)
         {
-            PlayerId = player.PlayerId;
-            Name = player.Name;
-            EmailAddress = player.EmailAddress;
-            UserName = player.UserName;
-            Password = player.Password;
+            if (player != null) {
+
+                PlayerId = player.PlayerId;
+                Name = player.Name;
+                EmailAddress = player.EmailAddress;
+                UserName = player.UserName;
+                Password = player.Password;
+            }
+                      
         }
 
-        Guid PlayerId { get; set; }
-        string Name { get; set; }
-        string EmailAddress { get; set; }
-        string UserName { get; set; }
-        string Password { get; set; }
+        public Guid PlayerId { get; set; }
+        public string Name { get; set; }
+        public string EmailAddress { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
 
 
 

@@ -17,6 +17,9 @@ namespace DartballBLUnitTest.IntegrationValidation
         public GameInningTeamBatterUnitTests()
         {
             Service = new GameInningTeamBatterService();
+
+            Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
+            dartballContext.Migrate();
         }
 
         private const int TEST_SEQUENCE = 1;

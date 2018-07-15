@@ -16,6 +16,9 @@ namespace DartballBLUnitTest.IntegrationValidation
         public TeamPlayerLineupUnitTests()
         {
             Lineup = new TeamPlayerLineupService();
+
+            Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
+            dartballContext.Migrate();
         }
 
         private const int TEST_BATTING_ORDER = 3;

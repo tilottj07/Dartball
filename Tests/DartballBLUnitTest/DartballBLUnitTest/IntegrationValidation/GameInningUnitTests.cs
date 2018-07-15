@@ -16,6 +16,9 @@ namespace DartballBLUnitTest.IntegrationValidation
         public GameInningUnitTests()
         {
             GameInning = new GameInningService();
+
+            Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
+            dartballContext.Migrate();
         }
 
         private const int TEST_INNING_NUMBER = 3;

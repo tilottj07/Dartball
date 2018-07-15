@@ -17,6 +17,9 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             Game = new GameService();
 
+            Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
+            dartballContext.Migrate();
+
             TEST_GAME_ID = Guid.NewGuid();
             TEST_GAME_DATE = DateTime.Today;
             TEST_GAME_DATE_2 = DateTime.Today.AddDays(-1);

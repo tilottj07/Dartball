@@ -17,6 +17,9 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             PlayerService = new PlayerService();
             TEST_ID = Guid.NewGuid();
+
+            Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
+            dartballContext.Migrate();
         }
 
         private Guid TEST_ID;

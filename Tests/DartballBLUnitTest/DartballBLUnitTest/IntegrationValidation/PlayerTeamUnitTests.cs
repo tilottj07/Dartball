@@ -16,6 +16,9 @@ namespace DartballBLUnitTest.IntegrationValidation
         public PlayerTeamUnitTests()
         {
             PlayerTeamService = new PlayerTeamService();
+
+            Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
+            dartballContext.Migrate();
         }
 
 

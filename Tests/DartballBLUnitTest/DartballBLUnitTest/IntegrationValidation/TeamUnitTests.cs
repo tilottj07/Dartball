@@ -17,6 +17,9 @@ namespace DartballBLUnitTest.IntegrationValidation
         {
             TeamService = new TeamService();
             TEST_ALTERNATE_ID = Guid.NewGuid();
+
+            Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
+            dartballContext.Migrate();
         }
 
         private const string TEST_TEAM_NAME = "TeamNameTestTravis123?";

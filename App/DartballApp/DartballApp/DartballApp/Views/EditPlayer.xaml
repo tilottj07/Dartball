@@ -3,7 +3,7 @@
              x:Class="DartballApp.Views.EditPlayer">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
+            <StackLayout Padding="10, 25, 10, 10">
 
                 <Label Text="Name" FontSize="Large" />
                 <Entry Placeholder="Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.Name}"/>
@@ -18,8 +18,13 @@
                 <Entry Placeholder="Email" Keyboard="Email" IsSpellCheckEnabled="false" Text="{Binding Player.EmailAddress}"/>
 
 
-                <StackLayout HorizontalOptions="Center" VerticalOptions="End">
-                    <Button Text="Save" Clicked="Save" HorizontalOptions="CenterAndExpand"/>
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="End" Padding="10, 10, 10, 10">
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Button Text="Cancel" Clicked="Cancel" HorizontalOptions="Start"/>
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Button Text="Save" Clicked="Save" HorizontalOptions="End"/>
+                    </StackLayout>
                 </StackLayout>
 
             </StackLayout>

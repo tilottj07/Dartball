@@ -12,15 +12,22 @@ namespace DartballApp.Views
 
         public PlayerList()
         {
-            BindingContext = this;
-
             var playerListViewModel = new PlayerListViewModel();
             playerListViewModel.FillPlayers();
+
+            MessagingCenter.Subscribe<EditPlayer>(this, "PlayerEdited", (sender) => {
+                playerListViewModel.FillPlayers();
+                Items = playerListViewModel.Players;
+            });
+
+            BindingContext = this;
+
+
 
             Items = playerListViewModel.Players;
 
 
-            ToolbarItems.Add(new ToolbarItem("Add", "", async () => { await Navigation.PushAsync( new EditPlayer(playerId: null)); }));
+           // ToolbarItems.Add(new ToolbarItem("Add", "", async () => { await Navigation.PushAsync( new EditPlayer(playerId: null)); }));
 
             InitializeComponent();
 
@@ -35,7 +42,7 @@ namespace DartballApp.Views
             Guid? playerId = null;
             if (player != null) playerId = player.PlayerId;
 
-            Navigation.PushAsync(new NavigationPage(new EditPlayer(playerId)));
+            Navigation.PushModalAsync(new EditPlayer(playerId));
 
         }
     }

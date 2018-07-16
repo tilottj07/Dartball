@@ -36,11 +36,14 @@ namespace DartballApp.Views
 
                 DisplayAlert("Alert", sb.ToString(), "OK");
             }
-           
+            else {
+                MessagingCenter.Send<EditPlayer>(this, "PlayerEdited");
+                Navigation.PopModalAsync(animated: true);
+            }
         }
 
         public void Cancel(object sender, EventArgs args) {
-            Navigation.PushAsync(new PlayerList());
+            Navigation.PopModalAsync(animated: true);
         }
 
 

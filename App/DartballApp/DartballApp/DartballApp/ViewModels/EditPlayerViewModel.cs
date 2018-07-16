@@ -2,14 +2,15 @@
 using Dartball.BusinessLayer.Player.Dto;
 using Dartball.BusinessLayer.Player.Implementation;
 using Dartball.BusinessLayer.Player.Interface;
+using Dartball.BusinessLayer.Shared.Models;
 
 namespace DartballApp.ViewModels
 {
-    public class EditPlayer 
+    public class EditPlayerViewModel
     {
         IPlayerService Service;
 
-        public EditPlayer()
+        public EditPlayerViewModel()
         {
             Service = new PlayerService();
         }
@@ -30,17 +31,17 @@ namespace DartballApp.ViewModels
 
 
 
-        public void SavePlayer(Models.Player player)
+        public ChangeResult SavePlayer()
         {
             PlayerDto dto = new PlayerDto()
             {
-                PlayerId = player.PlayerId,
-                EmailAddress = player.EmailAddress,
-                Name = player.Name,
-                UserName = player.UserName,
-                Password = player.Password
+                PlayerId = Player.PlayerId,
+                EmailAddress = Player.EmailAddress,
+                Name = Player.Name,
+                UserName = Player.UserName,
+                Password = Player.Password
             };
-            Service.Save(dto);
+            return Service.Save(dto);
         }
     }
 }

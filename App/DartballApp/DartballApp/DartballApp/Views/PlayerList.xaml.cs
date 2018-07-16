@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using DartballApp.ViewModels;
 using Xamarin.Forms;
 
 namespace DartballApp.Views
@@ -8,16 +8,24 @@ namespace DartballApp.Views
     public partial class PlayerList : ContentPage
     {
         
-        public ViewModels.PlayerList PlayersModel;
+        public List<Models.Player> Items { get; set; }
 
         public PlayerList()
         {
-            PlayersModel = new ViewModels.PlayerList();
-            PlayersModel.FillPlayers();
+            BindingContext = this;
 
-            BindingContext = PlayersModel;
+            var playerListViewModel = new PlayerListViewModel();
+            playerListViewModel.FillPlayers();
+
+            Items = playerListViewModel.Players;
+
+
+            ToolbarItems.Add(new ToolbarItem("Add", "", async () => { await Navigation.PushAsync( new EditPlayer(playerId: null)); }));
 
             InitializeComponent();
+
+
+           
         }
 
         public void GoToPlayerEdit(object sender, SelectedItemChangedEventArgs args) {

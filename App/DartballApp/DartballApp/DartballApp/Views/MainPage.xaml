@@ -6,17 +6,16 @@
              Title="Home">
 
      <ContentPage.Content>
-        
-    
-    
-    <StackLayout>
 
- 
-        <Label Text="Welcome to Dartball :)" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-        <Button Text="Go To Players" Clicked="GoToPlayerList" /> 
-    </StackLayout>
+    
+        <StackLayout>
+
+     
+            <Label Text="Welcome to Dartball :)" 
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand" />
+      
+        </StackLayout>
 
     </ContentPage.Content>
         

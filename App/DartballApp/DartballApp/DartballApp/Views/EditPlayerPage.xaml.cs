@@ -5,12 +5,12 @@ using Xamarin.Forms;
 
 namespace DartballApp.Views
 {
-    public partial class EditPlayer : ContentPage
+    public partial class EditPlayerPage : ContentPage
     {
         ViewModels.EditPlayerViewModel EditPlayerViewModel;
 
 
-        public EditPlayer(Guid? playerId)
+        public EditPlayerPage(Guid? playerId)
         {
             EditPlayerViewModel = new ViewModels.EditPlayerViewModel();
             EditPlayerViewModel.FillPlayer(playerId);
@@ -37,7 +37,7 @@ namespace DartballApp.Views
                 DisplayAlert("Alert", sb.ToString(), "OK");
             }
             else {
-                MessagingCenter.Send<EditPlayer>(this, "PlayerEdited");
+                MessagingCenter.Send<EditPlayerPage>(this, "PlayerEdited");
                 Navigation.PopModalAsync(animated: true);
             }
         }

@@ -6,14 +6,14 @@ using Xamarin.Forms;
 
 namespace DartballApp.Views
 {
-    public partial class PlayerList : ContentPage
+    public partial class PlayerListPage : ContentPage
     {
         
         public PlayerListViewModel ViewModel { get; set; }
 
-        public PlayerList()
+        public PlayerListPage()
         {
-            MessagingCenter.Subscribe<EditPlayer>(this, "PlayerEdited", (sender) => {
+            MessagingCenter.Subscribe<EditPlayerPage>(this, "PlayerEdited", (sender) => {
                 RefreshPage();
             });
 
@@ -33,7 +33,7 @@ namespace DartballApp.Views
             Guid? playerId = null;
             if (player != null) playerId = player.PlayerId;
 
-            Navigation.PushModalAsync(new EditPlayer(playerId));
+            Navigation.PushModalAsync(new EditPlayerPage(playerId));
 
         }
 

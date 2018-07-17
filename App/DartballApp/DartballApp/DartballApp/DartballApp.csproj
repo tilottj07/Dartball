@@ -27,4 +27,18 @@
     <EmbeddedResource Remove="Views\Navigation.xaml" />
     <EmbeddedResource Remove="Views\MasterPage.xaml" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\EditPlayer.xaml.cs">
+      <DependentUpon>EditPlayerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\EditPlayerPage.xaml.cs">
+      <DependentUpon>EditPlayerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PlayerList.xaml.cs">
+      <DependentUpon>PlayerListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PlayerListPage.xaml.cs">
+      <DependentUpon>PlayerListPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

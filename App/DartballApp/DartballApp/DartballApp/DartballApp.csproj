@@ -40,5 +40,8 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PlayerListPage.xaml.cs">
       <DependentUpon>PlayerListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\TeamListPage.xaml.cs">
+      <DependentUpon>TeamListPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

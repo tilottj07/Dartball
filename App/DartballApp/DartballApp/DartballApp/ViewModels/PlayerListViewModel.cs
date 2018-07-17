@@ -24,7 +24,7 @@ namespace DartballApp.ViewModels
 
         public ObservableCollection<Models.Player> Players { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+       
 
         public void FillPlayers()
         {

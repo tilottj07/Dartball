@@ -5,15 +5,11 @@
      
     
    <StackLayout>
-        <ListView x:Name="PlayerListView" ItemsSource="{Binding Items}"  ItemSelected="GoToPlayerEdit">
+        <Button Text="Add Player" Clicked="GoToPlayerEdit" HorizontalOptions="CenterAndExpand"/>
+        <ListView x:Name="PlayerListView" ItemsSource="{Binding ViewModel.Players}" ItemSelected="GoToPlayerEdit">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <StackLayout> 
-                            <Label Text="{Binding Name}" FontAttributes="Bold"/>
-                            <Label Text="{Binding UserName}"/>
-                        </StackLayout>
-                    </ViewCell>
+                    <TextCell Text="{Binding Name}" Detail="{Binding UserName}"/>           
                 </DataTemplate>
             </ListView.ItemTemplate>    
         </ListView>

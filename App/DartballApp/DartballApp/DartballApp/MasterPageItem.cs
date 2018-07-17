@@ -1,11 +1,10 @@
 ﻿using System;
-namespace DartballApp.Models
+namespace DartballApp
 {
-    public class MainMenuItem
+    public class MasterPageItem
     {
         public string Title { get; set; }
+        public string IconSource { get; set; }
         public Type TargetType { get; set; }
-        public string Icon { get; set; }
-
     }
 }

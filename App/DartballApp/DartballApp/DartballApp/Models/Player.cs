@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Dartball.BusinessLayer.Player.Interface.Models;
 
 namespace DartballApp.Models
@@ -26,7 +27,8 @@ namespace DartballApp.Models
         public string UserName { get; set; }
         public string Password { get; set; }
 
+        public bool PropertyChanged { get; set; }
 
-
+       
     }
 }

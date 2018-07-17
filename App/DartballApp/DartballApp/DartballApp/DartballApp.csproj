@@ -20,8 +20,11 @@
   <ItemGroup>
     <Compile Remove="Views\Navigation.cs" />
     <Compile Remove="Views\Navigation.xaml.cs" />
+    <Compile Remove="Views\MasterPage.xaml.cs" />
+    <Compile Remove="MasterPageItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\Navigation.xaml" />
+    <EmbeddedResource Remove="Views\MasterPage.xaml" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,10 @@ namespace DartballApp.Models
     {
         public Team() {}
 
+        public Team(Guid leagueId) {
+            LeagueId = leagueId;
+        }
+
         public Team(ITeam team) {
             if (team != null) {
                 TeamId = team.TeamId;

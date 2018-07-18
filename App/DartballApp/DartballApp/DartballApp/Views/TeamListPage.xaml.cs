@@ -12,7 +12,7 @@ namespace DartballApp.Views
         public TeamListPage()
         {
 
-            MessagingCenter.Subscribe<EditPlayerPage>(this, "PlayerEdited", (sender) => {
+            MessagingCenter.Subscribe<EditTeamPage>(this, "TeamEdited", (sender) => {
                 RefreshPage();
             });
 
@@ -26,7 +26,12 @@ namespace DartballApp.Views
 
 
         public void GoToTeamEdit(object sender, SelectedItemChangedEventArgs args) {
-            DisplayAlert("Hi", "Comming Soon :)", "OK");
+            var team = args.SelectedItem as Models.Team;
+
+            Guid? teamId = null;
+            if (team != null) teamId = team.TeamId;
+
+            Navigation.PushModalAsync(new EditTeamPage(teamId));
         }
 
         void RefreshPage()

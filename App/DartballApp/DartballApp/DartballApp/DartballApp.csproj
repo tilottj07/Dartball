@@ -43,5 +43,8 @@
     <Compile Update="Views\TeamListPage.xaml.cs">
       <DependentUpon>TeamListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\EditTeamPage.xaml.cs">
+      <DependentUpon>EditTeamPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

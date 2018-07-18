@@ -9,7 +9,9 @@
         <ListView x:Name="TeamListView" ItemsSource="{Binding ViewModel.Teams}" ItemSelected="GoToTeamEdit">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" />           
+                     <ViewCell>
+                        <Label Text="{Binding Name}"/>
+                    </ViewCell>         
                 </DataTemplate>
             </ListView.ItemTemplate>    
         </ListView>

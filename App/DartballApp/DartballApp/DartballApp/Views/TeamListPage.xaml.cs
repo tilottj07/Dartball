@@ -7,7 +7,7 @@ namespace DartballApp.Views
 {
     public partial class TeamListPage : ContentPage
     {
-        public TeamListViewModel ViewModel;
+        public TeamListViewModel ViewModel { get; set; }
 
         public TeamListPage()
         {
@@ -40,7 +40,9 @@ namespace DartballApp.Views
             ViewModel.FillTeams();
 
             BindingContext = this;
+
         }
 
     }
+    
 }

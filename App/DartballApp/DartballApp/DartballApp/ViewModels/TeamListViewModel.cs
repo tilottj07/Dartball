@@ -23,7 +23,9 @@ namespace DartballApp.ViewModels
 
         public void FillTeams() {
             Teams = new ObservableCollection<Team>();
-            foreach(var item in Service.GetTeams().OrderBy(x => x.Name)) {
+
+            foreach(var item in Service.GetTeams().OrderBy(x => x.Name)) 
+            {
                 Teams.Add(new Team(item));
             }
         }

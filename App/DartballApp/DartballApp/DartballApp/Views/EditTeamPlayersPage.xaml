@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="DartballApp.Views.EditTeamPlayersPage" Title="{Binding TeamName}">
+             x:Class="DartballApp.Views.EditTeamPlayersPage" Title="{Binding ViewModel.TeamName}">
     <ContentPage.Content>
 
     <StackLayout>
         <Picker Title="Add Player" ItemsSource="{Binding ViewModel.AvailablePlayers}" ItemDisplayBinding="{Binding Name}" SelectedItem="AddSelectedPlayer"  /> 
-        <ListView x:Name="TeamPlayersListView" ItemsSource="{Binding ViewModel.TeamPlayers}" ItemSelected="GoToTeamEdit">
+        <ListView x:Name="TeamPlayersListView" ItemsSource="{Binding ViewModel.TeamPlayers}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                     <TextCell Text="{Binding Name}" />       
+                     <TextCell Text="{Binding Name}" Detail="{Binding UserName}"/>       
                 </DataTemplate>
             </ListView.ItemTemplate>    
         </ListView>

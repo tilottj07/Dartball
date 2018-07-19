@@ -7,7 +7,7 @@ namespace DartballApp.Views
 {
     public partial class EditTeamPlayersPage : ContentPage
     {
-        public ViewModels.EditTeamPlayersViewModel ViewModel;
+        public ViewModels.EditTeamPlayersViewModel ViewModel { get; set; }
 
         public EditTeamPlayersPage(Guid teamId)
         {
@@ -22,23 +22,25 @@ namespace DartballApp.Views
 
         public void AddSelectedPlayer(object sender, SelectedItemChangedEventArgs args)
         {
-            Models.Player player = args.SelectedItem as Models.Player;
-            if (player != null)
+            if (args.SelectedItem is Models.Player player)
             {
                 var result = ViewModel.AddTeamPlayer(player.PlayerId);
-                if (!result.IsSuccess) {
+                if (!result.IsSuccess)
+                {
 
                     StringBuilder sb = new StringBuilder();
                     int index = 0;
 
-                    foreach(var item in result.ErrorMessages) {
+                    foreach (var item in result.ErrorMessages)
+                    {
                         if (index > 0) sb.Append(" ");
                         sb.Append(item);
                         index++;
                     }
                     DisplayAlert("Alert", sb.ToString(), "OK");
                 }
-                else {
+                else
+                {
                     RefreshTeamPlayers();
                 }
             }
@@ -46,10 +48,11 @@ namespace DartballApp.Views
 
 
 
-        private void RefreshTeamPlayers() {
+        void RefreshTeamPlayers()
+        {
             BindingContext = null;
 
-            ViewModel.FillTeamPlayers();
+            ViewModel.FillPlayers();
             BindingContext = this;
         }
     }

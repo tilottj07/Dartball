@@ -31,7 +31,7 @@ namespace DartballApp.Views
             Guid? teamId = null;
             if (team != null) teamId = team.TeamId;
 
-            Navigation.PushModalAsync(new EditTeamPage(teamId));
+            Navigation.PushModalAsync(new TeamTabbedPage(teamId));
         }
 
         void RefreshPage()
@@ -40,7 +40,6 @@ namespace DartballApp.Views
             ViewModel.FillTeams();
 
             BindingContext = this;
-
         }
 
     }

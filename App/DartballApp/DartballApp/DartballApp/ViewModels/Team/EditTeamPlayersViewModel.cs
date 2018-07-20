@@ -9,12 +9,11 @@ using Dartball.BusinessLayer.Shared.Models;
 using Dartball.BusinessLayer.Team.Implementation;
 using Dartball.BusinessLayer.Team.Interface;
 
-namespace DartballApp.ViewModels
+namespace DartballApp.ViewModels.Team
 {
     public class EditTeamPlayersViewModel
     {
         IPlayerTeamService PlayerTeam;
-        IPlayerService Player;
         ITeamService Team;
 
         public EditTeamPlayersViewModel(Guid teamId)
@@ -22,7 +21,6 @@ namespace DartballApp.ViewModels
             TeamId = teamId;
 
             PlayerTeam = new PlayerTeamService();
-            Player = new PlayerService();
             Team = new TeamService();
         }
 
@@ -31,24 +29,15 @@ namespace DartballApp.ViewModels
         public string TeamName { get; set; }
 
         public ObservableCollection<Models.Player> TeamPlayers { get; set; }
-        public ObservableCollection<Models.Player> AvailablePlayers { get; set; }
+     
 
 
         public void FillPlayers() {
             TeamPlayers = new ObservableCollection<Models.Player>();
-            AvailablePlayers = new ObservableCollection<Models.Player>();
 
             foreach(var player in PlayerTeam.GetTeamPlayerInformations(TeamId).OrderBy(y => y.Name)) {
                 TeamPlayers.Add(new Models.Player(player));
             }
-
-            List<Guid> playerIdsOnTeam = TeamPlayers.Select(y => y.PlayerId).ToList();
-            foreach(var player in Player.GetPlayers().OrderBy(y => y.Name)) {
-                if (!playerIdsOnTeam.Contains(player.PlayerId)) {
-                    AvailablePlayers.Add(new Models.Player(player));
-                }
-            }
-
         }
 
        
@@ -64,14 +53,6 @@ namespace DartballApp.ViewModels
             }
         }
 
-
-        public ChangeResult AddTeamPlayer(Guid playerId) {
-            return PlayerTeam.Save(new PlayerTeamDto()
-            {
-                TeamId = TeamId,
-                PlayerId = playerId
-            });
-        }
 
         public ChangeResult RemoveTeamPlayer(Guid playerId) {
             return PlayerTeam.Remove(playerId, TeamId);

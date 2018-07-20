@@ -17,7 +17,7 @@ namespace DartballApp.Views
 
         public void GoToPlayerList(object sender, EventArgs args)
         {
-            Navigation.PushAsync(new PlayerListPage());
+            Navigation.PushAsync(new Player.PlayerListPage());
         }
     }
 }

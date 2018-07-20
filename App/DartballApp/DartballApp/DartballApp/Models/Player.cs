@@ -29,6 +29,6 @@ namespace DartballApp.Models
 
         public bool PropertyChanged { get; set; }
 
-       
+
     }
 }

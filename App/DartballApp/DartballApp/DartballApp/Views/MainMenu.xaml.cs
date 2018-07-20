@@ -21,8 +21,8 @@ namespace DartballApp.Views
             MainMenuItems = new List<MainMenuItem>()
             {
                 new MainMenuItem() { Title = "Home", TargetType = typeof(MainPage) },
-                new MainMenuItem() { Title = "Players", TargetType = typeof(PlayerListPage) },
-                new MainMenuItem() { Title = "Teams", TargetType = typeof(TeamListPage) }
+                new MainMenuItem() { Title = "Players", TargetType = typeof(Player.PlayerListPage) },
+                new MainMenuItem() { Title = "Teams", TargetType = typeof(Team.TeamListPage) }
             };
 
             // Set the default page, this is the "home" page.
@@ -42,10 +42,10 @@ namespace DartballApp.Views
                         Detail = new NavigationPage(new MainPage());
                         break;
                     case "Players":
-                        Detail = new NavigationPage(new PlayerListPage());
+                        Detail = new NavigationPage(new Player.PlayerListPage());
                         break;
                     case "Teams":
-                        Detail = new NavigationPage(new TeamListPage());
+                        Detail = new NavigationPage(new Team.TeamListPage());
                         break;
                 }
                           

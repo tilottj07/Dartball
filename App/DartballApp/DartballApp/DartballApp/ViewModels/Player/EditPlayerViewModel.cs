@@ -4,7 +4,7 @@ using Dartball.BusinessLayer.Player.Implementation;
 using Dartball.BusinessLayer.Player.Interface;
 using Dartball.BusinessLayer.Shared.Models;
 
-namespace DartballApp.ViewModels
+namespace DartballApp.ViewModels.Player
 {
     public class EditPlayerViewModel
     {

@@ -2,6 +2,6 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
             xmlns:local="clr-namespace:DartballApp;"
-            x:Class="DartballApp.Views.TeamTabbedPage">
+            x:Class="DartballApp.Views.Team.TeamTabbedPage">
 
 </TabbedPage>

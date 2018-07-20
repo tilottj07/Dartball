@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 
-namespace DartballApp.Views
+namespace DartballApp.Views.Team
 {
     public partial class TeamTabbedPage : TabbedPage
     {

@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DartballApp.Views.EditTeamPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="DartballApp.Views.Player.EditPlayerPage">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="10, 25, 10, 10">
 
                 <Label Text="Name" FontSize="Large" />
-                <Entry Placeholder="Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Team.Name}"/>
+                <Entry Placeholder="Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.Name}"/>
+
+                <Label Text="User Name" FontSize="Large" />
+                <Entry Placeholder="User Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.UserName}"/>
 
                 <Label Text="Password" FontSize="Large" />
-                <Entry Placeholder="Password" IsPassword="true" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Team.Password}"/>
-                              
+                <Entry Placeholder="Password" IsPassword="true" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.Password}"/>
+
+                <Label Text="Email Address" FontSize="Large" />
+                <Entry Placeholder="Email" Keyboard="Email" IsSpellCheckEnabled="false" Text="{Binding Player.EmailAddress}"/>
+
                 <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" VerticalOptions="End" Padding="10, 10, 10, 10">
                     <StackLayout Padding="10, 10, 10, 10">
                         <Button Text="Cancel" Clicked="Cancel" />

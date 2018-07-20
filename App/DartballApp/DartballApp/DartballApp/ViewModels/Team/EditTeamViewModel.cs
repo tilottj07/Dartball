@@ -6,7 +6,7 @@ using Dartball.BusinessLayer.Team.Dto;
 using Dartball.BusinessLayer.Team.Implementation;
 using Dartball.BusinessLayer.Team.Interface;
 
-namespace DartballApp.ViewModels
+namespace DartballApp.ViewModels.Team
 {
     public class EditTeamViewModel
     {

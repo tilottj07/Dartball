@@ -35,20 +35,24 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\EditPlayer.xaml.cs">
       <DependentUpon>EditPlayerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\EditPlayerPage.xaml.cs">
-      <DependentUpon>EditPlayerPage.xaml</DependentUpon>
-    </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PlayerList.xaml.cs">
       <DependentUpon>PlayerListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PlayerListPage.xaml.cs">
-      <DependentUpon>PlayerListPage.xaml</DependentUpon>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Player\EditPlayerPage.xaml.cs">
+      <DependentUpon>..\Views\EditPlayerPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TeamListPage.xaml.cs">
-      <DependentUpon>TeamListPage.xaml</DependentUpon>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Player\PlayerListPage.xaml.cs">
+      <DependentUpon>..\Views\PlayerListPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EditTeamPage.xaml.cs">
-      <DependentUpon>EditTeamPage.xaml</DependentUpon>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Team\EditTeamPage.xaml.cs">
+      <DependentUpon>..\Views\EditTeamPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Team\TeamListPage.xaml.cs">
+      <DependentUpon>..\Views\TeamListPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 </Project>

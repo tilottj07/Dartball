@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace DartballApp.Views
+namespace DartballApp.Views.Team
 {
     public partial class EditTeamPage : ContentPage
     {
-        ViewModels.EditTeamViewModel ViewModel;
+        ViewModels.Team.EditTeamViewModel ViewModel;
 
         public EditTeamPage(Guid? teamId)
         {
-            ViewModel = new ViewModels.EditTeamViewModel();
+            ViewModel = new ViewModels.Team.EditTeamViewModel();
             ViewModel.FillTeam(teamId);
 
             BindingContext = ViewModel;

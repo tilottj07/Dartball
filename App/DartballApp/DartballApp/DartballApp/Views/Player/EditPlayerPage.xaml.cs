@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace DartballApp.Views
+namespace DartballApp.Views.Player
 {
     public partial class EditPlayerPage : ContentPage
     {
-        ViewModels.EditPlayerViewModel EditPlayerViewModel;
+        ViewModels.Player.EditPlayerViewModel EditPlayerViewModel;
 
 
         public EditPlayerPage(Guid? playerId)
         {
-            EditPlayerViewModel = new ViewModels.EditPlayerViewModel();
+            EditPlayerViewModel = new ViewModels.Player.EditPlayerViewModel();
             EditPlayerViewModel.FillPlayer(playerId);
 
             BindingContext = EditPlayerViewModel;

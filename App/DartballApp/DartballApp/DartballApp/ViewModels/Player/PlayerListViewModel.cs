@@ -8,7 +8,7 @@ using Dartball.BusinessLayer.Player.Implementation;
 using Dartball.BusinessLayer.Player.Interface;
 
 
-namespace DartballApp.ViewModels
+namespace DartballApp.ViewModels.Player
 {
     public class PlayerListViewModel 
     {

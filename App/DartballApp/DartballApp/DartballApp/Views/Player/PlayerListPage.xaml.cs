@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using DartballApp.ViewModels;
+using DartballApp.ViewModels.Player;
 using Xamarin.Forms;
 
-namespace DartballApp.Views
+namespace DartballApp.Views.Player
 {
     public partial class PlayerListPage : ContentPage
     {

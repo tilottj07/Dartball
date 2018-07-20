@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using DartballApp.ViewModels;
+using DartballApp.ViewModels.Team;
 using Xamarin.Forms;
 
-namespace DartballApp.Views
+namespace DartballApp.Views.Team
 {
     public partial class TeamListPage : ContentPage
     {

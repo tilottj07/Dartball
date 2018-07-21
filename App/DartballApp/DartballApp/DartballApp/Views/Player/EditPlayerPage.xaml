@@ -5,18 +5,22 @@
         <ScrollView>
             <StackLayout Padding="10, 25, 10, 10">
 
-                <Label Text="Name" FontSize="Large" />
+                <Label Text="Name" />
                 <Entry Placeholder="Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.Name}"/>
 
-                <Label Text="User Name" FontSize="Large" />
+                <Label Text="User Name" />
                 <Entry Placeholder="User Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.UserName}"/>
 
-                <Label Text="Password" FontSize="Large" />
+                <Label Text="Password (optional)" />
                 <Entry Placeholder="Password" IsPassword="true" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.Password}"/>
 
-                <Label Text="Email Address" FontSize="Large" />
+                <Label Text="Email Address (optional)" />
                 <Entry Placeholder="Email" Keyboard="Email" IsSpellCheckEnabled="false" Text="{Binding Player.EmailAddress}"/>
 
+                <Label Text="Player's Team (optional)"/>
+                <Picker x:Name="PlayerTeamPicker" ItemsSource="{Binding Teams}" ItemDisplayBinding="{Binding Name}" 
+                        SelectedIndex="{Binding TeamPickerDefaultSelectedIndex}"/>
+                
                 <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" VerticalOptions="End" Padding="10, 10, 10, 10">
                     <StackLayout Padding="10, 10, 10, 10">
                         <Button Text="Cancel" Clicked="Cancel" />

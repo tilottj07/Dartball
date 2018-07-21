@@ -33,7 +33,7 @@ namespace DartballApp.Views.Player
             Guid? playerId = null;
             if (player != null) playerId = player.PlayerId;
 
-            Navigation.PushModalAsync(new EditPlayerPage(playerId));
+            Navigation.PushModalAsync(new EditPlayerPage(playerId, leagueId: null));
 
         }
 

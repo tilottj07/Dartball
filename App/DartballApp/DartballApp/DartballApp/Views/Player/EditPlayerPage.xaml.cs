@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Dartball.BusinessLayer.Shared.Models;
 using Xamarin.Forms;
 
 namespace DartballApp.Views.Player
@@ -10,12 +12,14 @@ namespace DartballApp.Views.Player
         ViewModels.Player.EditPlayerViewModel EditPlayerViewModel;
 
 
-        public EditPlayerPage(Guid? playerId)
+        public EditPlayerPage(Guid? playerId, Guid? leagueId)
         {
-            EditPlayerViewModel = new ViewModels.Player.EditPlayerViewModel();
-            EditPlayerViewModel.FillPlayer(playerId);
-
+            EditPlayerViewModel = new ViewModels.Player.EditPlayerViewModel(playerId, leagueId);
+            EditPlayerViewModel.FillPlayer();
+            EditPlayerViewModel.FillTeams();
+                      
             BindingContext = EditPlayerViewModel;
+
 
             InitializeComponent();
         }
@@ -25,20 +29,33 @@ namespace DartballApp.Views.Player
             var result = EditPlayerViewModel.SavePlayer();
 
             if (!result.IsSuccess) {
+                DisplayErrors(result);
+            }
+            else {
+                
+                if (PlayerTeamPicker.SelectedIndex >= 0) {
+                    result = EditPlayerViewModel.SavePlayerTeam(EditPlayerViewModel.Teams[PlayerTeamPicker.SelectedIndex].TeamId);
+                }
+
+                MessagingCenter.Send<EditPlayerPage>(this, "PlayerEdited");
+                Navigation.PopModalAsync(animated: true);
+            }
+        }
+
+        public void DisplayErrors(ChangeResult result) {
+            if (!result.IsSuccess)
+            {
                 StringBuilder sb = new StringBuilder();
 
                 int index = 0;
-                foreach(var item in result.ErrorMessages) {
+                foreach (var item in result.ErrorMessages)
+                {
                     if (index > 0) sb.Append(" ");
                     sb.Append(item);
                     index++;
                 }
 
                 DisplayAlert("Alert", sb.ToString(), "OK");
-            }
-            else {
-                MessagingCenter.Send<EditPlayerPage>(this, "PlayerEdited");
-                Navigation.PopModalAsync(animated: true);
             }
         }
 

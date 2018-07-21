@@ -6,7 +6,7 @@ namespace DartballApp.Models
 {
     public class Player
     {
-        public Player(){ }
+        public Player(){ PlayerId = Guid.NewGuid(); }
 
         public Player(IPlayer player)
         {

@@ -48,5 +48,17 @@ namespace DartballApp.Views.Team
         {
             Navigation.PopModalAsync(animated: true);
         }
+
+
+        public void Done(object sender, EventArgs args) {
+
+            if (!string.IsNullOrWhiteSpace(ViewModel.Team.Name) || !string.IsNullOrWhiteSpace(ViewModel.Team.Password)) {
+                Save(sender, args);
+            }
+            else {
+                Cancel(sender, args);
+            }
+        }
+
     }
 }

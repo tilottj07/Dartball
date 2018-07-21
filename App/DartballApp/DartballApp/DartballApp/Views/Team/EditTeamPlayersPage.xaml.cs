@@ -11,6 +11,8 @@ namespace DartballApp.Views.Team
 
         public EditTeamPlayersPage(Guid teamId)
         {
+           
+
             ViewModel = new ViewModels.Team.EditTeamPlayersViewModel(teamId);
             ViewModel.FillTeamInfo();
             ViewModel.FillPlayers();
@@ -39,5 +41,12 @@ namespace DartballApp.Views.Team
             ViewModel.FillPlayers();
             BindingContext = this;
         }
+
+
+        public void GoBackToTeamsList(object sender, EventArgs args) {
+            Navigation.PopModalAsync();
+        }
+
+        //public void RemovePlayerFromTeam(object sender, selecte)
     }
 }

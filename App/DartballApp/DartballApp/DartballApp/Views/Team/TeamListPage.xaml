@@ -3,9 +3,8 @@
              x:Class="DartballApp.Views.Team.TeamListPage" 
              Title="Teams">
 
-
     <StackLayout>
-        <Button Text="Add Team" Clicked="GoToTeamEdit" HorizontalOptions="CenterAndExpand"/>
+        <Button Text="Add Team" Clicked="GoToTeamEdit"/>
         <ListView x:Name="TeamListView" ItemsSource="{Binding ViewModel.Teams}" ItemSelected="GoToTeamEdit">
             <ListView.ItemTemplate>
                 <DataTemplate>

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="DartballApp.Views.Team.EditTeamPlayersPage" Title="{Binding ViewModel.TeamName}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Done" Clicked="GoBackToTeamsList"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
 
+        
     <StackLayout>
-        <Button Text="Add Player" Clicked="ChooseTeamPlayerToAdd"/>
+        <Button Text="Add Player" Clicked="ChooseTeamPlayerToAdd" />
         <ListView x:Name="TeamPlayersListView" ItemsSource="{Binding ViewModel.TeamPlayers}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                     <TextCell Text="{Binding Name}" Detail="{Binding UserName}"/>       
+                    <TextCell Text="{Binding Name}" Detail="{Binding UserName}"/>                    
                 </DataTemplate>
             </ListView.ItemTemplate>    
         </ListView>

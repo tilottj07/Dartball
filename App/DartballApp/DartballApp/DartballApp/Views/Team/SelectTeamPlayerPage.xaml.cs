@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -17,6 +18,23 @@ namespace DartballApp.Views.Team
             BindingContext = this;
 
             InitializeComponent();
+        }
+
+        public void SearchBar_FilterPlayers(object sender, TextChangedEventArgs args) {
+            string filterText = args.NewTextValue;
+            if (!string.IsNullOrWhiteSpace(filterText)) {
+
+                filterText = filterText.Trim().ToUpper();
+                ViewModel.PlayersFiltered = ViewModel.AllPlayers.Where(y => y.Name.ToUpper().Contains(filterText)
+                                                                       || y.UserName.ToUpper().Contains(filterText)).ToList();
+
+            }
+            else {
+                ViewModel.PlayersFiltered = ViewModel.AllPlayers;
+            }
+
+            BindingContext = null;
+            BindingContext = this;
         }
 
 
@@ -43,5 +61,10 @@ namespace DartballApp.Views.Team
 
             Navigation.PopModalAsync();
         }
+
+        public void Cancel(object sender, EventArgs args) {
+            Navigation.PopModalAsync();
+        }
+
     }
 }

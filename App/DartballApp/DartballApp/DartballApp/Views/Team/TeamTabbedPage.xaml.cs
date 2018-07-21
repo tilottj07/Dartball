@@ -9,6 +9,8 @@ namespace DartballApp.Views.Team
     {
         public TeamTabbedPage(Guid? teamId)
         {
+           
+
             if (teamId.HasValue)
             {
                 NavigationPage editTeamPlayers = new NavigationPage(new EditTeamPlayersPage(teamId.Value)) { Title = "Team Players" };

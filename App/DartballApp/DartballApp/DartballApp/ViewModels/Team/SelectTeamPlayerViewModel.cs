@@ -22,19 +22,23 @@ namespace DartballApp.ViewModels.Team
         }
 
         public Guid TeamId { get; set; }
-        public ObservableCollection<Models.Player> Players { get; set; }
-
+        public List<Models.Player> PlayersFiltered { get; set; }
+        public List<Models.Player> AllPlayers { get; set; }
+                          
 
         public void FillAvailablePlayers() {
-            Players = new ObservableCollection<Models.Player>();
+            PlayersFiltered = new List<Models.Player>();
+            AllPlayers = new List<Models.Player>();
 
             List<Guid> teamPlayerIds = PlayerTeam.GetTeamPlayers(TeamId).Select(y => y.PlayerId).ToList();
 
             foreach(var player in Player.GetPlayers().OrderBy(y => y.Name)) {
                 if (!teamPlayerIds.Contains(player.PlayerId)) {
-                    Players.Add(new Models.Player(player));
+                    AllPlayers.Add(new Models.Player(player));
                 }
             }
+
+            PlayersFiltered.AddRange(AllPlayers);
         }
 
 

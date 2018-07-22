@@ -6,6 +6,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using HockeyApp.Android;
+using HockeyApp.Android.Metrics;
+
 
 namespace DartballApp.Droid
 {
@@ -14,6 +17,8 @@ namespace DartballApp.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
+            MetricsManager.Register(Application, "$com.companyname.DartballApp");
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -21,6 +26,12 @@ namespace DartballApp.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            CrashManager.Register(this, "$com.companyname.DartballApp");
         }
     }
 }

@@ -21,7 +21,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>8.0</string>
+	<string>10.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>DartballApp</string>
 	<key>CFBundleIdentifier</key>
@@ -34,5 +34,9 @@
 	<string>DartballApp</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>UIMainStoryboardFile</key>
+	<string>LaunchScreen</string>
+	<key>XSLaunchImageAssets</key>
+	<string>Assets.xcassets/LaunchImage.launchimage</string>
 </dict>
 </plist>

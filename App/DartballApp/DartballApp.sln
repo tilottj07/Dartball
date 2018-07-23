@@ -9,11 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartballApp.iOS", "Dartball
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartballApp", "DartballApp\DartballApp\DartballApp.csproj", "{7286B60F-E4DF-4EBB-8D43-6F5B1B41B051}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dartball.Domain", "..\..\Components\Dartball.Domain\Dartball.Domain\Dartball.Domain.csproj", "{18BAA5E9-B6AF-4B12-AD9C-C6001AC72038}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dartball.Domain", "..\..\Components\Dartball.Domain\Dartball.Domain\Dartball.Domain.csproj", "{18BAA5E9-B6AF-4B12-AD9C-C6001AC72038}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dartball.Data", "..\..\Components\Dartball.Data\Dartball.Data\Dartball.Data.csproj", "{26CF40BA-B064-4DF2-AF57-AA7677E6241F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dartball.Data", "..\..\Components\Dartball.Data\Dartball.Data\Dartball.Data.csproj", "{26CF40BA-B064-4DF2-AF57-AA7677E6241F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DartballBL", "..\..\Components\DartballBL\DartballBL\DartballBL.csproj", "{CBE1E17E-361F-4666-BEFD-5E231368027D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartballBL", "..\..\Components\DartballBL\DartballBL\DartballBL.csproj", "{CBE1E17E-361F-4666-BEFD-5E231368027D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

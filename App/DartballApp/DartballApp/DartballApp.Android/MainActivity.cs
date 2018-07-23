@@ -17,8 +17,6 @@ namespace DartballApp.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
-            MetricsManager.Register(Application, "$com.companyname.DartballApp");
-
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -26,12 +24,15 @@ namespace DartballApp.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+
+            MetricsManager.Register(Application, "4d2b087d950f45b393dfbfda7f2fa57e");
+            //MetricsManager.Register(Application);//, $"${this.Application.PackageName}");
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            CrashManager.Register(this, "$com.companyname.DartballApp");
+            CrashManager.Register(this, "4d2b087d950f45b393dfbfda7f2fa57e");
         }
     }
 }

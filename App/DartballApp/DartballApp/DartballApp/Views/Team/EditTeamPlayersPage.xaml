@@ -10,7 +10,7 @@
 
         
     <StackLayout>
-        <Button Text="Add Player" Clicked="ChooseTeamPlayerToAdd" />
+        <Button Text="Add Player to Team" Clicked="ChooseTeamPlayerToAdd" FontSize="Small"/>
         <ListView x:Name="TeamPlayersListView" ItemsSource="{Binding ViewModel.TeamPlayers}">
             <ListView.ItemTemplate>
                 <DataTemplate>

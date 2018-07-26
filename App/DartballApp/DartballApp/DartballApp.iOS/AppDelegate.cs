@@ -23,12 +23,12 @@ namespace DartballApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            var manager = BITHockeyManager.SharedHockeyManager;
-            manager.Configure("$com.companyname.DartballApp");
-            manager.StartManager();
-            manager.Authenticator.AuthenticateInstallation(); // This line is obsolete in crash only builds
-            manager.DisableMetricsManager = true;
-            manager.StartManager();
+          //  var manager = BITHockeyManager.SharedHockeyManager;
+          //  manager.Configure("$com.companyname.DartballApp");
+          //  manager.StartManager();
+          //  manager.Authenticator.AuthenticateInstallation(); // This line is obsolete in crash only builds
+          //  manager.DisableMetricsManager = true;
+          //  manager.StartManager();
 
             SQLitePCL.Batteries_V2.Init();
             global::Xamarin.Forms.Forms.Init();

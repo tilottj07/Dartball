@@ -14,15 +14,26 @@ namespace DartballApp.ViewModels.Team
     public class TeamPlayerLineupViewModel
     {
         ITeamPlayerLineupService TeamPlayerLineup;
+        IPlayerTeamService PlayerTeam;
+        ITeamService Team;
 
         public TeamPlayerLineupViewModel(Guid teamId)
         {
             TeamPlayerLineup = new TeamPlayerLineupService();
+            Team = new TeamService();
+            PlayerTeam = new PlayerTeamService();
             TeamId = teamId;
+            TeamName = string.Empty;
+            HasChanges = true;
         }
 
         public Guid TeamId { get; set; }
+        public string TeamName { get; set; }
+
         public List<Models.Player> Batters { get; set; }
+
+
+        public bool HasChanges { get; set; }
 
 
 
@@ -31,6 +42,18 @@ namespace DartballApp.ViewModels.Team
             foreach(var item in TeamPlayerLineup.GetTeamSortedBattingOrderPlayers(TeamId)) {
                 Batters.Add(new Models.Player(item));
             }
+
+            if (Batters.Count == 0) {
+                //add all players on the team
+                foreach(var item in PlayerTeam.GetTeamPlayerInformations(TeamId)) {
+                    Batters.Add(new Models.Player(item));
+                }
+            }
+
+        }
+        public void FillTeamInfo() {
+            var t = Team.GetTeam(TeamId);
+            if (t != null) TeamName = t.Name;
         }
 
        
@@ -52,7 +75,12 @@ namespace DartballApp.ViewModels.Team
             return TeamPlayerLineup.SetLineup(teamPlayerLineups);
         }
 
-       
+        public void RemovePlayerFromLineup(Guid playerId) {
+            var player = Batters.FirstOrDefault(y => y.PlayerId == playerId);
+            if (player != null) {
+                Batters.Remove(player);
+            }
+        }
 
     }
 }

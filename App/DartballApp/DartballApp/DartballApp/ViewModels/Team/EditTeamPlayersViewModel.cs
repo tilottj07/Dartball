@@ -35,7 +35,7 @@ namespace DartballApp.ViewModels.Team
         public void FillPlayers() {
             TeamPlayers = new ObservableCollection<Models.Player>();
 
-            foreach(var player in PlayerTeam.GetTeamPlayerInformations(TeamId).OrderBy(y => y.Name)) {
+            foreach(var player in PlayerTeam.GetTeamPlayerInformations(TeamId).OrderBy(y => y.LastName).ThenBy(y => y.Name)) {
                 TeamPlayers.Add(new Models.Player(player));
             }
         }

@@ -84,7 +84,8 @@ namespace DartballApp.ViewModels.Player
             {
                 PlayerId = Player.PlayerId,
                 EmailAddress = Player.EmailAddress,
-                Name = Player.Name,
+                Name = Player.FirstName,
+                LastName = Player.LastName,
                 UserName = Player.UserName,
                 Password = Player.Password
             };

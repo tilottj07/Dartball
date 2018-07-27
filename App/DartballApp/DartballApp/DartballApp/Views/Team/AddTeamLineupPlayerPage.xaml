@@ -7,7 +7,7 @@
         <ListView x:Name="SelectTeamPlayerForLineupListView" ItemsSource="{Binding ViewModel.Players}" ItemSelected="AddPlayerToTeamLineup">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding UserName}"/>           
+                    <TextCell Text="{Binding DisplayName}" Detail="{Binding UserName}"/>           
                 </DataTemplate>
             </ListView.ItemTemplate>    
         </ListView>

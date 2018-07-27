@@ -5,8 +5,11 @@
         <ScrollView>
             <StackLayout Padding="10, 25, 10, 10">
 
-                <Label Text="Name" />
-                <Entry Placeholder="Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.Name}"/>
+                <Label Text="First Name" />
+                <Entry Placeholder="First Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.FirstName}"/>
+
+                <Label Text="Last Name (optional)" />
+                <Entry Placeholder="Last Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.LastName}"/>
 
                 <Label Text="User Name" />
                 <Entry Placeholder="User Name" Keyboard="Default" IsSpellCheckEnabled="false" Text="{Binding Player.UserName}"/>

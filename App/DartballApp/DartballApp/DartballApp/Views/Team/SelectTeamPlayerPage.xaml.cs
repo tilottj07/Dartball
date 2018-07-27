@@ -25,7 +25,8 @@ namespace DartballApp.Views.Team
             if (!string.IsNullOrWhiteSpace(filterText)) {
 
                 filterText = filterText.Trim().ToUpper();
-                ViewModel.PlayersFiltered = ViewModel.AllPlayers.Where(y => y.Name.ToUpper().Contains(filterText)
+                ViewModel.PlayersFiltered = ViewModel.AllPlayers.Where(y => y.LastName.ToUpper().Contains(filterText)
+                                                                       || y.LastName.ToUpper().Contains(filterText)
                                                                        || y.UserName.ToUpper().Contains(filterText)).ToList();
 
             }

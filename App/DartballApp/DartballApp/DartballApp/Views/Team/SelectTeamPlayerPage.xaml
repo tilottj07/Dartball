@@ -9,7 +9,7 @@
         <ListView x:Name="SelectTeamPlayerListView" ItemsSource="{Binding ViewModel.PlayersFiltered}" ItemSelected="SelectedTeamPlayer">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding UserName}"/>           
+                    <TextCell Text="{Binding DisplayName}" Detail="{Binding UserName}"/>           
                 </DataTemplate>
             </ListView.ItemTemplate>    
         </ListView>

@@ -32,7 +32,7 @@ namespace DartballApp.ViewModels.Team
 
             List<Guid> teamPlayerIds = PlayerTeam.GetTeamPlayers(TeamId).Select(y => y.PlayerId).ToList();
 
-            foreach(var player in Player.GetPlayers().OrderBy(y => y.Name)) {
+            foreach(var player in Player.GetPlayers().OrderBy(y => y.LastName).ThenBy(y => y.Name)) {
                 if (!teamPlayerIds.Contains(player.PlayerId)) {
                     AllPlayers.Add(new Models.Player(player));
                 }

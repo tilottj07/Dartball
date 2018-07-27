@@ -14,7 +14,7 @@
         <ListView x:Name="TeamPlayersListView" ItemsSource="{Binding ViewModel.TeamPlayers}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding UserName}"/>                    
+                    <TextCell Text="{Binding DisplayName}" Detail="{Binding UserName}"/>                    
                 </DataTemplate>
             </ListView.ItemTemplate>    
         </ListView>

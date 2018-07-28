@@ -14,8 +14,27 @@
         <ListView x:Name="TeamPlayersListView" ItemsSource="{Binding ViewModel.TeamPlayers}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding DisplayName}" Detail="{Binding UserName}"/>                    
-                </DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10, 10, 10, 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="40"></ColumnDefinition>                             
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding DisplayName}" LineBreakMode="TailTruncation" VerticalOptions="Center"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding UserName}" FontSize="Small" 
+                                   LineBreakMode="TailTruncation" VerticalOptions="Center" HorizontalOptions="End"/>
+
+                            <Button Grid.Row="0" Grid.Column="2" Text="X" Clicked="RemovePlayerFromTeam" 
+                                    CommandParameter="{Binding PlayerId}" HorizontalOptions="Center"/>
+                         
+                        </Grid>
+                    </ViewCell>
+                  </DataTemplate>
             </ListView.ItemTemplate>    
         </ListView>
     </StackLayout>

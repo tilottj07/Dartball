@@ -19,5 +19,9 @@ namespace DartballApp.Views
         {
             Navigation.PushAsync(new Player.PlayerListPage());
         }
+
+        public void SetupQuickPlayGame(object sender, EventArgs args) {
+            DisplayAlert("", "Coming Soon...", "OK");
+        }
     }
 }

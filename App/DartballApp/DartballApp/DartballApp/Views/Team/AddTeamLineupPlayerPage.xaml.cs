@@ -38,6 +38,9 @@ namespace DartballApp.Views.Team
                     }
                     DisplayAlert("Alert", sb.ToString(), "OK");
                 }
+                else {
+                    MessagingCenter.Send(this, "PlayerAddedToLineup");
+                }
             }
             Navigation.PopModalAsync();
         }

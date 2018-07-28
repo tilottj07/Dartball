@@ -48,6 +48,7 @@ namespace DartballApp.ViewModels.Team
                 foreach(var item in PlayerTeam.GetTeamPlayerInformations(TeamId)) {
                     Batters.Add(new Models.Player(item));
                 }
+                SaveLineup();
             }
 
         }
@@ -79,6 +80,31 @@ namespace DartballApp.ViewModels.Team
             var player = Batters.FirstOrDefault(y => y.PlayerId == playerId);
             if (player != null) {
                 Batters.Remove(player);
+            }
+        }
+
+        public void MovePlayerUpInLineup(Guid playerId) {
+            var player = Batters.FirstOrDefault(y => y.PlayerId == playerId);
+            if (player != null) {
+                int playerIndex = Batters.IndexOf(player);
+                if (playerIndex > 0) {
+                    Batters.Remove(player);
+                    Batters.Insert((playerIndex - 1), player);
+                }
+            }
+        }
+
+        public void MovePlayerDownInLineup(Guid playerId)
+        {
+            var player = Batters.FirstOrDefault(y => y.PlayerId == playerId);
+            if (player != null)
+            {
+                int playerIndex = Batters.IndexOf(player);
+                if (playerIndex < (Batters.Count - 1))
+                {
+                    Batters.Remove(player);
+                    Batters.Insert((playerIndex + 1), player);
+                }
             }
         }
 

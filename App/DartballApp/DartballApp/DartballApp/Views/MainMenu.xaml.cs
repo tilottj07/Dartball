@@ -25,6 +25,7 @@ namespace DartballApp.Views
                 new MainMenuItem() { Title = "Teams", TargetType = typeof(Team.TeamListPage) }
             };
 
+
             // Set the default page, this is the "home" page.
             Detail = new NavigationPage(new MainPage());
 

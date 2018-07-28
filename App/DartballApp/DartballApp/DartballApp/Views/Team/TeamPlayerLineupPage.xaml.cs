@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using Dartball.BusinessLayer.Shared.Models;
 using Xamarin.Forms;
@@ -15,6 +14,9 @@ namespace DartballApp.Views.Team
             ViewModel = new ViewModels.Team.TeamPlayerLineupViewModel(teamId);
             ViewModel.FillBatters();
             ViewModel.FillTeamInfo();
+
+            MessagingCenter.Subscribe<SelectTeamPlayerPage>(this, "PlayerAddedToTeam", (sender) => { RefreshSavePlayers(); });
+            MessagingCenter.Subscribe<AddTeamLineupPlayerPage>(this, "PlayerAddedToLineup", (sender) => { RefreshSavePlayers(); });
 
             BindingContext = this;
             InitializeComponent();
@@ -32,28 +34,82 @@ namespace DartballApp.Views.Team
 
             if (ViewModel.HasChanges)
             {
-                //TODO: make this save async
                 var result = ViewModel.SaveLineup();
-                if (!result.IsSuccess)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    int index = 0;
-
-                    foreach (var item in result.ErrorMessages)
-                    {
-                        if (index > 0) sb.Append(" ");
-                        sb.Append(item);
-                        index++;
-                    }
-                    DisplayAlert("Alert", sb.ToString(), "OK");
-                }
+                if (!result.IsSuccess) DisplayAlert(result);
             }
             Navigation.PopModalAsync();
         }
 
+        private void RefreshSavePlayers() {
+            BindingContext = null;
+            ViewModel.FillBatters();
 
+            var result = ViewModel.SaveLineup();
+            if (!result.IsSuccess) DisplayAlert(result);
+
+            BindingContext = this;
+        }
+
+        private void RefreshPlayers()
+        {
+            BindingContext = null;
+            ViewModel.FillBatters();
+            BindingContext = this;
+        }
          
+        public void PlayerUp(object sender, EventArgs args) {
+            var button = sender as Button;
+            Guid playerId = Guid.Parse(button.CommandParameter.ToString());
 
+            ViewModel.MovePlayerUpInLineup(playerId);
+
+            var result = ViewModel.SaveLineup();
+            if (!result.IsSuccess) DisplayAlert(result);
+
+            RefreshPlayers();
+        }
+
+        public void PlayerDown(object sender, EventArgs args) {
+            var button = sender as Button;
+            Guid playerId = Guid.Parse(button.CommandParameter.ToString());
+
+            ViewModel.MovePlayerDownInLineup(playerId);
+           
+            var result = ViewModel.SaveLineup();
+            if (!result.IsSuccess) DisplayAlert(result);
+
+            RefreshPlayers();
+        }
+
+        public void PlayerRemove(object sender, EventArgs args) {
+            var button = sender as Button;
+            Guid playerId = Guid.Parse(button.CommandParameter.ToString());
+
+            ViewModel.RemovePlayerFromLineup(playerId);
+
+            var result = ViewModel.SaveLineup();
+            if (!result.IsSuccess) DisplayAlert(result);
+
+            RefreshPlayers();
+        }
+
+
+
+        private void DisplayAlert(ChangeResult result) {
+            if (!result.IsSuccess)
+            {
+                StringBuilder sb = new StringBuilder();
+                int index = 0;
+
+                foreach (var item in result.ErrorMessages)
+                {
+                    if (index > 0) sb.Append(" ");
+                    sb.Append(item);
+                    index++;
+                }
+                DisplayAlert("Alert", sb.ToString(), "OK");
+            }
+        }
 
     }
 }

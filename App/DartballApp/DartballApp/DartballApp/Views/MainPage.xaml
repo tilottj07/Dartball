@@ -10,7 +10,8 @@
     
         <StackLayout>
 
-     
+            <Button Text="Play Game" Clicked="SetupQuickPlayGame" />
+            
             <Label Text="Welcome to Dartball :)" 
                HorizontalOptions="Center"
                VerticalOptions="CenterAndExpand" />

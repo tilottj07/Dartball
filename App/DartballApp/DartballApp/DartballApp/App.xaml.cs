@@ -10,7 +10,6 @@ namespace DartballApp
 		public App ()
 		{
 			InitializeComponent();
-
             MainPage = new Views.MainMenu();
 		}
 

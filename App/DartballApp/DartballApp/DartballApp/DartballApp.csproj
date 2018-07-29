@@ -21,6 +21,8 @@
     <Folder Include="Views\Player\" />
     <Folder Include="ViewModels\Team\" />
     <Folder Include="ViewModels\Player\" />
+    <Folder Include="Views\Game\" />
+    <Folder Include="ViewModels\Game\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Views\Navigation.cs" />

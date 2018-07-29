@@ -3,33 +3,36 @@
              x:Class="DartballApp.Views.Player.PlayerListPage" Title="Players">
 
      
-    
-   <StackLayout>
-        <Button Text="Add Player" Clicked="GoToPlayerEdit" HorizontalOptions="CenterAndExpand"/>
-        <ListView x:Name="PlayerListView" ItemsSource="{Binding ViewModel.Players}" ItemSelected="GoToPlayerEdit">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid Padding="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="80"></ColumnDefinition>
+    <ScrollView>
+        <StackLayout>
+                              
+            <Button Text="Add Player" Clicked="GoToPlayerEdit" HorizontalOptions="CenterAndExpand"/>
+            <ListView x:Name="PlayerListView" ItemsSource="{Binding ViewModel.Players}" ItemSelected="GoToPlayerEdit">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="80"></ColumnDefinition>
 
-                            </Grid.ColumnDefinitions>
+                                </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding DisplayName}" LineBreakMode="TailTruncation" VerticalOptions="Center"/>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding UserName}" FontSize="Small" 
-                                   LineBreakMode="TailTruncation" VerticalOptions="Center" HorizontalOptions="End"/>
-                         
-                        </Grid>
-                    </ViewCell>
-                  </DataTemplate>
-            </ListView.ItemTemplate>    
-        </ListView>
-    </StackLayout>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding DisplayName}" LineBreakMode="TailTruncation" VerticalOptions="Center"/>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding UserName}" FontSize="Small" 
+                                       LineBreakMode="TailTruncation" VerticalOptions="Center" HorizontalOptions="End"/>
+                             
+                            </Grid>
+                        </ViewCell>
+                      </DataTemplate>
+                </ListView.ItemTemplate>    
+            </ListView>
+            
+        </StackLayout>
+    </ScrollView>
    
 
 

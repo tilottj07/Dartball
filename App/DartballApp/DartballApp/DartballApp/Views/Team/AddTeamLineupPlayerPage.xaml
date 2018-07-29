@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DartballApp.Views.Team.AddTeamLineupPlayerPage">
 
-
-    <StackLayout>
-        <Button Text="Cancel" Clicked="Cancel"/>       
-        <ListView x:Name="SelectTeamPlayerForLineupListView" ItemsSource="{Binding ViewModel.Players}" ItemSelected="AddPlayerToTeamLineup">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding DisplayName}" Detail="{Binding UserName}"/>           
-                </DataTemplate>
-            </ListView.ItemTemplate>    
-        </ListView>
-    </StackLayout>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0"/>
+    </ContentPage.Padding>
+    
+    <ScrollView>
+        <StackLayout>
+            <Button Text="Cancel" Clicked="Cancel"/>       
+            <ListView x:Name="SelectTeamPlayerForLineupListView" ItemsSource="{Binding ViewModel.Players}" ItemSelected="AddPlayerToTeamLineup">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding DisplayName}" Detail="{Binding UserName}"/>           
+                    </DataTemplate>
+                </ListView.ItemTemplate>    
+            </ListView>
+        </StackLayout>
+    </ScrollView>
     
     
 </ContentPage>

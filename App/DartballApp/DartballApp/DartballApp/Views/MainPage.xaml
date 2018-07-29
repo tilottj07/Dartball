@@ -7,16 +7,17 @@
 
      <ContentPage.Content>
 
-    
-        <StackLayout>
+        <ScrollView>
+            <StackLayout>
 
-            <Button Text="Play Game" Clicked="SetupQuickPlayGame" />
-            
-            <Label Text="Welcome to Dartball :)" 
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
-      
-        </StackLayout>
+                <Button Text="Play Game" Clicked="SetupQuickPlayGame" />
+                
+                <Label Text="Welcome to Dartball :)" 
+                   HorizontalOptions="Center"
+                   VerticalOptions="CenterAndExpand" />
+          
+            </StackLayout>
+        </ScrollView>
 
     </ContentPage.Content>
         

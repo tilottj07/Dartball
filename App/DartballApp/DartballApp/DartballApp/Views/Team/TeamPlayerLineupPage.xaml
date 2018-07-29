@@ -8,38 +8,39 @@
         <ToolbarItem Text="Done" Clicked="Done"/>
     </ContentPage.ToolbarItems>
     
-    
-    <StackLayout>
-        <Button Text="Add Team Player to Lineup" Clicked="AddTeamPlayerToLineup" FontSize="Small"/>
-        <ListView x:Name="SetLineupListView" ItemsSource="{Binding ViewModel.Batters}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid Padding="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
+    <ScrollView>
+        <StackLayout>
+            <Button Text="Add Team Player to Lineup" Clicked="AddTeamPlayerToLineup" FontSize="Small"/>
+            <ListView x:Name="SetLineupListView" ItemsSource="{Binding ViewModel.Batters}" SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding DisplayName}" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
-                            
-                            <Button Grid.Row="0" Grid.Column="1" Text="X" Clicked="PlayerRemove" 
-                                    CommandParameter="{Binding PlayerId}" HorizontalOptions="Center"/>
-                            <Button Grid.Row="0" Grid.Column="2" Text="↑" Clicked="PlayerUp" 
-                                    CommandParameter="{Binding PlayerId}" HorizontalOptions="Center"/>
-                            <Button Grid.Row="0" Grid.Column="3" Text="↓" Clicked="PlayerDown" 
-                                    CommandParameter="{Binding PlayerId}" HorizontalOptions="Center"/>
-                            
-                        </Grid>
-                    </ViewCell>
-                  </DataTemplate>
-            </ListView.ItemTemplate>    
-        </ListView>
-    </StackLayout>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding DisplayName}" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
+                                
+                                <Button Grid.Row="0" Grid.Column="1" Text="X" Clicked="PlayerRemove" 
+                                        CommandParameter="{Binding PlayerId}" HorizontalOptions="Center"/>
+                                <Button Grid.Row="0" Grid.Column="2" Text="↑" Clicked="PlayerUp" 
+                                        CommandParameter="{Binding PlayerId}" HorizontalOptions="Center"/>
+                                <Button Grid.Row="0" Grid.Column="3" Text="↓" Clicked="PlayerDown" 
+                                        CommandParameter="{Binding PlayerId}" HorizontalOptions="Center"/>
+                                
+                            </Grid>
+                        </ViewCell>
+                      </DataTemplate>
+                </ListView.ItemTemplate>    
+            </ListView>
+        </StackLayout>
+    </ScrollView>
 
 </ContentPage>

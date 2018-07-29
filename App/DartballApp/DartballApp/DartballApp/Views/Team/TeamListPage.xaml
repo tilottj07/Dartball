@@ -4,14 +4,16 @@
              Title="Teams">
 
     <StackLayout>
-        <Button Text="Add Team" Clicked="GoToTeamEdit"/>
-        <ListView x:Name="TeamListView" ItemsSource="{Binding ViewModel.Teams}" ItemSelected="GoToTeamEdit">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                     <TextCell Text="{Binding Name}" />       
-                </DataTemplate>
-            </ListView.ItemTemplate>    
-        </ListView>
+        <ScrollView>
+            <Button Text="Add Team" Clicked="GoToTeamEdit"/>
+            <ListView x:Name="TeamListView" ItemsSource="{Binding ViewModel.Teams}" ItemSelected="GoToTeamEdit">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                         <TextCell Text="{Binding Name}" />       
+                    </DataTemplate>
+                </ListView.ItemTemplate>    
+            </ListView>
+        </ScrollView>
     </StackLayout>
     
 </ContentPage>

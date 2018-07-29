@@ -15,6 +15,7 @@ namespace DartballApp.ViewModels.Team
     {
         IPlayerTeamService PlayerTeam;
         ITeamService Team;
+        ITeamPlayerLineupService TeamPlayerLineup;
 
         public EditTeamPlayersViewModel(Guid teamId)
         {
@@ -22,6 +23,7 @@ namespace DartballApp.ViewModels.Team
 
             PlayerTeam = new PlayerTeamService();
             Team = new TeamService();
+            TeamPlayerLineup = new TeamPlayerLineupService();
         }
 
         public Guid TeamId { get; set; }
@@ -55,7 +57,14 @@ namespace DartballApp.ViewModels.Team
 
 
         public ChangeResult RemoveTeamPlayer(Guid playerId) {
-            return PlayerTeam.Remove(playerId, TeamId);
+
+            //remove player from lineup, then from the actual team
+            var result = TeamPlayerLineup.Remove(TeamId, playerId);
+            if (result.IsSuccess) {
+                result = PlayerTeam.Remove(playerId, TeamId);
+            }
+
+            return result;
         }
     }
 }

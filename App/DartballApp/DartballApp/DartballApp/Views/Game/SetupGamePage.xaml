@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="DartballApp.Views.Game.SetupGamePage"
+             Title="Game Setup">
+
+    <ContentPage.Content>
+
+        <ScrollView>
+            <StackLayout Padding="0, 20, 0, 0">
+                <Label Text="Select Away Team"/>
+                <Picker x:Name="AwayTeamPicker" ItemsSource="{Binding ViewModel.AwayTeams}" ItemDisplayBinding="{Binding Name}" />
+
+                <Label Text="Select Home Team"/>
+                <Picker x:Name="HomeTeamPicker" ItemsSource="{Binding ViewModel.HomeTeams}" ItemDisplayBinding="{Binding Name}" />
+
+                <Button Text="Set Away Team Lineup" Clicked="SetAwayTeamLineup" />
+                <Button Text="Set Home Team Lineup" Clicked="SetHomeTeamLineup" />
+                
+                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" VerticalOptions="End" Padding="10, 10, 10, 10">
+                    <StackLayout Padding="10, 10, 10, 10">
+                        <Button Text="Cancel" Clicked="Cancel" />
+                    </StackLayout>
+                    <StackLayout Padding="40, 10, 10, 10">
+                        <Button Text="Review" Clicked="SaveTeams" />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+            
+    </ContentPage.Content>
+</ContentPage>

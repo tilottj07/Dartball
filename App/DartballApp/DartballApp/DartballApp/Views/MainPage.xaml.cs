@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Dartball.BusinessLayer.League.Implementation;
+using Dartball.BusinessLayer.League.Interface;
 using Xamarin.Forms;
 
 namespace DartballApp.Views
@@ -21,7 +19,12 @@ namespace DartballApp.Views
         }
 
         public void SetupQuickPlayGame(object sender, EventArgs args) {
-            DisplayAlert("", "Coming Soon...", "OK");
+
+            //TODO: replace with proper league settings
+            ILeagueService leagueService = new LeagueService();
+            var league = leagueService.GetGenericLeague();
+
+            Navigation.PushModalAsync(new NavigationPage( new Game.SetupGamePage(league.LeagueId)));
         }
     }
 }

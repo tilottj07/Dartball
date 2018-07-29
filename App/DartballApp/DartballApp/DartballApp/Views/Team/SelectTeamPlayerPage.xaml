@@ -2,18 +2,19 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DartballApp.Views.Team.SelectTeamPlayerPage">
    
 
-    
-    <StackLayout>
-        <SearchBar x:Name="PlayerSearchBar" Placeholder="Search" TextChanged="SearchBar_FilterPlayers"/>
-        <Button Text="Cancel" Clicked="Cancel"/>       
-        <ListView x:Name="SelectTeamPlayerListView" ItemsSource="{Binding ViewModel.PlayersFiltered}" ItemSelected="SelectedTeamPlayer">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding DisplayName}" Detail="{Binding UserName}"/>           
-                </DataTemplate>
-            </ListView.ItemTemplate>    
-        </ListView>
-    </StackLayout>
+    <ScrollView>
+        <StackLayout>
+            <SearchBar x:Name="PlayerSearchBar" Placeholder="Search" TextChanged="SearchBar_FilterPlayers"/>
+            <Button Text="Cancel" Clicked="Cancel"/>       
+            <ListView x:Name="SelectTeamPlayerListView" ItemsSource="{Binding ViewModel.PlayersFiltered}" ItemSelected="SelectedTeamPlayer">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding DisplayName}" Detail="{Binding UserName}"/>           
+                    </DataTemplate>
+                </ListView.ItemTemplate>    
+            </ListView>
+        </StackLayout>
+    </ScrollView>
 
     
 </ContentPage>

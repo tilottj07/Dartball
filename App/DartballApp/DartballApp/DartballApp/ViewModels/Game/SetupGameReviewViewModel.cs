@@ -30,12 +30,12 @@ namespace DartballApp.ViewModels.Game
 
         public string AwayTeamDisplayDescription {
             get {
-                return $"Away Team: {AwayTeamName}";
+                return $"Away: {AwayTeamName}";
             }
         }
         public string HomeTeamDisplayDescription {
             get {
-                return $"Home Team: {HomeTeamName}";
+                return $"Home: {HomeTeamName}";
             }
         }
 

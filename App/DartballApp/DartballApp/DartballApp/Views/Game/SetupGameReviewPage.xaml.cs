@@ -11,12 +11,28 @@ namespace DartballApp.Views.Game
 
         public SetupGameReviewPage(Guid gameId)
         {
+            InitializeComponent();
+
             ViewModel = new ViewModels.Game.SetupGameReviewViewModel(gameId);
             ViewModel.FillInformation();
 
             BindingContext = this;
 
-            InitializeComponent();
+
+
+            int counter = 0;
+            foreach (var item in ViewModel.AwayTeamLineup)
+            {
+                AwayTeamContainer.Children.Add(new Label { Text = $"{++counter}. {item.DisplayName}" });
+            }
+
+            counter = 0;
+            foreach (var item in ViewModel.HomeTeamLineup)
+            {
+                HomeTeamContainer.Children.Add(new Label { Text = $"{++counter}. {item.DisplayName}" });
+            }
+
+           
         }
 
 

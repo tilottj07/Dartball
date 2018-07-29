@@ -5,51 +5,28 @@
     <ContentPage.Content>
 
         <ScrollView>
-            <StackLayout>
-                <Label Text="{Binding ViewModel.AwayTeamDisplayDescription}"/>
-                <ListView x:Name="AwayTeamLineupReview" ItemsSource="{Binding ViewModel.AwayTeamLineup}" SelectionMode="None">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid Padding="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
+            <StackLayout Padding="10">
+                <StackLayout>
+                    <Label Text="{Binding ViewModel.AwayTeamDisplayDescription}" FontSize="Large" />
+                    <StackLayout x:Name="AwayTeamContainer" Padding="30, 0, 0, 0">
+                    </StackLayout>
+                </StackLayout>
 
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding DisplayName}" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
-
-                                
-                            </Grid>
-                        </ViewCell>
-                      </DataTemplate>
-                </ListView.ItemTemplate>    
-            </ListView>
+                <StackLayout Padding="0, 40, 0, 0">
+                    <Label Text="{Binding ViewModel.HomeTeamDisplayDescription}" FontSize="Large" />
+                    <StackLayout x:Name="HomeTeamContainer" Padding="30, 0, 0, 0">
+                    </StackLayout>
+                </StackLayout>
 
 
-            <Label Text="{Binding ViewModel.HomeTeamDisplayDescription}"/>
-                <ListView x:Name="HomeTeamLineupReview" ItemsSource="{Binding ViewModel.HomeTeamLineup}" SelectionMode="None">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid Padding="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding DisplayName}" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
-
-                                
-                            </Grid>
-                        </ViewCell>
-                      </DataTemplate>
-                </ListView.ItemTemplate>    
-            </ListView>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" VerticalOptions="End" Padding="10, 10, 10, 10">
+                    <StackLayout Padding="10, 10, 10, 10">
+                        <Button Text="Cancel" Clicked="Cancel" />
+                    </StackLayout>
+                    <StackLayout Padding="40, 10, 10, 10">
+                        <Button Text="Start Game" Clicked="PlayGame" />
+                    </StackLayout>
+                </StackLayout>
                 
             </StackLayout>
             

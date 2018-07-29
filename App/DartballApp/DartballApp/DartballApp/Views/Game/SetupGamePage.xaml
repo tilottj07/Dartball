@@ -6,7 +6,7 @@
     <ContentPage.Content>
 
         <ScrollView>
-            <StackLayout Padding="0, 20, 0, 0">
+            <StackLayout Padding="10, 20, 0, 0">
                 <Label Text="Select Away Team"/>
                 <Picker x:Name="AwayTeamPicker" ItemsSource="{Binding ViewModel.AwayTeams}" ItemDisplayBinding="{Binding Name}" />
 
@@ -21,7 +21,7 @@
                         <Button Text="Cancel" Clicked="Cancel" />
                     </StackLayout>
                     <StackLayout Padding="40, 10, 10, 10">
-                        <Button Text="Review" Clicked="SaveTeams" />
+                        <Button Text="Review and Play" Clicked="SaveTeams" />
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

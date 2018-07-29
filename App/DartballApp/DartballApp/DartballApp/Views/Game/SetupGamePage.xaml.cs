@@ -70,7 +70,7 @@ namespace DartballApp.Views.Game
             }
             else
             {
-               //navigate to game review page
+                Navigation.PushAsync(new SetupGameReviewPage(ViewModel.GameId));
             }
         }
 

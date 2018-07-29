@@ -19,6 +19,7 @@ namespace DartballApp.ViewModels.Game
         public SetupGameViewModel(Guid leagueId)
         {
             LeagueId = leagueId;
+            GameId = Guid.NewGuid();
 
             Team = new TeamService();
             Game = new GameService();
@@ -27,6 +28,8 @@ namespace DartballApp.ViewModels.Game
 
 
         public Guid LeagueId { get; set; }
+        public Guid GameId { get; set; }
+
         public List<Models.Team> LeagueTeams { get; set; }
 
 
@@ -49,10 +52,9 @@ namespace DartballApp.ViewModels.Game
         public ChangeResult SaveGameTeams(Models.Team awayTeam, Models.Team homeTeam) {
 
             //create game
-            Guid gameId = Guid.NewGuid();
-            var result = Game.AddNew(new GameDto()
+            var result = Game.Save(new GameDto()
             {
-                GameId = gameId,
+                GameId = GameId,
                 GameDate = DateTime.UtcNow,
                 LeagueId = LeagueId
             });
@@ -61,7 +63,7 @@ namespace DartballApp.ViewModels.Game
             if (result.IsSuccess) {
                 result = GameTeam.Save(new GameTeamDto()
                 {
-                    GameId = gameId,
+                    GameId = GameId,
                     TeamId = awayTeam.TeamId,
                     TeamBattingSequence = 0
                 });
@@ -71,7 +73,7 @@ namespace DartballApp.ViewModels.Game
             if (result.IsSuccess) {
                 result = GameTeam.Save(new GameTeamDto()
                 {
-                    GameId = gameId,
+                    GameId = GameId,
                     TeamId = homeTeam.TeamId,
                     TeamBattingSequence = 1
                 });

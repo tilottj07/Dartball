@@ -36,13 +36,19 @@ namespace DartballApp.Views.Game
         }
 
 
-        public void PlayGame(object sender, EventArgs args) {
-            DisplayAlert("Hello Bucko", "Coming Soon...", "OK");
+        public async void PlayGame(object sender, EventArgs args) {
+            bool answer = await DisplayAlert("Start Game?", "Are you sure you want to begin the game?  Once the game has started the " +
+                                             "lineups can no longer be altered.", "Yes", "No");
+
+            if (answer == true) NavigateToPlayGame();
         }
 
         public void Cancel(object sender, EventArgs args)  {
             Navigation.PopModalAsync();
         }
 
+        void NavigateToPlayGame() {
+            DisplayAlert("Hello Bucko", "Coming Soon...", "OK");
+        }
     }
 }

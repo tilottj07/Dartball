@@ -48,7 +48,7 @@ namespace DartballApp.Views.Game
         }
 
         void NavigateToPlayGame() {
-            DisplayAlert("Hello Bucko", "Coming Soon...", "OK");
+            Navigation.PushModalAsync(new PlayGamePage(ViewModel.GameId));
         }
     }
 }

@@ -16,10 +16,7 @@ namespace DartballApp.Views.Game
             
             ViewModel = new ViewModels.Game.PlayGameViewModel(gameId);
             ViewModel.InitializeGame();
-            ViewModel.FillCurrentInning();
-            ViewModel.FillCurrentAtBatTeam();
-            ViewModel.FillCurrentAtBatTeamPlayer();
-            ViewModel.FillBoxScore();
+
 
             BindingContext = this;
         }
@@ -36,5 +33,6 @@ namespace DartballApp.Views.Game
 
             BindingContext = this;
         }
+
     }
 }

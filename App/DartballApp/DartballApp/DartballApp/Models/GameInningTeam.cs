@@ -9,6 +9,7 @@ namespace DartballApp.Models
         {
             GameInningId = gameInningId;
             GameTeamId = gameTeamId;
+            HasData = true;
         }
 
         public GameInningTeam(IGameInningTeam gameInningTeam) {
@@ -21,8 +22,11 @@ namespace DartballApp.Models
                 IsRunnerOnFirst = gameInningTeam.IsRunnerOnFirst;
                 IsRunnerOnSecond = gameInningTeam.IsRunnerOnSecond;
                 IsRunnerOnThird = gameInningTeam.IsRunnerOnThird;
+                HasData = true;
             }
         }
+
+        public bool HasData { get; set; }
 
         public Guid GameInningTeamId { get; set; }
         public Guid GameInningId { get; set; }

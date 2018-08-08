@@ -10,6 +10,7 @@ namespace DartballApp.Models
             GameInningTeamId = gameInningTeamId;
             PlayerId = playerId;
             Sequence = sequence;
+            HasData = true;
         }
 
         public GameInningTeamBatter(IGameInningTeamBatter gameInningTeamBatter) {
@@ -21,9 +22,11 @@ namespace DartballApp.Models
                 EventType = gameInningTeamBatter.EventType;
                 TargetEventType = gameInningTeamBatter.TargetEventType;
                 RBIs = gameInningTeamBatter.RBIs;
+                HasData = true;
             }
         }
 
+        public bool HasData { get; set; }
 
         public Guid GameInningTeamBatterId { get; set; }
         public Guid GameInningTeamId { get; set; }

@@ -1,42 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DartballApp.Views.Game.PlayGamePage">
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 30, 0, 0"/>
+    </ContentPage.Padding>
+    
     <ContentPage.Content>
 
-        <ScrollView>
-            <Grid>
-             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="200" />
-              </Grid.RowDefinitions>  
+        <StackLayout>
+            
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
 
-                <Button Text="1" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="2" 
-                        Grid.Row="0" Grid.Column="0" />
-                <Button Text="2" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="3" 
-                        Grid.Row="0" Grid.Column="1" />
-                <Button Text="3" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="4" 
-                        Grid.Row="0" Grid.Column="2" />
-                <Button Text="HR" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="5" 
-                        Grid.Row="0" Grid.Column="3" />
-                <Button Text="Out" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="1" 
-                        Grid.Row="1" Grid.Column="0" />
-                <Button Text="Walk" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="6" 
-                        Grid.Row="1" Grid.Column="1" />
-                <Button Text="DP" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="7" 
-                        Grid.Row="1" Grid.Column="2" />
-                <Button Text="SH" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="8" 
-                        Grid.Row="1" Grid.Column="3" />
-                <Button Text="2BS" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="9" 
-                        Grid.Row="2" Grid.Column="0" />
-                
-            </Grid>
-        </ScrollView>
+            <Label Text="{Binding ViewModel.AtBatTeam}" Grid.Row="0" Grid.Column="0"  />
+            <Label Text="{Binding ViewModel.AtBatPlayer}" Grid.Row="1" Grid.Column="0" />
+            <Label Text="{Binding ViewModel.CurrentInningDisplay}" Grid.Row="2" Grid.Column="0" />
+            <Label Text="{Binding ViewModel.OutsDisplay}" Grid.Row="0" Grid.Column="1" />
+            <Label Text="{Binding ViewModel.RunsDisplay}" Grid.Row="1" Grid.Column="1" />
+            <Label Text="{Binding ViewModel.RunnersOnDisplay}" Grid.Row="2" Grid.Column="1" />
+
+            
+        </Grid>
+        
+        <Grid>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="4*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="5*" />
+          </Grid.RowDefinitions>  
+
+            
+            
+            <Button Text="1" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="2" 
+                    Grid.Row="1" Grid.Column="0" />
+            <Button Text="2" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="3" 
+                    Grid.Row="1" Grid.Column="1" />
+            <Button Text="3" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="4" 
+                    Grid.Row="1" Grid.Column="2" />
+            <Button Text="HR" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="5" 
+                    Grid.Row="1" Grid.Column="3" />
+            <Button Text="Out" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="1" 
+                    Grid.Row="2" Grid.Column="0" />
+            <Button Text="Walk" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="6" 
+                    Grid.Row="2" Grid.Column="1" />
+            <Button Text="DP" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="7" 
+                    Grid.Row="2" Grid.Column="2" />
+            <Button Text="SH" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="8" 
+                    Grid.Row="2" Grid.Column="3" />
+            <Button Text="2BS" FontSize="Large" Clicked="SaveBatterEvent" CommandParameter="9" 
+                    Grid.Row="3" Grid.Column="3" />
+            
+        </Grid>
+        
+        </StackLayout>
         
     </ContentPage.Content>
 </ContentPage>

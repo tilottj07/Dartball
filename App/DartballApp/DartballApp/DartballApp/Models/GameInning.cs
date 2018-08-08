@@ -9,16 +9,19 @@ namespace DartballApp.Models
         {
             GameId = gameId;
             InningNumber = inningNumber;
+            HasData = true;
         }
 
         public GameInning(IGameInning gameInning) {
             if (gameInning != null) {
+                HasData = true;
                 GameInningId = gameInning.GameInningId;
                 GameId = gameInning.GameId;
                 InningNumber = gameInning.InningNumber;
             }
         }
 
+        public bool HasData { get; set; }
 
         public Guid GameInningId { get; set; }
         public Guid GameId { get; set; }

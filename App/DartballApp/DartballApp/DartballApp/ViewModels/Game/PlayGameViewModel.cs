@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dartball.BusinessLayer.Game.Dto;
 using Dartball.BusinessLayer.Game.Implementation;
 using Dartball.BusinessLayer.Game.Interface;
@@ -47,54 +48,72 @@ namespace DartballApp.ViewModels.Game
 
         void PreLoadGameData()
         {
+            CurrentGame = new Models.Game(Game.GetGame(GameId));
             GameTeams = GameTeam.GetGameTeams(GameId).Where(y => !y.DeleteDate.HasValue).OrderBy(y => y.TeamBattingSequence).ToList();
 
             //Fill Teams
             Teams = Team.GetTeams(GameTeams.Select(y => y.TeamId).ToList());
 
-            //Fill Team Lineups and players
-            TeamLineupDict = new Dictionary<Guid, List<IPlayer>>();
+            //load all players in this game
             AllPlayers = new List<IPlayer>();
             foreach (var gt in GameTeams)
             {
-                if (!TeamLineupDict.ContainsKey(gt.GameTeamId)) TeamLineupDict.Add(gt.GameTeamId, new List<IPlayer>());
-                foreach (var player in TeamPlayerLineup.GetTeamSortedBattingOrderPlayers(gt.TeamId))
-                {
-                    TeamLineupDict[gt.GameTeamId].Add(player);
-                    AllPlayers.Add(player);
-                }
+                foreach (var player in TeamPlayerLineup.GetTeamSortedBattingOrderPlayers(gt.TeamId)) AllPlayers.Add(player);                
             }
         }
+
+        Models.Game CurrentGame { get; set; }
+        Models.GameInning CurrentGameInning { get; set; }
+        Models.GameInningTeam CurrentGameInningTeam { get; set; }
+        Models.GameInningTeamBatter CurrentGameInningTeamBatter { get; set; }
+        Models.Team CurrentTeam { get; set; }
+        Models.Player CurrentPlayer { get; set; }
 
 
         List<IGameTeam> GameTeams { get; set; }
         List<ITeam> Teams { get; set; }
 
-        Dictionary<Guid, List<IPlayer>> TeamLineupDict { get; set; }
         List<IPlayer> AllPlayers { get; set; }
 
 
         public Guid GameId { get; set; }
         public Models.BoxScore GameBoxScore { get; set; }
 
-        public int CurrentInning { get; set; }
-        public Guid CurrentGameInningId { get; set; }
-        Guid CurrentGameInningTeamId { get; set; }
+        public int CurrentInning { get { return CurrentGameInning != null ? CurrentGameInning.InningNumber : 0; } }
+        public string CurrentInningDisplay { get { return $"Inning #: {CurrentInning}"; } }
 
-        public Guid AtBatGameTeamId { get; set; }
-        public string AtBatTeam { get; set; }
+        public Guid AtBatTeamId { get { return CurrentTeam != null ? CurrentTeam.TeamId : Guid.Empty; } }
+        public string AtBatTeam { get { return CurrentTeam != null ? CurrentTeam.Name : string.Empty; } }
 
 
-        public Guid PlayerId { get; set; }
-        public string AtBatPlayer { get; set; }
-        public int InningBatterSequence { get; set; }
+
+
+        public Guid PlayerId { get { return CurrentPlayer != null ? CurrentPlayer.PlayerId : Guid.Empty; } }
+        public string AtBatPlayer { get { return CurrentPlayer != null ? CurrentPlayer.DisplayName : string.Empty; } }
+        public int InningBatterSequence { get { return CurrentGameInningTeamBatter != null ? CurrentGameInningTeamBatter.Sequence : 0; } }
 
 
         public int Outs { get; set; }
+        public string OutsDisplay { get { return $"Inning Outs: {Outs}"; } }
         public int Runs { get; set; }
+        public string RunsDisplay { get { return $"Inning Runs: {Runs}"; } }
         public bool IsRunnerOnFirst { get; set; }
         public bool IsRunnerOnSecond { get; set; }
         public bool IsRunnerOnThird { get; set; }
+        bool AdvanceToNextHalfInning { get; set; }
+
+        public string RunnersOnDisplay {
+            get {
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append("Runners On: ");
+                if (IsRunnerOnFirst) sb.Append("1 ");
+                if (IsRunnerOnSecond) sb.Append("2 ");
+                if (IsRunnerOnThird) sb.Append("3 ");
+
+                return sb.ToString().Trim();
+            }
+        }
 
 
 
@@ -104,57 +123,40 @@ namespace DartballApp.ViewModels.Game
         }
 
 
-        public ChangeResult InitializeGame()
+        public void InitializeGame()
         {
-            //add inning 1
-            CurrentGameInningId = Guid.NewGuid();
-            GameInningDto gameInning = new GameInningDto()
+            FillCurrentInning();
+            if (!CurrentGameInning.HasData)
             {
-                InningNumber = 1,
-                GameId = GameId,
-                GameInningId = CurrentGameInningId
-            };
+                AdvanceToNextInning(isBeginningOfGame: true);
+            }
 
-            var result = GameInning.Save(gameInning);
+            FillCurrentAtBatTeam();
+            if (!CurrentGameInningTeam.HasData)
+            {
+                AdvanceToNextInningTeam(isBeginingOfGame: true);
+            }
 
-            return result;
+            FillCurrentAtBatTeamPlayer();
+            if (!CurrentGameInningTeamBatter.HasData)
+            {
+                AdvanceToNextInningTeamBatter();
+            }
         }
 
 
         public void FillCurrentInning()
         {
-            var currentInning = GameInning.GetCurrentGameInning(GameId);
-            if (currentInning != null)
-            {
-                CurrentInning = currentInning.InningNumber;
-                CurrentGameInningId = currentInning.GameInningId;
-            }
+            CurrentGameInning = new Models.GameInning(GameInning.GetCurrentGameInning(GameId));
         }
 
 
         public void FillCurrentAtBatTeam()
         {
-            var currentTeam = GameInningTeam.GetCurrentGameInningTeam(GameId);
-            if (currentTeam == null)
-            {
-                AdvanceToNextInningTeam();
-                currentTeam = GameInningTeam.GetCurrentGameInningTeam(GameId);
-            }
-
-            AtBatTeam = string.Empty;
-            if (currentTeam != null)
-            {
-                AtBatGameTeamId = currentTeam.GameTeamId;
-                CurrentGameInningTeamId = currentTeam.GameInningTeamId;
-                var gt = GameTeams.FirstOrDefault(y => y.GameTeamId == currentTeam.GameTeamId);
-                if (gt != null)
-                {
-                    var team = Teams.FirstOrDefault(y => y.TeamId == gt.TeamId);
-                    if (team != null)
-                    {
-                        AtBatTeam = team.Name;
-                    }
-                }
+            CurrentGameInningTeam = new Models.GameInningTeam(GameInningTeam.GetCurrentGameInningTeam(GameId));
+            var gameTeam = GameTeams.FirstOrDefault(y => y.GameTeamId == CurrentGameInningTeam.GameTeamId);
+            if (gameTeam != null) {
+                CurrentTeam = new Models.Team(Teams.FirstOrDefault(y => y.TeamId == gameTeam.TeamId));
             }
         }
 
@@ -162,167 +164,143 @@ namespace DartballApp.ViewModels.Game
 
         public void FillCurrentAtBatTeamPlayer()
         {
-            var currentBatter = GameInningTeamBatter.GetCurrentGameInningTeamBatter(GameId);
-            if (currentBatter == null)
-            {
-                AdvanceToNextInningTeamBatter();
-                currentBatter = GameInningTeamBatter.GetCurrentGameInningTeamBatter(GameId);
-            }
-
-            if (currentBatter != null)
-            {
-                PlayerId = currentBatter.PlayerId;
-                var playerInfo = AllPlayers.FirstOrDefault(y => y.PlayerId == currentBatter.PlayerId);
-                if (playerInfo != null)
-                {
-                    AtBatPlayer = $"{playerInfo.Name} {playerInfo.LastName}".Trim();
-                }
+            if (CurrentGameInning != null && CurrentGameInningTeam != null) {
+                CurrentGameInningTeamBatter = new Models.GameInningTeamBatter(GameInningTeamBatter.GetCurrentGameInningTeamBatter(GameId));
+                CurrentPlayer = new Models.Player(AllPlayers.FirstOrDefault(y => y.PlayerId == CurrentGameInningTeamBatter.PlayerId));
             }
         }
 
 
-        public void SaveEventType(EventType eventType) {
-
-            //update the event for the current batter
-            var currentBatter = GameInningTeamBatter.GetCurrentGameInningTeamBatter(GameId);
-            if (currentBatter != null)
-            {
-                GameInningTeamBatterDto gameInningTeamBatter = new GameInningTeamBatterDto()
-                {
-                    GameInningTeamBatterId = currentBatter.GameInningTeamBatterId,
-                    GameInningTeamId = currentBatter.GameInningTeamId,
-                    EventType = (int)eventType,
-                    PlayerId = currentBatter.PlayerId,
-                    Sequence = currentBatter.Sequence,
-                    RBIs = currentBatter.RBIs
-                };
-                GameInningTeamBatter.Update(gameInningTeamBatter);
-
-                //update outs, runs, and baserunners 
-                var halfInningActions = HalfInning.GetHalfInningActions(CurrentGameInningTeamId);
-                Outs = halfInningActions.TotalOuts;
-                Runs = halfInningActions.TotalRuns;
-                IsRunnerOnFirst = halfInningActions.IsRunnerOnFirst;
-                IsRunnerOnSecond = halfInningActions.IsRunnerOnSecond;
-                IsRunnerOnThird = halfInningActions.IsRunnerOnThird;
-
-                //update total runs 
-                var currentInningTeam = GameInningTeam.GetCurrentGameInningTeam(GameId);
-                if (currentInningTeam != null)
-                {
-                    GameInningTeamDto gameInningTeam = new GameInningTeamDto()
-                    {
-                        GameTeamId = currentInningTeam.GameTeamId,
-                        GameInningTeamId = currentInningTeam.GameInningTeamId,
-                        GameInningId = currentInningTeam.GameInningId,
-                        IsRunnerOnFirst = IsRunnerOnFirst,
-                        IsRunnerOnSecond = IsRunnerOnSecond,
-                        IsRunnerOnThird = IsRunnerOnThird,
-                        Outs = Outs,
-                        Score = Runs
-                    };
-                    GameInningTeam.Update(gameInningTeam);
-                }
-            }
-
-            AdvanceToNextInningTeamBatter();
-        }
-
-
-        void AdvanceToNextInning()
+        public void SaveEventType(EventType eventType)
         {
-            CurrentInning++;
+            if (CurrentGameInning != null && CurrentGameInningTeam != null && CurrentGameInningTeamBatter != null)
+            {
+                //update the event for the current batter
+                var currentBatter = GameInningTeamBatter.GetCurrentGameInningTeamBatter(GameId);
+                if (currentBatter != null)
+                {
+                    GameInningTeamBatterDto gameInningTeamBatter = new GameInningTeamBatterDto()
+                    {
+                        GameInningTeamBatterId = currentBatter.GameInningTeamBatterId,
+                        GameInningTeamId = currentBatter.GameInningTeamId,
+                        EventType = (int)eventType,
+                        PlayerId = currentBatter.PlayerId,
+                        Sequence = currentBatter.Sequence,
+                        RBIs = currentBatter.RBIs
+                    };
+                    GameInningTeamBatter.Update(gameInningTeamBatter);
+
+                    //update outs, runs, and baserunners 
+                    var halfInningActions = HalfInning.GetHalfInningActions(CurrentGameInningTeam.GameInningTeamId);
+                    Outs = halfInningActions.TotalOuts;
+                    Runs = halfInningActions.TotalRuns;
+                    IsRunnerOnFirst = halfInningActions.IsRunnerOnFirst;
+                    IsRunnerOnSecond = halfInningActions.IsRunnerOnSecond;
+                    IsRunnerOnThird = halfInningActions.IsRunnerOnThird;
+                    AdvanceToNextHalfInning = halfInningActions.AdvanceToNextHalfInning;
+
+                    //update total runs 
+                    var currentInningTeam = GameInningTeam.GetCurrentGameInningTeam(GameId);
+                    if (currentInningTeam != null)
+                    {
+                        GameInningTeamDto gameInningTeam = new GameInningTeamDto()
+                        {
+                            GameTeamId = currentInningTeam.GameTeamId,
+                            GameInningTeamId = currentInningTeam.GameInningTeamId,
+                            GameInningId = currentInningTeam.GameInningId,
+                            IsRunnerOnFirst = IsRunnerOnFirst,
+                            IsRunnerOnSecond = IsRunnerOnSecond,
+                            IsRunnerOnThird = IsRunnerOnThird,
+                            Outs = Outs,
+                            Score = Runs
+                        };
+                        GameInningTeam.Update(gameInningTeam);
+                    }
+                }
+
+                AdvanceToNextInningTeamBatter();
+            }
+        }
+
+
+        void AdvanceToNextInning(bool isBeginningOfGame = false)
+        {
             GameInningDto gameInning = new GameInningDto()
             {
-                GameId = GameId,
-                InningNumber = CurrentInning,
+                InningNumber = GameInning.GetNextGameInningNumber(GameId),
+                GameId = GameId
             };
             GameInning.Save(gameInning);
+            FillCurrentInning();
+            AdvanceToNextInningTeam(isBeginningOfGame);
         }
 
 
-        void AdvanceToNextInningTeam()
+        void AdvanceToNextInningTeam(bool isBeginingOfGame = false)
         {
-            if (AtBatGameTeamId == Guid.Empty) AtBatGameTeamId = GameTeams.FirstOrDefault().GameTeamId;
-
-            var gameTeam = GameTeams.FirstOrDefault(y => y.GameTeamId == AtBatGameTeamId);
-            if (gameTeam != null)
+            ClearBoard();
+            if (CurrentGameInning != null)
             {
-                int nextGameTeamIndex = GameTeams.IndexOf(gameTeam) + 1;
-                bool advanceToNextInning = false;
-
-                if (nextGameTeamIndex > (GameTeams.Count - 1))
+                Guid? nextAtBatTeamId = GameInningTeam.GetNextAtBatTeamId(GameId);
+                if (nextAtBatTeamId.HasValue)
                 {
-                    nextGameTeamIndex = 0;
-                    advanceToNextInning = true;
-                }
+                    var atBatGameTeam = GameTeams.FirstOrDefault(y => y.TeamId == nextAtBatTeamId.Value);
 
-                if (advanceToNextInning)
-                {
-                    bool isGameOver = false;
-                    if (CurrentInning >= 9)
+                    bool shouldAdvanceInning = GameTeams.IndexOf(atBatGameTeam) == 0 && isBeginingOfGame == false;
+                    if (shouldAdvanceInning == false)
                     {
-                        List<int> distinctGameScores = Game.GetGameTeamScores(GameId).Select(y => y.Item2).Distinct().ToList();
-                        if (distinctGameScores.Count > 1) isGameOver = true;
+                        GameInningTeamDto gameInningTeam = new GameInningTeamDto()
+                        {
+                            GameTeamId = atBatGameTeam.GameTeamId,
+                            GameInningId = CurrentGameInning.GameInningId,
+                            IsRunnerOnFirst = false,
+                            IsRunnerOnThird = false,
+                            IsRunnerOnSecond = false,
+                            Outs = 0,
+                            Score = 0
+                        };
+                        GameInningTeam.AddNew(gameInningTeam);
+                        FillCurrentAtBatTeam();
+                        AdvanceToNextInningTeamBatter();
                     }
-
-                    if (isGameOver == true) GameComplete();
                     else
                     {
-                        AdvanceToNextInning();
-                        FillCurrentInning();
-                        FillCurrentAtBatTeam();
-                        FillCurrentAtBatTeamPlayer();
+                        if (IsGameOver() == true) GameComplete();
+                        else
+                        {
+                            AdvanceToNextInning();
+                        }
                     }
-                }
-                else
-                {
-                    var nextGameTeam = GameTeams[nextGameTeamIndex];
-                    GameInningTeamDto gameInningTeam = new GameInningTeamDto()
-                    {
-                        GameTeamId = nextGameTeam.GameTeamId,
-                        GameInningId = CurrentGameInningId,
-                        IsRunnerOnFirst = false,
-                        IsRunnerOnThird = false,
-                        IsRunnerOnSecond = false,
-                        Outs = 0,
-                        Score = 0
-                    };
-                    GameInningTeam.AddNew(gameInningTeam);
                 }
             }
         }
+
+
 
 
         void AdvanceToNextInningTeamBatter()
         {
-            if (TeamLineupDict.ContainsKey(AtBatGameTeamId))
+            if (AdvanceToNextHalfInning == true) AdvanceToNextInningTeam();
+            else
             {
-                var lineupPlayers = TeamLineupDict[AtBatGameTeamId];
-
-                int playerIndex = 0;
-                if (PlayerId != Guid.Empty)
+                if (CurrentGameInning != null && CurrentGameInningTeam != null)
                 {
-                    var atBatPlayer = lineupPlayers.FirstOrDefault(y => y.PlayerId == PlayerId);
-                    playerIndex = lineupPlayers.IndexOf(atBatPlayer);
-                }
-
-                if (playerIndex >= (lineupPlayers.Count - 1)) AdvanceToNextInningTeam();                
-                else
-                {
-                    var nextAtBatPlayer = lineupPlayers[playerIndex + 1];
-                    InningBatterSequence++;
-
-                    GameInningTeamBatterDto gameInningTeamBatter = new GameInningTeamBatterDto()
+                    Guid? nextPlayerToBat = GameInningTeamBatter.GetNextGameBatterPlayerId(GameId, AtBatTeamId);
+                    if (nextPlayerToBat.HasValue)
                     {
-                        PlayerId = nextAtBatPlayer.PlayerId,
-                        GameInningTeamId = CurrentGameInningTeamId,
-                        EventType = (int)EventType.Unknown,
-                        RBIs = 0,
-                        Sequence = InningBatterSequence
-                    };
-                    GameInningTeamBatter.Save(gameInningTeamBatter);
-                    FillCurrentAtBatTeamPlayer();
+                        int batterSequence = CurrentGameInningTeamBatter != null ? CurrentGameInningTeamBatter.Sequence + 1 : 0;
+
+                        GameInningTeamBatterDto gameInningTeamBatter = new GameInningTeamBatterDto()
+                        {
+                            PlayerId = nextPlayerToBat.Value,
+                            GameInningTeamId = CurrentGameInningTeam.GameInningTeamId,
+                            EventType = (int)EventType.Unknown,
+                            RBIs = 0,
+                            Sequence = InningBatterSequence
+                        };
+                        GameInningTeamBatter.Save(gameInningTeamBatter);
+                        FillCurrentAtBatTeamPlayer();
+                    }
                 }
             }
         }
@@ -330,12 +308,30 @@ namespace DartballApp.ViewModels.Game
 
         void GameComplete()
         {
-
+            //TODO
         }
 
 
 
+        void ClearBoard() {
+            Runs = 0;
+            Outs = 0;
+            IsRunnerOnFirst = false;
+            IsRunnerOnSecond = false;
+            IsRunnerOnThird = false;
+            AdvanceToNextHalfInning = false;
+        }
 
+        bool IsGameOver()
+        {
+            bool isOver = false;
+            if (CurrentInning >= 9)
+            {
+                var gameScores = Game.GetGameTeamScores(GameId);
+                if (gameScores.Select(y => y.Item2).Distinct().Count() > 1) isOver = true;
+            }
 
+            return isOver;
+        }
     }
 }

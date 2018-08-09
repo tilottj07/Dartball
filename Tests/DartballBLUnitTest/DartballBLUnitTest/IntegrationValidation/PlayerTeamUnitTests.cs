@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dartball.BusinessLayer.Player.Dto;
 using Dartball.BusinessLayer.Player.Implementation;
@@ -50,6 +51,10 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             var teamPlayers = PlayerTeamService.GetTeamPlayers(seedTeamId);
             Assert.IsTrue(teamPlayers.Count >= 1);
+
+            var teamPlayerInfos = PlayerTeamService.GetTeamPlayerInformations(seedTeamId);
+            Assert.IsTrue(teamPlayerInfos.Count >= 1);
+            Assert.IsNotNull(teamPlayerInfos.FirstOrDefault().Name);
 
             var removeResult = PlayerTeamService.Remove(seedPlayerId, seedTeamId);
             Assert.IsTrue(removeResult.IsSuccess);

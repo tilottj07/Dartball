@@ -98,17 +98,7 @@ namespace DartballBLUnitTest.IntegrationValidation
             Assert.IsFalse(result.IsSuccess);
         }
 
-        [TestMethod]
-        public void InvalidGameTeamIdTest()
-        {
-            GameTeamDto dto = new GameTeamDto()
-            {
-                GameId = Guid.NewGuid(),
-                TeamId = Guid.NewGuid()
-            };
-
-            var result = GameTeam.Update(dto);
-            Assert.IsFalse(result.IsSuccess);
-        }
+     
+       
     }
 }

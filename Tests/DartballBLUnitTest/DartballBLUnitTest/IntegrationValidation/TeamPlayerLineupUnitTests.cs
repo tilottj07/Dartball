@@ -96,18 +96,6 @@ namespace DartballBLUnitTest.IntegrationValidation
             Assert.IsFalse(result.IsSuccess);
         }
 
-        [TestMethod]
-        public void InvalidTeamPlayerLineupIdTest()
-        {
-            TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
-            {
-                TeamId = Guid.NewGuid(),
-                PlayerId = Guid.NewGuid(),
-                BattingOrder = TEST_BATTING_ORDER
-            };
 
-            var result = Lineup.Update(dto);
-            Assert.IsFalse(result.IsSuccess);
-        }
     }
 }

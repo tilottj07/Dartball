@@ -132,22 +132,7 @@ namespace DartballBLUnitTest.IntegrationValidation
             Assert.IsFalse(result.IsSuccess);
         }
 
-        [TestMethod]
-        public void InvalidGameInningTeamIdTest()
-        {
-            GameInningTeamDto dto = new GameInningTeamDto()
-            {
-                GameInningId = Guid.NewGuid(),
-                GameTeamId = Guid.NewGuid(),
-                Score = TEST_SCORE,
-                Outs = TEST_OUTS,
-                IsRunnerOnFirst = TEST_IS_RUNNER_ON_FIRST,
-                IsRunnerOnSecond = TEST_IS_RUNNER_ON_SECOND,
-                IsRunnerOnThird = TEST_IS_RUNNER_ON_THIRD
-            };
-            var result = GameInningTeam.Update(dto);
-            Assert.IsFalse(result.IsSuccess);
-        }
+      
 
         [TestMethod]
         public void TooManyOutsTest()

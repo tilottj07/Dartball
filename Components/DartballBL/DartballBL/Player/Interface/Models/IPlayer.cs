@@ -8,7 +8,7 @@ namespace Dartball.BusinessLayer.Player.Interface.Models
     {
         Guid PlayerId { get; }
         string Name { get; }
-        byte[] Photo { get; }
+        string LastName { get; }
         string EmailAddress { get; }
         string UserName { get; }
         string Password { get; }

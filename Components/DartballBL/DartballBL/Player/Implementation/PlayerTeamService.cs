@@ -7,6 +7,7 @@ using Dartball.BusinessLayer.Player.Dto;
 using Dartball.BusinessLayer.Player.Interface.Models;
 using Dartball.BusinessLayer.Shared.Models;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dartball.BusinessLayer.Player.Implementation
 {
@@ -16,7 +17,11 @@ namespace Dartball.BusinessLayer.Player.Implementation
 
         public PlayerTeamService()
         {
-            var mapConfig = new MapperConfiguration(cfg => cfg.CreateMap<Domain.PlayerTeam, PlayerTeamDto>());
+            var mapConfig = new MapperConfiguration(cfg => 
+            { 
+                cfg.CreateMap<Domain.PlayerTeam, PlayerTeamDto>();
+                cfg.CreateMap<Domain.Player, PlayerDto>();
+            });
             Mapper = mapConfig.CreateMapper();
         }
 
@@ -46,8 +51,46 @@ namespace Dartball.BusinessLayer.Player.Implementation
             return playerTeam;
         }
 
+        public List<IPlayerTeam> GetPlayerTeams(Guid playerId) {
+            List<IPlayerTeam> playerTeams = new List<IPlayerTeam>();
+
+            using(var context = new Data.DartballContext()) {
+                var items = context.PlayerTeams.Where(x => x.PlayerId == playerId.ToString()).ToList();
+                foreach (var item in items) playerTeams.Add(Mapper.Map<PlayerTeamDto>(item));
+            }
+
+            return playerTeams;
+        }
 
 
+        public List<IPlayer> GetTeamPlayerInformations(Guid teamId) {
+            List<IPlayer> players = new List<IPlayer>();
+
+            using (var context = new Data.DartballContext()) {
+                var items = context.PlayerTeams
+                                   .Where(x => x.TeamId == teamId.ToString() && !x.DeleteDate.HasValue)
+                                   .Include(x => x.Player).Select(x => x.Player).ToList();
+
+                foreach (var item in items)
+                {
+                    players.Add(Mapper.Map<PlayerDto>(item));
+                }
+            }
+
+            return players;
+        }
+
+
+
+
+        public ChangeResult Save(IPlayerTeam playerTeam) {
+            bool isAdd = false;
+
+            if (GetPlayerTeam(playerTeam.TeamId, playerTeam.PlayerId) == null) isAdd = true;
+
+            if (isAdd) return AddNew(playerTeam);
+            else return Update(playerTeam);
+        }
 
 
         public ChangeResult AddNew(IPlayerTeam playerTeam) 

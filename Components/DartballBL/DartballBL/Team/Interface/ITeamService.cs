@@ -12,6 +12,9 @@ namespace Dartball.BusinessLayer.Team.Interface
         ITeam GetTeam(Guid teamId);
         List<ITeam> GetTeams(Guid leagueId);
         List<ITeam> GetTeams();
+        List<ITeam> GetTeams(List<Guid> teamIds);
+
+        ChangeResult Save(ITeam team);
 
         ChangeResult AddNew(ITeam team);
         ChangeResult AddNew(List<ITeam> teams);

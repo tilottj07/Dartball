@@ -7,6 +7,7 @@ using Dartball.BusinessLayer.Game.Dto;
 using Dartball.BusinessLayer.Game.Interface.Models;
 using Dartball.BusinessLayer.Shared.Models;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dartball.BusinessLayer.Game.Implementation
 {
@@ -71,6 +72,114 @@ namespace Dartball.BusinessLayer.Game.Implementation
         }
 
 
+        public List<IGameInningTeam> GetTeamInningsForEntireGame(Guid gameId)
+        {
+            List<IGameInningTeam> list = new List<IGameInningTeam>();
+
+            using (var context = new Data.DartballContext())
+            {
+                var items = (from g in context.Games
+                             join gi in context.GameInnings on g.GameId equals gi.GameId
+                             join git in context.GameInningTeams on gi.GameInningId equals git.GameInningId
+                             where g.GameId == gameId.ToString()
+                             && !g.DeleteDate.HasValue
+                             && !gi.DeleteDate.HasValue
+                             && !git.DeleteDate.HasValue
+                             select git).ToList();
+
+                foreach (var item in items)
+                    list.Add(Mapper.Map<GameInningTeamDto>(item));
+            }
+
+            return list;
+        }
+
+
+        public IGameInningTeam GetCurrentGameInningTeam(Guid gameId) {
+            IGameInningTeam gameInningTeam = null;
+            using(var context = new Data.DartballContext()) {
+                var items = (from g in context.Games
+                            join gi in context.GameInnings on g.GameId equals gi.GameId
+                            join gt in context.GameTeams on g.GameId equals gt.GameId
+                            join git in context.GameInningTeams on gi.GameInningId equals git.GameInningId
+                            where g.GameId == gameId.ToString()
+                             && !g.DeleteDate.HasValue
+                             && !gi.DeleteDate.HasValue
+                             && !gt.DeleteDate.HasValue
+                             && !git.DeleteDate.HasValue
+                            orderby gi.InningNumber descending 
+                            orderby gt.TeamBattingSequence descending
+                            select git).Take(1);
+
+                if (items != null && items.Count() > 0) gameInningTeam = Mapper.Map<GameInningTeamDto>(items.FirstOrDefault());
+            }
+
+            return gameInningTeam;
+        }
+
+
+        public Guid? GetNextAtBatTeamId(Guid gameId)
+        {
+            Guid? nextAtBatTeamId = null;
+
+            using (var context = new Data.DartballContext())
+            {
+                Guid? lastTeamId = null;
+                var lastTeam = (from gi in context.GameInnings
+                                join git in context.GameInningTeams on gi.GameInningId equals git.GameInningId
+                                join gt in context.GameTeams on gi.GameId equals gt.GameId
+                                where gi.GameId == gameId.ToString()
+                                && !gi.DeleteDate.HasValue
+                                && !git.DeleteDate.HasValue
+                                && !gt.DeleteDate.HasValue
+                                orderby gi.InningNumber descending
+                                orderby gt.TeamBattingSequence descending
+                                select new { LastTeamId = gt.TeamId }).Take(1);
+
+                if (lastTeam != null && lastTeam.Count() > 0)
+                    lastTeamId = Guid.Parse(lastTeam.FirstOrDefault().LastTeamId);
+
+                if (!lastTeamId.HasValue)
+                {
+                    //get the first team in the sequence 
+                    var gameTeam = context.GameTeams
+                                          .Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue)
+                                          .OrderBy(x => x.TeamBattingSequence).FirstOrDefault();
+
+                    if (gameTeam != null)
+                        nextAtBatTeamId = Guid.Parse(gameTeam.TeamId);
+                }
+                else
+                {
+                    //get the next team in the sequence
+                    var gameTeams = context.GameTeams
+                                           .Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue)
+                                           .OrderBy(x => x.TeamBattingSequence).ToList();
+
+                    var lastGameTeam = gameTeams.FirstOrDefault(x => x.TeamId == lastTeamId.Value.ToString());
+                    if (lastGameTeam != null) {
+                        int gtIndex = gameTeams.IndexOf(lastGameTeam);
+                        if (gtIndex < (gameTeams.Count - 1))  {
+                            nextAtBatTeamId = Guid.Parse(gameTeams[gtIndex + 1].TeamId);
+                        }
+                        else {
+                            nextAtBatTeamId = Guid.Parse(gameTeams.FirstOrDefault().TeamId);
+                        }
+                    }
+                }
+
+            }
+            return nextAtBatTeamId;
+        }
+
+
+
+        public ChangeResult Save(IGameInningTeam gameInningTeam) {
+            bool isAdd = GetGameInningTeam(gameInningTeam.GameTeamId, gameInningTeam.GameInningId) == null;
+
+            if (isAdd) return AddNew(gameInningTeam);
+            return Update(gameInningTeam);
+        }
 
         public ChangeResult AddNew(IGameInningTeam gameInningTeam)
         {
@@ -168,10 +277,8 @@ namespace Dartball.BusinessLayer.Game.Implementation
                     result.ErrorMessages.Add("Invalid Score, cannot be less than 0.");
                 }
 
-                if (isAddNew == false)
-                {
-                    if (item.GameInningTeamId == Guid.Empty)
-                    {
+                if (isAddNew == false) {
+                    if (item.GameInningTeamId == Guid.Empty) {
                         result.IsSuccess = false;
                         result.ErrorMessages.Add("Invalid Game Inning Team Id.");
                     }

@@ -1,7 +1,6 @@
 ﻿using Dartball.BusinessLayer.Game.Interface;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using AutoMapper;
 using Dartball.BusinessLayer.Game.Dto;
@@ -68,6 +67,104 @@ namespace Dartball.BusinessLayer.Game.Implementation
         }
 
 
+        public IGameInningTeamBatter GetCurrentGameInningTeamBatter(Guid gameId) {
+            IGameInningTeamBatter gameInningTeamBatter = null;
+            using(var context = new Data.DartballContext()) {
+                var items = (from g in context.Games
+                            join gt in context.GameTeams on g.GameId equals gt.GameId
+                            join gi in context.GameInnings on g.GameId equals gi.GameId
+                            join git in context.GameInningTeams on gi.GameInningId equals git.GameInningId
+                            join gitb in context.GameInningTeamBatters on git.GameInningTeamId equals gitb.GameInningTeamId
+                            where g.GameId == gameId.ToString()
+                            && !g.DeleteDate.HasValue
+                            && !gt.DeleteDate.HasValue
+                            && !gi.DeleteDate.HasValue
+                            && !git.DeleteDate.HasValue
+                            && !gitb.DeleteDate.HasValue
+                            orderby gi.InningNumber descending
+                            orderby gt.TeamBattingSequence descending
+                            orderby gitb.Sequence descending
+                            select gitb).Take(1);
+
+                if (items != null && items.Count() > 0) gameInningTeamBatter = Mapper.Map<GameInningTeamBatterDto>(items.FirstOrDefault());
+            }
+
+            return gameInningTeamBatter;
+        }
+
+
+        public Guid? GetNextGameBatterPlayerId(Guid gameId, Guid teamId)
+        {
+            Guid? nextAtBatPlayerId = null;
+
+            using (var context = new Data.DartballContext())
+            {
+                Guid? lastAtBatPlayerId = null;
+                var lastTeamBatter = (from gt in context.GameTeams
+                                      join tpl in context.TeamPlayerLineups on gt.TeamId equals tpl.TeamId
+                                      join gi in context.GameInnings on gt.GameId equals gi.GameId
+                                      join git in context.GameInningTeams on gi.GameInningId equals git.GameInningId
+                                      join gitb in context.GameInningTeamBatters on git.GameInningTeamId equals gitb.GameInningTeamId
+                                      where gt.GameId == gameId.ToString()
+                                      && gt.TeamId == teamId.ToString()
+                                      && !gt.DeleteDate.HasValue
+                                      && !tpl.DeleteDate.HasValue
+                                      && !gi.DeleteDate.HasValue
+                                      && !git.DeleteDate.HasValue
+                                      && !gitb.DeleteDate.HasValue
+                                      orderby gi.InningNumber descending
+                                      orderby gt.TeamBattingSequence descending
+                                      orderby gitb.Sequence descending
+                                      select new { LastAtBatPlayerId = gitb.PlayerId }).Take(1);
+
+                if (lastTeamBatter != null && lastTeamBatter.Count() > 0)
+                    lastAtBatPlayerId = Guid.Parse(lastTeamBatter.FirstOrDefault().LastAtBatPlayerId);
+
+                if (!lastAtBatPlayerId.HasValue)
+                {
+                    //next up is the first player in the team's lineup
+                    var firstBatterInLineup = context.TeamPlayerLineups
+                                                     .Where(x => x.TeamId == teamId.ToString() && !x.DeleteDate.HasValue)
+                                                     .OrderBy(x => x.BattingOrder).FirstOrDefault();
+
+                    if (firstBatterInLineup != null) nextAtBatPlayerId = Guid.Parse(firstBatterInLineup.PlayerId);
+                }
+                else
+                {
+                    //find the next player in the team's lineup
+                    var orderedLineup = context.TeamPlayerLineups
+                                               .Where(x => x.TeamId == teamId.ToString() && !x.DeleteDate.HasValue)
+                                               .OrderBy(x => x.BattingOrder).ToList();
+
+                    var lastBatter = orderedLineup.FirstOrDefault(x => x.PlayerId == lastAtBatPlayerId.Value.ToString());
+                    if (lastBatter != null) {
+                        int batterIndex = orderedLineup.IndexOf(lastBatter);
+                        if (batterIndex < (orderedLineup.Count - 1)) {
+                            nextAtBatPlayerId = Guid.Parse(orderedLineup[batterIndex + 1].PlayerId);
+                        }
+                        else {
+                            nextAtBatPlayerId = Guid.Parse(orderedLineup.FirstOrDefault().PlayerId);
+                        }
+                    }
+                }
+
+            }
+
+            return nextAtBatPlayerId;
+        }
+
+
+       
+
+
+        public ChangeResult Save(IGameInningTeamBatter gameInningTeamBatter) {
+            bool isAdd = GetGameInningTeamBatter(gameInningTeamBatter.GameInningTeamId, gameInningTeamBatter.Sequence) == null;
+
+            if (isAdd) return AddNew(gameInningTeamBatter);
+            return Update(gameInningTeamBatter);
+        }
+
+
         public ChangeResult AddNew(IGameInningTeamBatter gameInningTeamBatter)
         {
             return AddNew(new List<IGameInningTeamBatter> { gameInningTeamBatter });
@@ -114,7 +211,7 @@ namespace Dartball.BusinessLayer.Game.Implementation
                     {
                         context.GameInningTeamBatters.Update(new Domain.GameInningTeamBatter()
                         {
-                            GameInningTeamBatterId = item.GameInningTeamBatterId == Guid.Empty ? Guid.NewGuid().ToString() : item.GameInningTeamBatterId.ToString(),
+                            GameInningTeamBatterId = item.GameInningTeamBatterId.ToString(),
                             GameInningTeamId = item.GameInningTeamId.ToString(),
                             PlayerId = item.PlayerId.ToString(),
                             Sequence = item.Sequence,
@@ -182,14 +279,14 @@ namespace Dartball.BusinessLayer.Game.Implementation
                     }
                 }
 
-                if (isAddNew == false)
-                {
-                    if (item.GameInningTeamBatterId == Guid.Empty)
-                    {
+                if (isAddNew == false) {
+                    if (item.GameInningTeamBatterId == Guid.Empty) {
                         result.IsSuccess = false;
-                        result.ErrorMessages.Add("Invalid PK");
+                        result.ErrorMessages.Add("Invalid Team Inning Batter Id.");
                     }
                 }
+
+
             }
 
             return result;

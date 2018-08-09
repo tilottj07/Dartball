@@ -10,6 +10,7 @@ namespace Dartball.BusinessLayer.Game.Interface.Models
         Guid GameTeamId { get; }
         Guid GameId { get; }
         Guid TeamId { get; }
+        int TeamBattingSequence { get; }
         DateTime ChangeDate { get; }
         DateTime? DeleteDate { get; }
 

@@ -1,4 +1,5 @@
-﻿using Dartball.BusinessLayer.Shared.Models;
+﻿using Dartball.BusinessLayer.Player.Interface.Models;
+using Dartball.BusinessLayer.Shared.Models;
 using Dartball.BusinessLayer.Team.Interface.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,12 @@ namespace Dartball.BusinessLayer.Team.Interface
     {
         ITeamPlayerLineup GetTeamPlayerLineupItem(Guid teamId, Guid playerId);
         List<ITeamPlayerLineup> GetTeamLineup(Guid teamId);
+
+        List<IPlayer> GetTeamSortedBattingOrderPlayers(Guid teamId);
+
+
+        ChangeResult SetLineup(List<ITeamPlayerLineup> teamPlayerLineups);
+        ChangeResult Save(ITeamPlayerLineup teamPlayerLineup);
 
         ChangeResult AddNew(ITeamPlayerLineup teamPlayerLineup);
         ChangeResult AddNew(List<ITeamPlayerLineup> teamPlayerLineups);

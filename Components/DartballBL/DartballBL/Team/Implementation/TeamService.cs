@@ -48,6 +48,21 @@ namespace Dartball.BusinessLayer.Team.Implementation
             return teams;
         }
 
+        public List<ITeam> GetTeams(List<Guid> teamIds) {
+            List<ITeam> teams = new List<ITeam>();
+
+            List<string> teamIdsAsStrings = new List<string>();
+            foreach (Guid id in teamIds) teamIdsAsStrings.Add(id.ToString());
+
+            using (var context = new Data.DartballContext()) {
+                var items = context.Teams.Where(x => teamIdsAsStrings.Contains(x.TeamId) && !x.DeleteDate.HasValue).ToList();
+                foreach(var item in items) {
+                    teams.Add(Mapper.Map<TeamDto>(item));
+                }
+            }
+            return teams;
+        }
+
         public List<ITeam> GetTeams()
         {
             List<ITeam> teams = new List<ITeam>();
@@ -61,6 +76,17 @@ namespace Dartball.BusinessLayer.Team.Implementation
             return teams;
         }
 
+
+
+        public ChangeResult Save(ITeam team) {
+            bool isAdd = false;
+
+            if (team.TeamId == Guid.Empty) isAdd = true;
+            else if (GetTeam(team.TeamId) == null) isAdd = true;
+
+            if (isAdd) return AddNew(team);
+            else return Update(team);
+        }
 
 
         public ChangeResult AddNew(ITeam team)

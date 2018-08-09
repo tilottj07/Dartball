@@ -74,6 +74,16 @@ namespace Dartball.BusinessLayer.Game.Implementation
 
 
 
+        public ChangeResult Save(IGameTeam gameTeam) {
+            bool isAdd = false;
+
+            if (GetGameTeam(gameTeam.GameId, gameTeam.TeamId) == null) isAdd = true;
+
+            if (isAdd) return AddNew(gameTeam);
+            else return Update(gameTeam);
+        }
+
+
         public ChangeResult AddNew(IGameTeam gameTeam)
         {
             return AddNew(new List<IGameTeam> { gameTeam });
@@ -92,6 +102,7 @@ namespace Dartball.BusinessLayer.Game.Implementation
                             GameTeamId = item.GameTeamId == Guid.Empty ? Guid.NewGuid().ToString() : item.GameTeamId.ToString(),
                             GameId = item.GameId.ToString(),
                             TeamId = item.TeamId.ToString(),
+                            TeamBattingSequence = item.TeamBattingSequence,
                             DeleteDate = item.DeleteDate
                         });
                     }
@@ -116,9 +127,9 @@ namespace Dartball.BusinessLayer.Game.Implementation
                     {
                         context.GameTeams.Update(new Domain.GameTeam()
                         {
-                            GameTeamId = item.GameTeamId.ToString(),
                             GameId = item.GameId.ToString(),
                             TeamId = item.TeamId.ToString(),
+                            TeamBattingSequence = item.TeamBattingSequence,
                             DeleteDate = item.DeleteDate
                         });
                     }
@@ -150,14 +161,7 @@ namespace Dartball.BusinessLayer.Game.Implementation
                     result.ErrorMessages.Add("Invalid Team.");
                 }
 
-                if (isAddNew == false)
-                {
-                    if (item.GameTeamId == Guid.Empty)
-                    {
-                        result.IsSuccess = false;
-                        result.ErrorMessages.Add("Invalid Game Team Id.");
-                    }
-                }
+             
             }
 
             return result;

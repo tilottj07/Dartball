@@ -11,6 +11,7 @@ namespace Dartball.BusinessLayer.Game.Dto
         public Guid GameTeamId { get; set; }
         public Guid GameId { get; set; }
         public Guid TeamId { get; set; }
+        public int TeamBattingSequence { get; set; }
         public DateTime ChangeDate { get; set; }
         public DateTime? DeleteDate { get; set; }
 

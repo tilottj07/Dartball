@@ -76,9 +76,7 @@ namespace Dartball.BusinessLayer.GameEngine.InGame.Implementation
                     case EventType.TwoBaseSingle:
                         dto = TwoBaseSingle.FillTwoBaseSingleActions(dto);
                         break;
-
-                    default:
-                        throw new Exception($"Event Type: {(EventType)batter.EventType} is not mapped.");
+                    
                 }
             }
 

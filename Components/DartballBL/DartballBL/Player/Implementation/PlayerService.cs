@@ -46,6 +46,31 @@ namespace Dartball.BusinessLayer.Player.Implementation
             return players;
         }
 
+        public List<IPlayer> GetPlayers(List<Guid> playerIds) {
+            List<IPlayer> players = new List<IPlayer>();
+
+            List<string> playerIdsAsStrings = new List<string>();
+            foreach (Guid id in playerIds) playerIdsAsStrings.Add(id.ToString());
+
+            using(var context = new Data.DartballContext()) {
+                var items = context.Players.Where(x => playerIdsAsStrings.Contains(x.PlayerId) && !x.DeleteDate.HasValue).ToList();
+                foreach (var item in items) Mapper.Map<PlayerDto>(item);
+            }
+
+            return players;
+        }
+
+        public ChangeResult Save(IPlayer player)  {
+            bool isAdd = false;
+
+            if (player.PlayerId == Guid.Empty) isAdd = true;
+            else if (GetPlayer(player.PlayerId) == null) isAdd = true;
+
+            if (isAdd) return AddNew(player);
+            else return Update(player);
+        }
+
+
 
         public ChangeResult AddNew(IPlayer player)
         {
@@ -64,7 +89,7 @@ namespace Dartball.BusinessLayer.Player.Implementation
                         {
                             PlayerId = player.PlayerId == Guid.Empty ? Guid.NewGuid().ToString() : player.PlayerId.ToString(),
                             Name = Helper.CleanString(player.Name),
-                            Photo = player.Photo,
+                            LastName = Helper.CleanString(player.LastName),
                             EmailAddress = Helper.CleanString(player.EmailAddress),
                             UserName = Helper.CleanString(player.UserName),
                             Password = Helper.CleanString(player.Password), //TODO: add encryption
@@ -96,7 +121,7 @@ namespace Dartball.BusinessLayer.Player.Implementation
                         {
                             PlayerId = player.PlayerId.ToString(),
                             Name = Helper.CleanString(player.Name),
-                            Photo = player.Photo,
+                            LastName = Helper.CleanString(player.LastName),
                             EmailAddress = Helper.CleanString(player.EmailAddress),
                             UserName = Helper.CleanString(player.UserName),
                             Password = Helper.CleanString(player.Password), //TODO: add encryption
@@ -122,12 +147,17 @@ namespace Dartball.BusinessLayer.Player.Implementation
                 if (string.IsNullOrWhiteSpace(player.Name))
                 {
                     result.IsSuccess = false;
-                    result.ErrorMessages.Add("Player Name Required.");
+                    result.ErrorMessages.Add("Player Fist Name Required.");
                 }
                 else if (player.Name.Trim().Length > 100)
                 {
                     result.IsSuccess = false;
-                    result.ErrorMessages.Add("Player Name cannot be longer than 100 characters.");
+                    result.ErrorMessages.Add("Player First Name cannot be longer than 100 characters.");
+                }
+
+                if (!string.IsNullOrWhiteSpace(player.LastName) && player.LastName.Trim().Length > 100) {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add("Player Last Name cannot be longer than 100 characters.");
                 }
 
                 if (string.IsNullOrWhiteSpace(player.UserName))

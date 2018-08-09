@@ -58,6 +58,20 @@ namespace Dartball.BusinessLayer.Game.Implementation
             return gameInnings;
         }
 
+        public IGameInning GetCurrentGameInning(Guid gameId) {
+
+            IGameInning gameInning = null;
+            using(var context = new Data.DartballContext()) {
+                var item = context.GameInnings.Where(x => x.GameId == gameId.ToString() 
+                                                     && !x.DeleteDate.HasValue)
+                                                     .OrderByDescending(x => x.InningNumber).FirstOrDefault();
+
+                if (item != null) gameInning = Mapper.Map<GameInningDto>(item);
+            }
+
+            return gameInning;
+        }
+
         public List<IGameInning> GetAllGameInnings()
         {
             List<IGameInning> gameInnings = new List<IGameInning>();
@@ -68,6 +82,21 @@ namespace Dartball.BusinessLayer.Game.Implementation
             }
             return gameInnings;
         }
+
+
+        public ChangeResult Save(IGameInning gameInning) {
+            bool isAdd = GetGameInning(gameInning.GameId, gameInning.InningNumber) == null;
+
+            if (isAdd) return AddNew(gameInning);
+            return Update(gameInning);
+        }
+
+
+        public int GetNextGameInningNumber(Guid gameId) {
+            var currentInning = GetCurrentGameInning(gameId);
+            return currentInning != null ? currentInning.InningNumber + 1 : 1;
+        }
+
 
 
         public ChangeResult AddNew(IGameInning gameInning)

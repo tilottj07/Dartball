@@ -14,6 +14,12 @@ namespace Dartball.BusinessLayer.Game.Interface
         List<IGameInning> GetGameInnings(Guid gameId);
         List<IGameInning> GetAllGameInnings();
 
+        IGameInning GetCurrentGameInning(Guid gameId);
+        int GetNextGameInningNumber(Guid gameId);
+
+
+        ChangeResult Save(IGameInning gameInning);
+
         ChangeResult AddNew(IGameInning gameInning);
         ChangeResult AddNew(List<IGameInning> gameInnings);
 

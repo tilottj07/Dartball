@@ -11,6 +11,7 @@ namespace Dartball.BusinessLayer.League.Interface
 
         ILeague GetLeague(Guid leagueId);
         List<ILeague> GetLeagues();
+        ILeague GetGenericLeague();
 
         ChangeResult AddNew(ILeague league);
         ChangeResult AddNew(List<ILeague> leagues);

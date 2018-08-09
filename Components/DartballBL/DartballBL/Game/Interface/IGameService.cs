@@ -12,6 +12,9 @@ namespace Dartball.BusinessLayer.Game.Interface
         IGame GetGame(Guid gameId);
         List<IGame> GetLeagueGames(Guid leagueId);
         List<IGame> GetAllGames();
+        List<Tuple<Guid, int>> GetGameTeamScores(Guid gameId);
+
+        ChangeResult Save(IGame game);
 
         ChangeResult AddNew(IGame game);
         ChangeResult AddNew(List<IGame> games);

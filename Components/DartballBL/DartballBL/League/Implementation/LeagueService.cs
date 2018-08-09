@@ -36,6 +36,33 @@ namespace Dartball.BusinessLayer.League.Implementation
             return league;
         }
 
+        public ILeague GetGenericLeague() {
+            ILeague league = null;
+
+            string leagueName = "Quick Play";
+
+            using(var context = new Data.DartballContext()) {
+                var item = context.Leagues.FirstOrDefault(x => x.Name == leagueName);
+                if (item == null) 
+                 {
+                    LeagueDto dto = new LeagueDto()
+                    {
+                        Name = leagueName,
+                        Password = "Password"
+                    };
+                    AddNew(dto);
+
+                    item = context.Leagues.FirstOrDefault(x => x.Name == leagueName);
+                    league = Mapper.Map<LeagueDto>(item);
+                }
+                else  {
+                    league = Mapper.Map<LeagueDto>(item);
+                }
+            }
+
+            return league;
+        }
+
         public List<ILeague> GetLeagues()
         {
             List<ILeague> leagues = new List<ILeague>();

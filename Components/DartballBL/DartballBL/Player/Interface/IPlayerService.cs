@@ -10,6 +10,9 @@ namespace Dartball.BusinessLayer.Player.Interface
     {
         IPlayer GetPlayer(Guid playerId);
         List<IPlayer> GetPlayers();
+        List<IPlayer> GetPlayers(List<Guid> playerIds);
+
+        ChangeResult Save(IPlayer player);
 
         ChangeResult AddNew(IPlayer player);
         ChangeResult AddNew(List<IPlayer> players);

@@ -14,6 +14,13 @@ namespace Dartball.BusinessLayer.Game.Interface
         List<IGameInningTeam> GetInningTeams(Guid gameInningId);
         List<IGameInningTeam> GetTeamInnings(Guid gameTeamId);
 
+        List<IGameInningTeam> GetTeamInningsForEntireGame(Guid gameId);
+        IGameInningTeam GetCurrentGameInningTeam(Guid gameId);
+
+        Guid? GetNextAtBatTeamId(Guid gameId);
+
+        ChangeResult Save(IGameInningTeam gameInningTeam);
+
         ChangeResult AddNew(IGameInningTeam gameInningTeam);
         ChangeResult AddNew(List<IGameInningTeam> gameInningTeams);
 

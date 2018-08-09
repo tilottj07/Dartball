@@ -7,18 +7,24 @@ using Dartball.BusinessLayer.Game.Dto;
 using Dartball.BusinessLayer.Game.Interface.Models;
 using Dartball.BusinessLayer.Shared.Models;
 using System.Linq;
+using Dartball.BusinessLayer.Team.Interface;
+using Dartball.BusinessLayer.Team.Implementation;
 
 namespace Dartball.BusinessLayer.Game.Implementation
 {
     public class GameService : IGameService
     {
-        private IMapper Mapper;
+        IMapper Mapper;
 
         public GameService()
         {
             var mapConfig = new MapperConfiguration(c => c.CreateMap<Domain.Game, GameDto>());
             Mapper = mapConfig.CreateMapper();
+
+
         }
+
+
 
 
 
@@ -59,6 +65,48 @@ namespace Dartball.BusinessLayer.Game.Implementation
             }
 
             return games;
+        }
+
+
+        public List<Tuple<Guid, int>> GetGameTeamScores(Guid gameId)
+        {
+            List<Tuple<Guid, int>> gameTeamScores = new List<Tuple<Guid, int>>();
+
+            using (var context = new Data.DartballContext())
+            {
+                var items = (from g in context.Games
+                             join gt in context.GameTeams on g.GameId equals gt.TeamId
+                             join gi in context.GameInnings on g.GameId equals gi.GameId
+                             join git in context.GameInningTeams on gi.GameInningId equals git.GameInningId
+                             where g.GameId == gameId.ToString()
+                             && !g.DeleteDate.HasValue
+                             && !gt.DeleteDate.HasValue
+                             && !git.DeleteDate.HasValue
+                             group git by git.GameTeamId into s
+                             select new { GameTeamId = s.Key, Score = s.Sum(x => x.Score) });
+
+                foreach (var item in items)
+                {
+                    gameTeamScores.Add(new Tuple<Guid, int>(Guid.Parse(item.GameTeamId), item.Score));
+                }
+            }
+            return gameTeamScores;
+        }
+
+
+
+        public ChangeResult Save(IGame game) {
+            bool isAdd = false;
+
+            if (game.GameId == Guid.Empty) {
+                isAdd = true;
+            }
+            else if (GetGame(game.GameId) == null) {
+                isAdd = true;
+            }
+
+            if (isAdd) return AddNew(game);
+            else return Update(game);
         }
 
 
@@ -135,7 +183,7 @@ namespace Dartball.BusinessLayer.Game.Implementation
                     result.ErrorMessages.Add("Invalid League.");
                 }
 
-                if (item.GameDate > DateTime.Today.AddDays(1))
+                if (item.GameDate > DateTime.UtcNow)
                 {
                     result.IsSuccess = false;
                     result.ErrorMessages.Add("Game cannot take place in the future.");

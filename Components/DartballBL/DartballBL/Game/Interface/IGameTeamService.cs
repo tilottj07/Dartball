@@ -14,6 +14,8 @@ namespace Dartball.BusinessLayer.Game.Interface
         List<IGameTeam> GetGameTeams(Guid gameId);
         List<IGameTeam> GetAllGames();
 
+        ChangeResult Save(IGameTeam gameTeam);
+
         ChangeResult AddNew(List<IGameTeam> gameTeams);
         ChangeResult AddNew(IGameTeam gameTeam);
 

@@ -39,15 +39,16 @@ namespace Dartball.BusinessLayer.Game.Implementation
 
         public enum EventType
         {
-            Out = 0,
-            Single = 1,
-            Double = 2,
-            Triple = 3,
-            HomeRun = 4,
-            Walk = 5,
-            DoublePlay = 6,
-            SacraficeHit = 7,
-            TwoBaseSingle = 8
+            Unknown = 0,
+            Out = 1,
+            Single = 2,
+            Double = 3,
+            Triple = 4,
+            HomeRun = 5,
+            Walk = 6,
+            DoublePlay = 7,
+            SacraficeHit = 8,
+            TwoBaseSingle = 9
         }
 
 
@@ -55,6 +56,8 @@ namespace Dartball.BusinessLayer.Game.Implementation
         {
             switch (eventType)
             {
+                case EventType.Unknown:
+                    return "Unknown";
                 case EventType.Out:
                     return "Out";
                 case EventType.Single:

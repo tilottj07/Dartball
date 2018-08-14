@@ -10,7 +10,9 @@ using Dartball.BusinessLayer.Player.Interface;
 using Dartball.BusinessLayer.Team.Dto;
 using Dartball.BusinessLayer.Team.Implementation;
 using Dartball.BusinessLayer.Team.Interface;
+using Dartball.BusinessLayer.Team.Interface.Models;
 using System;
+using System.Collections.Generic;
 
 namespace DartballBLUnitTest.IntegrationValidation
 {
@@ -23,6 +25,8 @@ namespace DartballBLUnitTest.IntegrationValidation
         private IGameInningService GameInning;
         private IGameTeamService GameTeam;
         private IGameInningTeamService GameInningTeam;
+        IGameInningTeamBatterService GameInningTeamBatter;
+        ITeamPlayerLineupService TeamPlayerLineup;
 
         public IntegrationBase()
         {
@@ -33,6 +37,8 @@ namespace DartballBLUnitTest.IntegrationValidation
             GameInning = new GameInningService();
             GameTeam = new GameTeamService();
             GameInningTeam = new GameInningTeamService();
+            GameInningTeamBatter = new GameInningTeamBatterService();
+            TeamPlayerLineup = new TeamPlayerLineupService();
 
             Dartball.Data.DartballContext dartballContext = new Dartball.Data.DartballContext();
             dartballContext.Migrate();
@@ -79,6 +85,25 @@ namespace DartballBLUnitTest.IntegrationValidation
 
             return id;
         }
+        public Guid SeedTeamTwo()
+        {
+            Guid id = Guid.NewGuid();
+            Guid leagueId = SeedLeague();
+
+            TeamDto dto = new TeamDto()
+            {
+                TeamId = id,
+                LeagueId = leagueId,
+                Handicap = 3,
+                Name = "Bombers2",
+                Password = "KaBoom2",
+                ShouldSync = true
+            };
+
+            Team.AddNew(dto);
+
+            return id;
+        }
         public void DeleteSeededTeam(Guid teamId)
         {
             var team = Team.GetTeam(teamId);
@@ -109,6 +134,22 @@ namespace DartballBLUnitTest.IntegrationValidation
             var game = Game.GetGame(gameId);
             Guid leagueId = game.LeagueId;
 
+            foreach (var gi in GameInning.GetGameInnings(gameId))
+            {
+                foreach (var git in GameInningTeam.GetInningTeams(gi.GameInningId))
+                {
+                    foreach(var gitb in GameInningTeamBatter.GetGameInningTeamBatters(git.GameInningTeamId)) {
+                        GameInningTeamBatter.Remove(gitb.GameInningTeamId, gitb.Sequence);
+                    }
+                    GameInningTeam.Remove(git.GameInningId, git.GameTeamId);
+                }
+                GameInning.Remove(gi.GameId, gi.InningNumber);
+            }
+            foreach (var item in GameTeam.GetGameTeams(gameId))
+            {
+                GameTeam.Remove(item.GameId, item.TeamId);
+            }
+
             Game.Remove(gameId);
             League.RemoveLeague(leagueId);
         }
@@ -123,6 +164,60 @@ namespace DartballBLUnitTest.IntegrationValidation
                 PlayerId = playerId,
                 EmailAddress = "test@gamil.com",
                 Name = "Test Player",
+                Password = "password",
+                UserName = "TestPlayer",
+                ShouldSync = false
+            };
+
+            Player.AddNew(dto);
+
+            return playerId;
+        }
+        public Guid SeedPlayerTwo()
+        {
+            Guid playerId = Guid.NewGuid();
+
+            PlayerDto dto = new PlayerDto()
+            {
+                PlayerId = playerId,
+                EmailAddress = "test@gamil.com",
+                Name = "Test Player 2",
+                Password = "password",
+                UserName = "TestPlayer",
+                ShouldSync = false
+            };
+
+            Player.AddNew(dto);
+
+            return playerId;
+        }
+        public Guid SeedPlayerThree()
+        {
+            Guid playerId = Guid.NewGuid();
+
+            PlayerDto dto = new PlayerDto()
+            {
+                PlayerId = playerId,
+                EmailAddress = "test@gamil.com",
+                Name = "Test Player 3",
+                Password = "password",
+                UserName = "TestPlayer",
+                ShouldSync = false
+            };
+
+            Player.AddNew(dto);
+
+            return playerId;
+        }
+        public Guid SeedPlayerFour()
+        {
+            Guid playerId = Guid.NewGuid();
+
+            PlayerDto dto = new PlayerDto()
+            {
+                PlayerId = playerId,
+                EmailAddress = "test@gamil.com",
+                Name = "Test Player 4",
                 Password = "password",
                 UserName = "TestPlayer",
                 ShouldSync = false
@@ -215,5 +310,50 @@ namespace DartballBLUnitTest.IntegrationValidation
             DeleteSeededGameTeam(git.GameTeamId);
         }
 
+
+
+
+        public Guid SeedGameTeam(Guid gameId, Guid teamId, int battingSequence) {
+            Guid gameTeamId = Guid.NewGuid();
+
+            GameTeamDto dto = new GameTeamDto()
+            {
+                GameId = gameId,
+                TeamId = teamId,
+                GameTeamId = gameTeamId,
+                TeamBattingSequence = battingSequence
+            };
+            GameTeam.AddNew(dto);
+
+            return gameTeamId;
+        }
+
+
+
+        public void SeedTeamPlayerLineup(Guid teamId, List<Guid> sortedPlayerIds) {
+
+            int battingOrder = 0;
+            List<ITeamPlayerLineup> teamPlayers = new List<ITeamPlayerLineup>();
+            foreach(Guid playerId in sortedPlayerIds) {
+
+                TeamPlayerLineupDto dto = new TeamPlayerLineupDto()
+                {
+                    BattingOrder = battingOrder,
+                    PlayerId = playerId,
+                    TeamId = teamId
+                };
+                teamPlayers.Add(dto);
+                battingOrder++;
+            }
+
+            TeamPlayerLineup.AddNew(teamPlayers);
+        }
+
+        public void DeleteSeededTeamPlayerLineup(Guid teamId) {
+            var players = TeamPlayerLineup.GetTeamLineup(teamId);
+            foreach(var item in players) {
+                TeamPlayerLineup.Remove(item.PlayerId, item.TeamId);
+            }
+        }
     }
 }

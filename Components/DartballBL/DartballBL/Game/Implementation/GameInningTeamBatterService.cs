@@ -6,6 +6,7 @@ using AutoMapper;
 using Dartball.BusinessLayer.Game.Dto;
 using Dartball.BusinessLayer.Game.Interface.Models;
 using Dartball.BusinessLayer.Shared.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dartball.BusinessLayer.Game.Implementation
 {
@@ -67,26 +68,35 @@ namespace Dartball.BusinessLayer.Game.Implementation
         }
 
 
-        public IGameInningTeamBatter GetCurrentGameInningTeamBatter(Guid gameId) {
+        public IGameInningTeamBatter GetCurrentGameInningTeamBatter(Guid gameId)
+        {
             IGameInningTeamBatter gameInningTeamBatter = null;
-            using(var context = new Data.DartballContext()) {
-                var items = (from g in context.Games
-                            join gt in context.GameTeams on g.GameId equals gt.GameId
-                            join gi in context.GameInnings on g.GameId equals gi.GameId
-                            join git in context.GameInningTeams on gi.GameInningId equals git.GameInningId
-                            join gitb in context.GameInningTeamBatters on git.GameInningTeamId equals gitb.GameInningTeamId
-                            where g.GameId == gameId.ToString()
-                            && !g.DeleteDate.HasValue
-                            && !gt.DeleteDate.HasValue
-                            && !gi.DeleteDate.HasValue
-                            && !git.DeleteDate.HasValue
-                            && !gitb.DeleteDate.HasValue
-                            orderby gi.InningNumber descending
-                            orderby gt.TeamBattingSequence descending
-                            orderby gitb.Sequence descending
-                            select gitb).Take(1);
+            using (var context = new Data.DartballContext())
+            {
+                var currentInning = context.GameInnings
+                                           .Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue)
+                                           .OrderByDescending(x => x.InningNumber).FirstOrDefault();
+                if (currentInning != null)
+                {
+                    var gameTeamsInReverseSequence = context.GameTeams
+                                           .Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue)
+                                           .OrderByDescending(x => x.TeamBattingSequence).ToList();
 
-                if (items != null && items.Count() > 0) gameInningTeamBatter = Mapper.Map<GameInningTeamBatterDto>(items.FirstOrDefault());
+                    var inningTeamsBatters = context.GameInningTeamBatters
+                                                    .Where(x => x.GameInningTeam.GameInningId == currentInning.GameInningId && !x.DeleteDate.HasValue && !x.DeleteDate.HasValue)
+                                                    .Include(x => x.GameInningTeam)
+                                                    .OrderByDescending(x => x.Sequence).ToList();
+
+                    foreach (var gt in gameTeamsInReverseSequence)
+                    {
+                        var teamBatters = inningTeamsBatters.Where(x => x.GameInningTeam.GameTeamId == gt.GameTeamId).ToList();
+                        if (teamBatters.Count > 0)
+                        {
+                            gameInningTeamBatter = Mapper.Map<GameInningTeamBatterDto>(teamBatters.FirstOrDefault());
+                            break;
+                        }
+                    }
+                }
             }
 
             return gameInningTeamBatter;
@@ -154,10 +164,11 @@ namespace Dartball.BusinessLayer.Game.Implementation
         }
 
 
-       
 
 
-        public ChangeResult Save(IGameInningTeamBatter gameInningTeamBatter) {
+
+        public ChangeResult Save(IGameInningTeamBatter gameInningTeamBatter)
+        {
             bool isAdd = GetGameInningTeamBatter(gameInningTeamBatter.GameInningTeamId, gameInningTeamBatter.Sequence) == null;
 
             if (isAdd) return AddNew(gameInningTeamBatter);

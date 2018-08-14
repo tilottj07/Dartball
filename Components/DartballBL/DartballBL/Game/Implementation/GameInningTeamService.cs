@@ -124,27 +124,43 @@ namespace Dartball.BusinessLayer.Game.Implementation
 
             using (var context = new Data.DartballContext())
             {
-                Guid? lastTeamId = null;
-                var lastTeam = (from gi in context.GameInnings
-                                join git in context.GameInningTeams on gi.GameInningId equals git.GameInningId
-                                join gt in context.GameTeams on gi.GameId equals gt.GameId
-                                where gi.GameId == gameId.ToString()
-                                && !gi.DeleteDate.HasValue
-                                && !git.DeleteDate.HasValue
-                                && !gt.DeleteDate.HasValue
-                                orderby gi.InningNumber descending
-                                orderby gt.TeamBattingSequence descending
-                                select new { LastTeamId = gt.TeamId }).Take(1);
+                var gameTeams = context.GameTeams.Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue)
+                                           .OrderBy(x => x.TeamBattingSequence).ToList();
 
-                if (lastTeam != null && lastTeam.Count() > 0)
-                    lastTeamId = Guid.Parse(lastTeam.FirstOrDefault().LastTeamId);
+                var currentInning = context.GameInnings
+                                           .Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue)
+                                           .OrderByDescending(x => x.InningNumber).FirstOrDefault();
+                int maxInning = 1;
+                if (currentInning != null) maxInning = currentInning.InningNumber;
+
+                var inningTeams = context.GameInningTeams
+                                          .Where(x => x.GameInning.GameId == gameId.ToString() && !x.DeleteDate.HasValue && !x.GameInning.DeleteDate.HasValue)
+                                          .Include(x => x.GameInning).ToList();
+                
+                var currentInningTeams = inningTeams
+                    .Where(x => x.GameInning.InningNumber == maxInning).ToList();
+
+                Guid? lastGameTeamId = null;
+                List<string> currentInningGameTeamIds = currentInningTeams.Select(x => x.GameTeamId).ToList();
+                var reverseOrderGameTeams = gameTeams.OrderByDescending(x => x.TeamBattingSequence).ToList();
+
+                foreach(var gt in reverseOrderGameTeams) {
+                    if (currentInningGameTeamIds.Contains(gt.GameTeamId)) {
+                        lastGameTeamId = Guid.Parse(gt.GameTeamId);
+                        break;
+                    }
+                }
+
+                Guid? lastTeamId = null;
+                if (lastGameTeamId.HasValue) {
+                    var gt = gameTeams.FirstOrDefault(x => x.GameTeamId == lastGameTeamId.Value.ToString());
+                    if (gt != null) lastTeamId = Guid.Parse(gt.TeamId);
+                }
 
                 if (!lastTeamId.HasValue)
                 {
                     //get the first team in the sequence 
-                    var gameTeam = context.GameTeams
-                                          .Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue)
-                                          .OrderBy(x => x.TeamBattingSequence).FirstOrDefault();
+                    var gameTeam = gameTeams.FirstOrDefault();
 
                     if (gameTeam != null)
                         nextAtBatTeamId = Guid.Parse(gameTeam.TeamId);
@@ -152,17 +168,16 @@ namespace Dartball.BusinessLayer.Game.Implementation
                 else
                 {
                     //get the next team in the sequence
-                    var gameTeams = context.GameTeams
-                                           .Where(x => x.GameId == gameId.ToString() && !x.DeleteDate.HasValue)
-                                           .OrderBy(x => x.TeamBattingSequence).ToList();
-
                     var lastGameTeam = gameTeams.FirstOrDefault(x => x.TeamId == lastTeamId.Value.ToString());
-                    if (lastGameTeam != null) {
+                    if (lastGameTeam != null)
+                    {
                         int gtIndex = gameTeams.IndexOf(lastGameTeam);
-                        if (gtIndex < (gameTeams.Count - 1))  {
+                        if (gtIndex < (gameTeams.Count - 1))
+                        {
                             nextAtBatTeamId = Guid.Parse(gameTeams[gtIndex + 1].TeamId);
                         }
-                        else {
+                        else
+                        {
                             nextAtBatTeamId = Guid.Parse(gameTeams.FirstOrDefault().TeamId);
                         }
                     }
